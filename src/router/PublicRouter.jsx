@@ -1,21 +1,23 @@
-import React from 'react'
-import {Navigate, Outlet} from "react-router-dom"
+import { Navigate, Outlet } from "react-router-dom";
 import PropTypes from 'prop-types'
 
+const PrivateRoutes = ({
+  isAuthenticated,
+  redirectPath = "/login",
+  children,
+}) => {
+  if (!isAuthenticated) {
+    return <Navigate replace to={redirectPath} />;
+  }
+  return children || <Outlet />;
+};
 
 
-const PublicRouter = ({isAutenticate,redirect = "/", children}) => {
-    if (isAutenticate) {
-      return <Navigate replace to={redirect} />
-    }
-  return children || <Outlet/>
+PrivateRoutes.propTypes = {
+  isAutenticate: PropTypes.bool.isRequired,
+  redirect: PropTypes.string,
+  children: PropTypes.node
+
 }
 
-PublicRouter.propTypes = {
-    isAutenticate: PropTypes.bool.isRequired,
-    redirect: PropTypes.string,
-    children: PropTypes.node
-
-}
-
-export default PublicRouter
+export default PrivateRoutes;
