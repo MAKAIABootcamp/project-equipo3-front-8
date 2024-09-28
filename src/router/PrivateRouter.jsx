@@ -5,18 +5,18 @@ import PropTypes from "prop-types"
 
 
 
-const PublicRouter = ({isAutenticate,redirect = "/", children}) => {
-    if (isAutenticate) {
+const PrivateRouter = ({isAutenticate,redirect = "/login", children}) => {
+    if (!isAutenticate) {
       return <Navigate replace to={redirect} />
     }
   return children || <Outlet/>
 }
 
-PublicRouter.propTypes = {
+PrivateRouter.propTypes = {
     isAutenticate: PropTypes.bool.isRequired,
     redirect: PropTypes.string,
     children: PropTypes.node
 
 }
 
-export default PublicRouter
+export default PrivateRouter

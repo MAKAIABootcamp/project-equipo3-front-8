@@ -1,8 +1,6 @@
 import React from 'react'
 import Dashboard from '../pages/Dashboard'
 import { Routes, Route } from 'react-router-dom'
-import PublicRouter from './PublicRouter'
-import PrivateRoutes from './PrivateRoutes'
 import ProfileRestaurant from '../pages/ProfileRestaurant'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
@@ -12,6 +10,8 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../Firebase/firebaseConfig'
 import { useDispatch, useSelector } from "react-redux";
 import { restoreActiveSessionThunk } from '../redux/auth/authSlice'
+import PrivateRouter from './PrivateRouter'
+import PublicRouter from './PublicRouter'
 
 
 const AppRouter = () => {
@@ -35,12 +35,12 @@ const AppRouter = () => {
       <Route path="/" element={<Layout/>}>
         <Route index element={<Dashboard/>} />
         <Route element={<PublicRouter isAutenticate={isAuthenticated}/>}>
-          <Route path='login' element={<Login/>} />
-          <Route path='register' element={<Register/>} />
+            <Route path='login' element={<Login/>} />
+            <Route path='register' element={<Register/>} />
         </Route>
         
         
-        <Route element={<PrivateRoutes isAutenticate={isAuthenticated}/>}>
+        <Route element={<PrivateRouter isAutenticate={isAuthenticated}/>}>
             <Route path='news' element={<ProfileRestaurant/>}>
                 <Route path=':newid' element={<ProfileRestaurant/>} />
             </Route>

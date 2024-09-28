@@ -86,7 +86,7 @@ const Register = () => {
         {({ isSubmitting, setFieldValue }) => (
           <Form>
             <label htmlFor="name">Nombre completo</label>
-            <Field name="name" id="name" placeholder="Whitney" type="text" />
+            <Field name="name" id="name" placeholder="Introduzca su nombre" type="text" />
             <ErrorMessage name="name" />
 
             <label htmlFor="email">Correo electrónico:</label>
