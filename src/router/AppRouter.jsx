@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { restoreActiveSessionThunk } from '../redux/auth/authSlice'
 import PrivateRouter from './PrivateRouter'
 import PublicRouter from './PublicRouter'
+import LoginForm from '../pages/modales/LoginForm'
+import SingIn from '../pages/modales/SingIn'
 
 
 const AppRouter = () => {
@@ -37,6 +39,8 @@ const AppRouter = () => {
         <Route element={<PublicRouter isAutenticate={isAuthenticated}/>}>
             <Route path='login' element={<Login/>} />
             <Route path='register' element={<Register/>} />
+            <Route path='loginform' element={<LoginForm/>} />
+            <Route path='singin' element={<SingIn/>} />
         </Route>
         
         
