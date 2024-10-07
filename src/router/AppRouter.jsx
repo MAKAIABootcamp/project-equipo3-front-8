@@ -1,17 +1,20 @@
 import React from 'react'
 import Dashboard from '../pages/Dashboard'
 import { Routes, Route } from 'react-router-dom'
-import ProfileRestaurant from '../pages/ProfileRestaurant'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
 import Layout from '../components/Layout'
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from '../Firebase/firebaseConfig'
 import { useDispatch, useSelector } from "react-redux";
 import { restoreActiveSessionThunk } from '../redux/auth/authSlice'
 import PrivateRouter from './PrivateRouter'
 import PublicRouter from './PublicRouter'
+import { auth } from '../Firebase/firebaseConfig'
+import Home from '../pages/Home'
+import HomePage2 from '../pages/HomePage2'
+
+
 
 
 const AppRouter = () => {
@@ -33,7 +36,7 @@ const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout/>}>
-        <Route index element={<Dashboard/>} />
+        <Route path='/' element={<HomePage2/>} />
         <Route element={<PublicRouter isAutenticate={isAuthenticated}/>}>
             <Route path='login' element={<Login/>} />
             <Route path='register' element={<Register/>} />
@@ -41,8 +44,8 @@ const AppRouter = () => {
         
         
         <Route element={<PrivateRouter isAutenticate={isAuthenticated}/>}>
-            <Route path='news' element={<ProfileRestaurant/>}>
-                <Route path=':newid' element={<ProfileRestaurant/>} />
+            <Route path='news' element={<Dashboard/>}>
+                <Route path=':newid' element={<Dashboard/>} />
             </Route>
         </Route>
       
