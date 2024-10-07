@@ -42,7 +42,7 @@ const Login = () => {
 
   return (
     <main>
-      <h1>Iniciar Sesión</h1>
+      <h1 className="bg-secundario font-titulo">Iniciar Sesión</h1>
       <Formik
         initialValues={{
           email: "",
@@ -58,6 +58,7 @@ const Login = () => {
           <Form>
             <label htmlFor="email">Correo electrónico:</label>
             <Field
+            
               type="email"
               name="email"
               id="email"
