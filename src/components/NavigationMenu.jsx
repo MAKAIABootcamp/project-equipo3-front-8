@@ -32,15 +32,15 @@ const links = [
 const NavigationMenu = () => {
   return (
 
-    <div className="flex flex-col items-center space-y-4 pt-20 w-[244px] h-[900px] min-h-screen">
+    <div className="flex flex-col items-center justify-center space-y-4 pb-12 w-[244px] h-[900px] min-h-screen">
   {/* Navigation Menu */}
-  <nav className="flex flex-col space-y-3 w-full">
+  <nav className="flex flex-col items-center justify-center space-y-3 w-full">
     <div className="space-y-3">
       {links.map((item, index) => (
-        <button key={index} className="w-[234px] h-[50px] flex items-center justify-center">
-          <NavLink className="text-negro-carbon flex items-center">
+        <button key={index} className={`w-[234px] h-[50px] flex items-center justify-center rounded-full ${index === links.length - 1 ? 'bg-blanco-marino p-[8px_52px]' : index === links.length - 2 ? 'bg-default p-[0px_0px_0px_20px]' : 'bg-default'}`}>
+          <NavLink className={` text-negro-carbon flex items-center justify-center`}>
             <img src={item.icon} alt={item.label} className="mr-3 w-5 h-5" />
-            <span className="text-lg">{item.label}</span>
+            <span className="text-[24px]">{item.label}</span>
           </NavLink>
         </button>
       ))}
@@ -48,7 +48,7 @@ const NavigationMenu = () => {
   </nav>
 
   {/* Texto informativo */}
-  <p className="text-[12px] text-center leading-1.2 font-normal px-4 pb-[50px]">
+  <p className="text-[12px] text-center leading-1.2 font-normal px-4 pb-[66px] pt-[44px] ">
     Inicia sesión para crear reseñas, seguir a creadores, dar me gusta y ver comentarios.
   </p>
 

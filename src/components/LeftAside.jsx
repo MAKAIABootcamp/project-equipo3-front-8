@@ -16,7 +16,7 @@ const LeftAside = () => {
                     Encuentra restaurantes increíbles, lee reseñas honestas y comparte tus experiencias con otros amantes de la comida.
                 </p>
                 <div>
-                    <p className="font-bold leading-1.2">
+                    <p className="font-bold leading-1.2 pt-12">
                         ¡Es fácil, divertido y delicioso!
                     </p>
                 </div>
