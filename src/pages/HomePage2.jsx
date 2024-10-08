@@ -1,9 +1,12 @@
 import React from 'react';
 import UserProfile from '../components/UserProfile';
 import RestaurantCard from '../components/RestaurantCard';
+import { useSelector } from 'react-redux';
+import Modal from '../components/Modal';
 
 
 const HomePage2 = () => {
+  const { isActiveModal } = useSelector(store => store.modal);
   return (
 
     <div className="bg-gray-100 max-w-[749px] h-[904px] p-0 shadow-lg rounded-lg flex flex-col justify-end ">
@@ -20,7 +23,11 @@ const HomePage2 = () => {
 
         {/* Tarjeta de Restaurante */}
         <RestaurantCard foodImage={"https://elikaeskola.com/wp-content/uploads/dieta-parchis-11-1024x683.jpg"} />
-        </div>
+      </div>
+      {
+        isActiveModal && <Modal/>
+      }
+        
     </div>
   );
 };

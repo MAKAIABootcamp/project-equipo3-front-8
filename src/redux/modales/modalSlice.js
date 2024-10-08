@@ -1,26 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    isLoginModalOpen: false,
-    activeSubModal: null // 'email', 'phone', 'google', 'facebook', 'register'
+    isActiveModal: false
 };
 
 const modalSlice = createSlice({
     name: 'modal',
     initialState,
     reducers: {
-        openLoginModal: (state) => {
-            state.isLoginModalOpen = true;
+        showModal: (state) => {
+            state.isActiveModal = true;
         },
-        closeLoginModal: (state) => {
-            state.isLoginModalOpen = false;
-            state.activeSubModal = null;
-        },
-        setActiveSubModal: (state, action) => {
-            state.activeSubModal = action.payload;
+        hiddenModal: (state) => {
+            state.isActiveModal = false;
         }
     }
 });
 
-export const { openLoginModal, closeLoginModal, setActiveSubModal } = modalSlice.actions;
+export const { showModal, hiddenModal } = modalSlice.actions;
 export default modalSlice.reducer;

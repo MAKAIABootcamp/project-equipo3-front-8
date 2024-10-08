@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { closeLoginModal } from '../../redux/modales/modalSlice';
+//import { closeLoginModal } from '../../redux/modales/modalSlice';
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 
 const PhoneLogin = () => {
@@ -41,7 +41,7 @@ const PhoneLogin = () => {
         try {
             await auth.signInWithCredential(credential);
             alert('Número de teléfono verificado');
-            dispatch(closeLoginModal()); // Cierra el modal al iniciar sesión correctamente
+            //dispatch(closeLoginModal()); // Cierra el modal al iniciar sesión correctamente
         } catch (error) {
             console.error('Error verificando el código: ', error);
         }
@@ -52,7 +52,7 @@ const PhoneLogin = () => {
             <div className="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3">
                 <button
                     className="absolute  right-[480px] font-bold text-gray-500 hover:text-gray-700"
-                    //onClick={() => dispatch(closeLoginModal())}
+                    onClick={() => dispatch(closeLoginModal())}
                 > 
                     &#10005; 
                 </button>
@@ -104,3 +104,6 @@ const PhoneLogin = () => {
 };
 
 export default PhoneLogin;
+
+
+

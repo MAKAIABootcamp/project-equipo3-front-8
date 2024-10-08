@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { closeLoginModal } from '../../redux/modales/modalSlice';
+//import { closeLoginModal } from '../../redux/modales/modalSlice';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 const RegisterModal = () => {
@@ -28,7 +28,7 @@ const RegisterModal = () => {
         try {
             // Firebase función para registrar al usuario
             await createUserWithEmailAndPassword(auth, email, password);
-            dispatch(closeLoginModal()); // Cierra el modal al registrarse correctamente
+           // dispatch(closeLoginModal()); // Cierra el modal al registrarse correctamente
         } catch (error) {
             console.error('Error al registrarse: ', error);
             setError('Error al registrarse. Por favor, intenta de nuevo.');

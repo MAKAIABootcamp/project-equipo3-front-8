@@ -16,10 +16,12 @@ const Home = () => {
 
             <div className="space-y-4">
                 <button className="bg-principal text-white font-semibold py-2 px-8 rounded-md hover:bg-pink-600 transition-all">
-                    Registrarme
+                   Registrarme
+
                 </button>
                 <button className="border border-principal text-principal font-semibold py-2 px-8 rounded-md hover:bg-pink-100 transition-all">
                     Iniciar Sesión
+
                 </button>
             </div>
 

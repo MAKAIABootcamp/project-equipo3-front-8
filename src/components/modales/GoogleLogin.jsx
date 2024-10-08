@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { closeLoginModal } from '../../redux/modales/modalSlice';
+//import { closeLoginModal } from '../../redux/modales/modalSlice';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 const GoogleLogin = () => {
@@ -12,7 +12,7 @@ const GoogleLogin = () => {
 
         try {
             await signInWithPopup(auth, provider);
-            dispatch(closeLoginModal()); // Cierra el modal al iniciar sesión correctamente
+            //dispatch(closeLoginModal()); // Cierra el modal al iniciar sesión correctamente
         } catch (error) {
             console.error('Error al iniciar sesión con Google: ', error);
         }

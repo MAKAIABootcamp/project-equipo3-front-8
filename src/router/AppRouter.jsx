@@ -13,6 +13,12 @@ import PublicRouter from './PublicRouter'
 import { auth } from '../Firebase/firebaseConfig'
 import Home from '../pages/Home'
 import HomePage2 from '../pages/HomePage2'
+import PhoneLogin from '../components/modales/PhoneLogin'
+import LoginModal from '../components/modales/LoginModal'
+import EmailLogin from '../components/modales/EmailLogin'
+import GoogleLogin from '../components/modales/GoogleLogin'
+import RegisterModal from '../components/modales/RegisterModal'
+import FacebookLogin from '../components/modales/FacebookLogin'
 
 
 
@@ -21,6 +27,7 @@ const AppRouter = () => {
   const dispatch = useDispatch();
   const { loading, isAuthenticated, user } = useSelector((store) => store.auth);
   const [checking, setChecking] = useState(true);
+
 
   useEffect(() => {
     onAuthStateChanged(auth, (authUser) => {
@@ -34,7 +41,7 @@ const AppRouter = () => {
 
 
 
-  if (loading || checking) return <div>...Cargando</div>;
+  if (loading || checking) return <div className='text-center inset-8 justify-center items-center text-pink-600' > FODDIES </div>;
 
   return (
     <Routes>
@@ -43,6 +50,13 @@ const AppRouter = () => {
         <Route element={<PublicRouter isAutenticate={isAuthenticated}/>}>
             <Route path='login' element={<Login/>} />
             <Route path='register' element={<Register/>} />
+            <Route path='phonelogin' element={<PhoneLogin/>} />
+            <Route path='loginmodal' element={<LoginModal/>} />
+            <Route path='emailLogin' element={<EmailLogin/>} />
+            <Route path='GoogleLogin' element={<GoogleLogin/>} />
+            <Route path='facebook' element={<FacebookLogin/>} />
+            <Route path='registermodal' element={<RegisterModal/>} />
+            
         </Route>
         
         
@@ -57,7 +71,7 @@ const AppRouter = () => {
       
 
 
-    </>
+    
   )
 }
 

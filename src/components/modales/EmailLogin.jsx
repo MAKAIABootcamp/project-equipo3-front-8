@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { closeLoginModal } from '../../redux/modales/modalSlice';
+//import { hiddenModal } from '../../redux/modales/modalSlice';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const EmailLogin = () => {
@@ -10,6 +10,7 @@ const EmailLogin = () => {
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
+   
 
     // Función para alternar la visibilidad de la contraseña
     const togglePasswordVisibility = () => {
@@ -21,9 +22,9 @@ const EmailLogin = () => {
         const auth = getAuth();
 
         try {
-            // Firebase función para iniciar sesión con email y password
+            
             await signInWithEmailAndPassword(auth, email, password);
-            dispatch(closeLoginModal()); // Cierra el modal si el inicio de sesión es exitoso
+           //dispatch(hiddenModal()); // Cierra el modal
         } catch (error) {
             console.error('Error al iniciar sesión: ', error);
             setError('Error al iniciar sesión. Por favor, revisa tus credenciales.');
@@ -31,43 +32,46 @@ const EmailLogin = () => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center" >
-           <div className="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3">
-           <button
-                    className="absolute  right-[480px] font-bold text-gray-500 hover:text-gray-700"
-                    //onClick={() => dispatch(closeLoginModal())}
-                > 
-                    &#10005; 
-            </button>
-          
-           <h1 className="text-2xl text-center font-bold mb-4">Iniciar sesión </h1>
-           <p className='text-gray-500 m-2'>Correo electrónico o Nombre de usuario</p>
-           {error && <p className="text-red-500">{error}</p>}
-            <form onSubmit={handleLogin}>
-                <input
-                    type="email"
-                    className="w-full p-2 mb-2 border rounded bg-[#f8f9fa] "
-                    placeholder="Correo electrónico o usuario"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    className="w-full p-2 mb-4 border rounded bg-[#f8f9fa] "
-                    placeholder="Contraseña"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                 {/* Botón "ojito" */}
-                 <button
-                        type="button"
-                        className="absolute inset-y-0 bottom-4 right-[500px] flex items-center text-gray-500 hover:text-gray-700"
-                        onClick={togglePasswordVisibility}
-                    >
-                        {showPassword ? (
-                            <svg
+        <>
+        
+           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center" >
+               <div className="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3">
+                    <button
+                      className="absolute  right-[480px] font-bold text-gray-500 hover:text-gray-700"
+                      
+                    > <Modal/>
+                      &#10005; 
+                   </button>
+                 
+                   <h1 className="text-2xl text-center font-bold mb-4">Iniciar sesión </h1>
+                   <p className='text-gray-500 m-2'>Correo electrónico o Nombre de usuario</p>
+                     {error && <p className="text-red-500">{error}
+                    </p>}
+                    <form onSubmit={handleLogin}>
+                        <input
+                          type="email"
+                          className="w-full p-2 mb-2 border rounded bg-[#f8f9fa] "
+                          placeholder="Correo electrónico o usuario"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                        />
+                        <input
+                           type="password"
+                           className="w-full p-2 mb-4 border rounded bg-[#f8f9fa] "
+                           placeholder="Contraseña"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                        />
+                         {/* Botón "ojito" */}
+                        <button
+                          type="button"
+                          className="absolute inset-y-0 bottom-4 right-[500px] flex items-center text-gray-500 hover:text-gray-700"
+                          onClick={togglePasswordVisibility}
+                        >
+                           {showPassword ? (
+                              <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-5 w-5"
                                 viewBox="0 0 24 24"
@@ -95,23 +99,35 @@ const EmailLogin = () => {
                                 <circle cx="12" cy="12" r="3" />
                             </svg>
                         )}
-                    </button>
-                    <span className=' flex m-2 items-center justify-center text-center text-gray-500'>
-                        ¿Olvidaste tu contraseña?
-                    </span>
-                <button type="submit"
-                 className="w-full bg-[#ff0066] text-white p-2 rounded">
+                        </button>
+                        <span className=' flex m-2 items-center justify-center text-center text-gray-500'>
+                              ¿Olvidaste tu contraseña?
+                        </span>
+                        <button type="submit"
+                           className="w-full bg-[#ff0066] text-white p-2 rounded">
 
-                    Iniciar sesión
-                </button>
-                <span className='justify-center items-center text-center text-gray-500 m-4 flex '>¿No tienes cuenta? <a href="http://localhost:5173/registermodal" className='text-pink-600 '>Registrarte</a></span>
-            </form>
-           </div>
-        </div>
+                          Iniciar sesión
+                        </button>
+                        <span
+                           className='justify-center items-center text-center text-gray-500 m-4 flex '>
+                           ¿No tienes cuenta?
+                          <a href="http://localhost:5173/registermodal" 
+                             className='text-pink-600 '>
+                             Registrarte
+                          </a>
+                        </span>
+                   </form>
+               </div>
+            </div>
+
+        </>
+        
+        
     );
 };
 
 export default EmailLogin;
+
 
 // const SingIn = () => {
 //     return (

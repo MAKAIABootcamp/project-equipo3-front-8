@@ -5,6 +5,8 @@ import UserIcon from "../assets/User/User.png";
 import ExplorerIcon from "../assets/User/Explorer.png";
 import FraseBotonIcon from "../assets/icon/CalificaRestaurantes.png";
 import ComentIcon from "../assets/icon/ComentaryIcon.png";
+// import LoginModal from "./modales/LoginModal";
+import LoginButton from "./LoginButton";
 
 const links = [
   {
@@ -50,9 +52,11 @@ const NavigationMenu = () => {
       </p>
 
       {/* Botón de iniciar sesión */}
-      <button className="text-principal border border-principal py-2 rounded-[4px] mt-6 w-[234px] h-[50px] text-lg font-semibold hover:bg-pink-100 transition-all">
+      <LoginButton/>
+      {/* <button onClick={LoginModal}  className="text-principal border border-principal py-2 rounded-[4px] mt-6 w-[234px] h-[50px] text-lg font-semibold hover:bg-pink-100 transition-all">
         Iniciar Sesión
-      </button>
+            
+      </button> */}
 
       {/* Botón adicional con íconos */}
       <button className="flex items-center py-2 px-4 font-normal rounded-[4px] w-[234px] h-[50px] bg-gray-100 hover:bg-gray-200 transition-all">

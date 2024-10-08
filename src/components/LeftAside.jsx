@@ -1,4 +1,5 @@
-import FoddiesIcon from '../assets/icon/Foddies.png'
+import FoddiesIcon from '../assets/icon/Foddies.png';
+import LoginButton from './LoginButton';
 
 const LeftAside = () => {
     return (
@@ -25,9 +26,10 @@ const LeftAside = () => {
                     <button className="bg-principal text-white py-2 px-8 rounded-[4px] hover:bg-pink-600 transition-all">
                         Registrarme
                     </button>
-                    <button className="border border-principal text-principal  py-2 px-8 rounded-[4px] hover:bg-pink-100 transition-all">
+                    <LoginButton/>
+                    {/* <button className="border border-principal text-principal  py-2 px-8 rounded-[4px] hover:bg-pink-100 transition-all">
                         Iniciar Sesión
-                    </button>
+                    </button> */}
                 </div>
 
                 {/* Icono de Foddies */}
