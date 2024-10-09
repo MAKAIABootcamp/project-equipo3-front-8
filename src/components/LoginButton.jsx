@@ -1,13 +1,12 @@
-import { useDispatch } from "react-redux";
-import { showModal } from "../redux/modales/modalSlice";
+import { useNavigate } from "react-router-dom";
 
 
-const LoginButton = ({ bgSolid = false }) => {
-    const dispatch = useDispatch();
+const LoginButton = () => {
+    const navigate = useNavigate();
 
-    const handleShowModal = () => dispatch(showModal())
+    const handleLoginNavigate = () => navigate('/loginOptions')
     return (
-        <button onClick={handleShowModal} className={bgSolid ? "bg-principal border border-principal text-principal  py-2 px-8 rounded-[4px] hover:bg-pink-100 transition-all" : "border border-principal text-principal  py-2 px-8 rounded-[4px] hover:bg-pink-100 transition-all"}>
+        <button onClick={handleLoginNavigate} className="border border-principal text-principal  py-2 px-8 rounded-[.25rem] hover:bg-pink-100 transition-all">
             Iniciar Sesión
         </button>
     )
