@@ -8,15 +8,17 @@ const RestaurantCard = ({ foodImage }) => {
     <div className='flex justify-center items-center min-h-screen'>
       <div className="flex flex-col flex-nowrap bg-white rounded-lg shadow-lg font-titulo text-[14px] justify-center content-stretch" style={{ width: '470px', height: '722px' }}>
         {/* Información del restaurante y cliente */}
-        <div className='pt-[0px] pr-[15px] pb-[0px] pl-[15px]'>
+        <div className='pt-[10px] pr-[15px] pb-[0px] pl-[15px]'>
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center">
-              <div className="w-12 h-12 rounded-full border-2 border-pink-500 flex-shrink-0">
-                <img
-                  src="https://via.placeholder.com/100"
-                  alt="Cliente"
-                  className="rounded-full w-full h-full object-cover"
-                />
+              <div className="w-12 h-12 flex-shrink-0 relative rounded-full p-[2px]" style={{ background: 'linear-gradient(65deg, rgba(255,0,102,1) 0%, rgba(94,0,190,1) 100%)' }}>
+                <div className="w-full h-full rounded-full overflow-hidden bg-white">
+                  <img
+                    src="https://via.placeholder.com/100"
+                    alt="Restaurante"
+                    className="rounded-full w-full h-full object-cover"
+                  />
+                </div>
               </div>
               <div className="ml-3">
                 <p className="font-bold text-sm">Hice Klent</p>
