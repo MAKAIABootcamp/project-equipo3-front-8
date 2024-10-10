@@ -9,7 +9,7 @@ import PhoneLogin from "../components/PhoneLogin"
 const SignIn = ({isPhone=false}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
 
   useEffect(() => {
     dispatch(showModal());
