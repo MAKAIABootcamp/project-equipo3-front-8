@@ -10,6 +10,7 @@ const LeftAside = () => {
                 
                 <h1 className="text-[36px] font-bold leading-1.2 text-left" >
                     ¡<span className="text-principal">Foddies</span> es tu app foodie favorita!
+                    <h1>hola mundo</h1>
                 </h1>
                 
 
