@@ -1,13 +1,13 @@
 import { NavLink } from "react-router-dom";
-import { ReactComponent as HomeIcon } from "../../assets/icons/core/home_icon.svg";
-import { ReactComponent as SearchIcon } from "../../assets/icons/core/search_icon.svg";
-import { ReactComponent as UserIcon } from "../../assets/icons/core/account_icon.svg";
-import { ReactComponent as ExplorerIcon } from "../../assets/icons/core/discover_icon.svg";
+
+import HomeIcon from "../../assets/icons/core/home_icon.svg";
+import SearchIcon from "../../assets/icons/core/search_icon.svg";
+import UserIcon from "../../assets/icons/core/account_icon.svg";
+import DiscoverIcon from "../../assets/icons/core/discover_icon.svg";
+
 import EstrellaIcon from "../../assets/icon/Estrella.png";
 import ComentIcon from "../../assets/icon/ComentaryIcon.png";
-// import LoginModal from "./modales/LoginModal";
-import LoginButton from "../buttons/Auth/LoginButton";
-
+import LoginButton from "../Buttons/Auth/LoginButton";
 import "./NavigationMenu.css";
 
 const links = [
@@ -22,7 +22,7 @@ const links = [
     link: "/",
   },
   {
-    icon: ExplorerIcon,
+    icon: DiscoverIcon,
     label: "Explorar",
     link: "/",
   },
@@ -42,12 +42,9 @@ const NavigationMenu = () => {
       <nav className="flex flex-col items-center justify-center space-y-3 w-full">
           {links.map((item, index) => (
             <NavLink  key={index} className="w-[234px] h-[50px] flex items-center justify-center rounded-full ">
-              <div className="navbarLink absolute z-10 w-[94px] text-negro-carbon flex items-center  active:text-grey-basic">
-              <item.icon
-                  className={`mr-3 w-[24px] h-[24px] active:text-red-800 ${
-                    isActive ? "text-blue-600" : "text-negro-carbon"
-                  }`} // Cambia a los colores que deseas usar
-                />                <span className="text-xl">{item.label}</span>
+              <div className="navbarLink absolute z-10 w-[104px] text-negro-carbon flex items-center  active:text-grey-basic">
+                            <item.icon src={item.icon} className="mr-3 w-[24px] h-[24px]" alt="" srcset="" />
+                            <span className="text-xl">{item.label}</span>
               </div>
               <div className="navbarButton w-[234px] h-[50px] rounded-full"></div>
             </NavLink>

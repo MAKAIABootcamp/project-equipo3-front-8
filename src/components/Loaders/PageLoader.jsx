@@ -1,4 +1,4 @@
-import spinerIcon from '../../assets/icons/loaders/loading_icon.svg'
+import SpinerIcon from '../../assets/icons/loaders/loading_icon.svg'
 import '../../styles/utils/_animations.css'
 
 const PageLoader = () => {
@@ -24,7 +24,8 @@ const PageLoader = () => {
                 </svg>
             </figure>
 
-            <img src={spinerIcon} alt="Icono de carga" rel="preload" className='loaderSpin'/>
+
+            <SpinerIcon className='loaderSpin'/>
 
         </div>
     )
