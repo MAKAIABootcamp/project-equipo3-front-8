@@ -28,9 +28,8 @@ export default {
       // },
 
       fontFamily: {
-        'titulo': ['Nunito', 'sans-serif'],
-        'sans': ['Poppins', 'sans-serif'],
-
+        'goldplay': ['Goldplay', 'sans-serif'],
+        'nunito': ['Nunito', 'sans-serif'],
       },
       lineHeight: {
         '1.2': '1.2',
