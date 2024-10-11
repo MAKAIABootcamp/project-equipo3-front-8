@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  FacebookAuthProvider,
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
@@ -9,6 +10,7 @@ import {
 } from "firebase/auth";
 import { auth, database } from "../../Firebase/firebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import axios from "axios";
 
 const collectionName = "users";
 
@@ -45,7 +47,7 @@ export const createAccountThunk = createAsyncThunk(
   }
 );
 
-export const loginWithEmailAndPassworThunk = createAsyncThunk(
+export const loginWithEmailAndPasswordThunk = createAsyncThunk(
   "auth/login",
   async ({ email, password }) => {
     const { user } = await signInWithEmailAndPassword(auth, email, password);
@@ -151,6 +153,60 @@ export const restoreActiveSessionThunk = createAsyncThunk(
   }
 );
 
+export const loginWithFacebookThunk = createAsyncThunk(
+  "auth/loginWithFacebook",
+  async (_, { rejectWithValue }) => {
+    const provider = new FacebookAuthProvider();
+    provider.addScope("public_profile");
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const credential = FacebookAuthProvider.credentialFromResult(result);
+      const accessToken = credential.accessToken;
+
+      const response = await axios.get(
+        `https://graph.facebook.com/v20.0/me?fields=id,name,picture.type(large)&access_token=${accessToken}`
+      );
+      if (
+        response.data &&
+        response.data.picture &&
+        response.data.picture.data &&
+        response.data.picture.data.url
+      ) {
+        await updateProfile(auth.currentUser, {
+          photoURL: response.data.picture.data.url,
+        });
+      }
+      //Se busca la información del usuario en la base de datos. Si no existe el usuario se crea y si existe se obtiene la información
+      let newUser = null;
+      const userRef = doc(database, collectionName, result.user.uid);
+      const userDoc = await getDoc(userRef);
+
+      if (userDoc.exists()) {
+        newUser = userDoc.data();
+      } else {
+        newUser = {
+          id: result.user.uid,
+          accessToken,
+          displayName: result.user.displayName,
+          email: result.user.email,
+          photoURL: response.data?.picture?.data?.url
+            ? response.data.picture.data.url
+            : result.user.photoURL,
+          isAdmin: false,
+          //Incluir el resto de la información que deben guardar
+          city: null,
+        };
+        await setDoc(userRef, newUser);
+      }
+
+      return newUser;
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -186,17 +242,17 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(loginWithEmailAndPassworThunk.pending, (state) => {
+      .addCase(loginWithEmailAndPasswordThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(loginWithEmailAndPassworThunk.fulfilled, (state, action) => {
+      .addCase(loginWithEmailAndPasswordThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuthenticated = true;
         state.user = action.payload;
         state.error = null;
       })
-      .addCase(loginWithEmailAndPassworThunk.rejected, (state, action) => {
+      .addCase(loginWithEmailAndPasswordThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
@@ -250,6 +306,20 @@ const authSlice = createSlice({
       .addCase(restoreActiveSessionThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(loginWithFacebookThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.isAuthenticated = true;
+        state.error = null;
+      })
+      .addCase(loginWithFacebookThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginWithFacebookThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
