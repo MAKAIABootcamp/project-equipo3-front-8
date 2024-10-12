@@ -1,39 +1,53 @@
-import FoddiesIcon from '../assets/icon/Foddies.png';
+import UserProfile from '../components/UserProfile';
+import RestaurantCard from '../components/Common/Post/PostCard';
+import ComidaImg from '../assets/imagenes/comida.png';
+
 
 const Home = () => {
-    return (
-        <main className="fflex flex-col items-center justify-center max-w-[447px] h-[900px] p-4 bg-gray-50 shadow-lg rounded-lg ">
-            <h1 className="text-4xl font-bold">
-                ¡<span className="text-principal">Foddies</span> es tu app foodie favorita!
-            </h1>
-            <p className="text-lg text-gray-600 text-center mt-4">
-                Encuentra restaurantes increíbles, lee reseñas honestas y comparte tus experiencias con otros amantes de la comida.
-            </p>
-            
-            <p className="text-2xl font-semibold text-gray-800 mt-6 mb-8">
-                Es fácil, divertido y delicioso!
-            </p>
+  const prueba = [
+    {
+    name: "olmar",
+    imgUrl: "https://img.freepik.com/vector-premium/ilustracion-plana-vectorial-escala-gris-profilo-usuario-avatar-imagen-perfil-icono-persona-adecuado-perfiles-redes-sociales-iconos-protectores-pantalla-como-plantilla-x9xa_719432-1256.jpg?semt=ais_hybrid",
+  },
+  {
+    name: "Holguer",
+    imgUrl: "https://img.freepik.com/vector-premium/ilustracion-plana-vectorial-escala-gris-profilo-usuario-avatar-imagen-perfil-icono-persona-adecuado-perfiles-redes-sociales-iconos-protectores-pantalla-como-plantilla-x9xa_719432-1256.jpg?semt=ais_hybrid",
+  },
+  {
+    name: "olmar",
+    imgUrl: "https://img.freepik.com/vector-premium/ilustracion-plana-vectorial-escala-gris-profilo-usuario-avatar-imagen-perfil-icono-persona-adecuado-perfiles-redes-sociales-iconos-protectores-pantalla-como-plantilla-x9xa_719432-1256.jpg?semt=ais_hybrid",
+  },
+  {
+    name: "olmar",
+    imgUrl: "https://img.freepik.com/vector-premium/ilustracion-plana-vectorial-escala-gris-profilo-usuario-avatar-imagen-perfil-icono-persona-adecuado-perfiles-redes-sociales-iconos-protectores-pantalla-como-plantilla-x9xa_719432-1256.jpg?semt=ais_hybrid",
+  },
+  {
+    name: "olmar",
+    imgUrl: "https://img.freepik.com/vector-premium/ilustracion-plana-vectorial-escala-gris-profilo-usuario-avatar-imagen-perfil-icono-persona-adecuado-perfiles-redes-sociales-iconos-protectores-pantalla-como-plantilla-x9xa_719432-1256.jpg?semt=ais_hybrid",
+  },
+  {
+    name: "olmar",
+    imgUrl: "https://img.freepik.com/vector-premium/ilustracion-plana-vectorial-escala-gris-profilo-usuario-avatar-imagen-perfil-icono-persona-adecuado-perfiles-redes-sociales-iconos-protectores-pantalla-como-plantilla-x9xa_719432-1256.jpg?semt=ais_hybrid",
+  },
 
-            <div className="space-y-4">
-                <button className="bg-principal text-white font-semibold py-2 px-8 rounded-md hover:bg-pink-600 transition-all">
-                   Registrarme
+]
+  return (
 
-                </button>
-                <button className="border border-principal text-principal font-semibold py-2 px-8 rounded-md hover:bg-pink-100 transition-all">
-                    Iniciar Sesión
 
-                </button>
-            </div>
+    <main className=" max-w-[749px] h-auto p-0 shadow-lg rounded-lg flex flex-col justify-end ">
+      <div className='pt-[0px] pr-[30px] pb-[0px] pl-[30px]'>
+        {/* Sección de Perfiles de Usuario */}
+        <div className="flex justify-center mb-12">
+          {prueba.map((items,index)=>(
+            <UserProfile key={index} name={items.name} imageUrl={items.imgUrl} />
+          ))}
+        </div>
 
-            <button className="bg-secundario text-white font-semibold py-2 px-6 mt-8 rounded-md flex items-center hover:bg-green-500 transition-all">
-                <span className="mr-2">+</span>
-                Crear Reseña
-            </button>
-
-            <span className='pt-10 w-24 h-auto'> <img src={FoddiesIcon} alt="foddiesIcon" /></span>
-
-        </main>
-    );
+        {/* Tarjeta de Restaurante */}
+        <RestaurantCard foodImage={ComidaImg} />
+      </div>
+    </main>
+  );
 };
 
 export default Home;

@@ -1,0 +1,28 @@
+@import "../utils/_fonts.css";
+
+* {
+    @apply box-border m-0 p-0; /* Cambiar box-sizing a border-box para todos los elementos */
+}
+
+html {
+    @apply text-sm
+}
+
+h1 {
+  @apply font-goldplay font-bold;
+}
+
+body {
+    @apply font-nunito
+}
+
+.border-gradient {
+  border: 2px solid transparent; /* Establece un borde transparente inicial */
+  border-image: linear-gradient(
+    65deg,
+    rgba(255, 0, 102, 1) 0%,
+    rgba(94, 0, 190, 1) 100%
+  );
+  border-image-slice: 1;
+  border-radius: 9999px; /* Hace que el borde sea circular */
+}
