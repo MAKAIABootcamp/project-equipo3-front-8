@@ -20,7 +20,7 @@ const Modal = ({ children = null, onNavigate = null, showBack = false }) => {
       <div className="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3">
         {showBack && <button onClick={() => navigate(-1)}>{"<"}</button>}
         <button
-          className="absolute  right-[480px] font-bold text-gray-500 hover:text-gray-700"
+          className="fixed flex rigth-[500px] font-bold text-gray-500 hover:text-gray-700"
           onClick={handleModal}
         >
           &#10005;

@@ -13,6 +13,8 @@ import PageLoader from '../components/Loaders/PageLoader'
 import PrivateRouter from './PrivateRouter'
 import PublicRouter from './PublicRouter'
 import NotFound from '../pages/NotFound';
+import RestaurantProfile from '../components/RestaurantProfile';
+
 
 
 
@@ -42,7 +44,7 @@ const AppRouter = () => {
           <Route path='login' element={<LoginPanel />} />
           <Route path='loginWithEmailAndPassword' element={<SignIn />} />
           <Route path='loginWithPhoneNumber' element={<SignIn isPhone={true} />} />
-
+          <Route path='restaurantProfile' element={<RestaurantProfile />} />
         </Route>
 
 

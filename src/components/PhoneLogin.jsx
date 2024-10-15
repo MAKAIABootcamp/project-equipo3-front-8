@@ -37,7 +37,7 @@ const PhoneLogin = () => {
   const validationSchemaPhone = Yup.object().shape({
     phoneNumber: Yup.string()
       .required("El número de teléfono es obligatorio")
-      .matches(/^\+\d{1,15}$/, "Formato inválido. Ej: +123456789"),
+      .matches(/^\+\d{1,15}$/, "Formato inválido. Ej: +57123456789"),
   });
 
   const validationSchemaCode = Yup.object().shape({
@@ -84,8 +84,6 @@ const PhoneLogin = () => {
 
   return (
     <div>
-      {/* <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3"> */}
       <h2 className="text-2xl font-bold mb-4">Iniciar sesión con teléfono</h2>
 
       {/* Formulario condicional basado en el estado de verificationId */}
@@ -102,19 +100,19 @@ const PhoneLogin = () => {
                   type="text"
                   name="phoneNumber"
                   placeholder="Número de teléfono"
-                  className="w-full p-2 mb-2 bg-[#f8f9fa] border rounded"
+                  className="w-full p-2 mb-2 bg-blanco-marino border rounded"
                 />
                 <ErrorMessage
                   name="phoneNumber"
                   component="div"
-                  className="text-red-500"
+                  className="text-red-500 text-center font-goldplay"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-principal text-blanco-puro p-2 rounded"
+                className="w-full bg-principal text-blanco-puro p-2 font-goldplay rounded"
               >
                 Enviar código de verificación
               </button>
@@ -139,14 +137,14 @@ const PhoneLogin = () => {
                 <ErrorMessage
                   name="verificationCode"
                   component="div"
-                  className="text-red-500"
+                  className="text-red-500 text-center font-goldplay"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-principal text-white p-2 rounded"
+                className="w-full bg-principal text-blanco-puro p-2 rounded"
               >
                 Verificar código
               </button>
