@@ -1,28 +1,29 @@
-import {  useEffect } from "react"
-import { useDispatch } from "react-redux"
-import { useNavigate, useLocation } from "react-router-dom"
-import { showModal, hiddenModal } from "../redux/modales/modalSlice"
-import Modal from "../components/Modal"
-import EmailLoginChildren from "../components/EmailLoginChildren"
-import PhoneLogin from "../components/PhoneLogin"
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { showModal, hiddenModal } from "../redux/modales/modalSlice";
+import Modal from "../components/Layout/Modal";
+import EmailLoginChildren from "../components/Authentication/Login/EmailLoginChildren";
+import PhoneLogin from "../components/Authentication/Login/PhoneLogin";
 
-const SignIn = ({isPhone=false}) => {
+const SignIn = ({ isPhone = false }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
 
   useEffect(() => {
     dispatch(showModal());
-  }, [])
+  }, [dispatch]);
 
   const handleClose = () => {
-    dispatch(hiddenModal())
+    dispatch(hiddenModal());
     navigate("/");
-  }
+  };
 
   return (
-    <Modal children={isPhone ? <PhoneLogin /> : <EmailLoginChildren />} onNavigate={handleClose} />
-  )
-}
+    <Modal onNavigate={handleClose} showBack={true}>
+      {isPhone ? <PhoneLogin /> : <EmailLoginChildren />}
+    </Modal>
+  );
+};
 
-export default SignIn
+export default SignIn;

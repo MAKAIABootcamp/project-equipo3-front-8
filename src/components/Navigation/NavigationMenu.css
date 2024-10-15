@@ -1,0 +1,10 @@
+/* styles.css */
+
+.navbarButton {/* Fondo transparente para el botón */
+    transition: background-color 70ms ease-in; /* Transición suave para el fondo */
+}
+
+/* Cambiar el color del botón al pasar el mouse sobre el navbarLink */
+.navbarLink:hover + .navbarButton {
+   @apply bg-blanco-marino;
+}
