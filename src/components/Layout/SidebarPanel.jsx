@@ -1,4 +1,5 @@
 import LoginButton from '../Buttons/Auth/LoginButton';
+import RegisterButton from '../Buttons/Auth/RegisterButton';
 
 const SidebarPanel = () => {
     return (
@@ -22,9 +23,7 @@ const SidebarPanel = () => {
                 </div>
 
                 <div className="space-y-4 flex flex-col flex-nowrap content-stretch font-bold">
-                    <button className="bg-principal text-white py-2 px-8 rounded-[4px] hover:bg-pink-600 transition-all">
-                        Registrarme
-                    </button>
+                    <RegisterButton/>
                     <LoginButton />
                     {/* <button className="border border-principal text-principal  py-2 px-8 rounded-[4px] hover:bg-pink-100 transition-all">
                         Iniciar Sesión

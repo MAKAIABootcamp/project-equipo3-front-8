@@ -13,9 +13,8 @@ import PageLoader from '../components/Loaders/PageLoader'
 import PrivateRouter from './PrivateRouter'
 import PublicRouter from './PublicRouter'
 import NotFound from '../pages/NotFound';
-import RestaurantProfile from '../components/RestaurantProfile';
-
-
+import ModalRegistro from '../components/Layout/ModalRegistro';
+import RestaurantProfile from '../components/RestaurantProfile'
 
 
 const AppRouter = () => {
@@ -38,13 +37,16 @@ const AppRouter = () => {
 
   return (
     <Routes>
-      <Route element={<Layout />}>
+       <Route path='restaurantprofile' element={<RestaurantProfile />} />
+      <Route element={<Layout />}>        
         <Route path="/" element={<Home />} />
         <Route element={<PublicRouter isAutenticate={isAuthenticated} />}>
           <Route path='login' element={<LoginPanel />} />
           <Route path='loginWithEmailAndPassword' element={<SignIn />} />
           <Route path='loginWithPhoneNumber' element={<SignIn isPhone={true} />} />
-          <Route path='restaurantProfile' element={<RestaurantProfile />} />
+          <Route path='register' element={<ModalRegistro />} />
+          {/* <Route path='restaurantprofile' element={<RestaurantProfile />} /> */}
+
         </Route>
 
 

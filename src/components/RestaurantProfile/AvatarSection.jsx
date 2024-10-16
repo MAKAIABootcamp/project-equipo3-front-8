@@ -5,7 +5,7 @@ const AvatarSection = () => {
       <h2 className="text-xl font-bold mt-4">Josefina Valoyes</h2>
       <p className="text-sm text-gray-500">Regular Person</p>
       <div className="flex items-center mt-2">
-        <span className="text-pink-500 text-lg">★★★★★</span>
+        <span className="text-principal text-lg">★★★★★</span>
         <span className="ml-2 text-gray-500">2000 Reviews</span>
       </div>
     </div>

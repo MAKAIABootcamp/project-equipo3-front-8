@@ -1,8 +1,9 @@
 const Banner = () => {
-    return (
-      <div className="w-full h-40 bg-gray-300 rounded-t-lg" />
+  return (
+     <div className="w-full h-40 bg-grey-dim
+      rounded-t-lg" />
     );
   };
   
-  export default Banner;
+export default Banner;
   

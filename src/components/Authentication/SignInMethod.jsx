@@ -38,7 +38,7 @@ const SignInMethod = () => {
         <span>¿No tienes cuenta?</span>
         <button
           className='rounded-lg transition-all gap-2 active:duration-75  p-2 w-[200px] hover:scale-[1.01] ease-in-out  bg-violet-500 text-white  '>
-          <Link to={'/'}>Registrate Ya!!!</Link>
+          <Link to={'/register'}>Registrate Ya!!!</Link>
         </button>
         <p className='text-center text-[12px] font-goldplay text-gray-600'>
           Al seguir usando una cuenta en Colombia, acepto los Términos del servicio de Foddies
