@@ -1,0 +1,24 @@
+.storyOn {
+    position: relative;
+  }
+  
+  .StoryOn::before {
+    content: '';
+    position: absolute;
+    top: 50%; /* Centrar verticalmente */
+    left: 50%; /* Centrar horizontalmente */
+    transform: translate(-50%, -50%); /* Ajuste para centrar el borde */
+    width: 52px; /* 32px + 10px */
+    height: 52px; /* 32px + 10px */
+     /* Color azul de Tailwind */
+    border-radius: 50%;
+    background: transparent; /* Relleno transparente */
+    border: 6px solid transparent; /* Grosor del borde */
+    background-image: linear-gradient(45deg, #3b82f6, #ff6347), linear-gradient(white, white); /* Fondo blanco y degradado */
+    background-clip: padding-box, border-box;/* Para que el borde se muestre correctamente */
+    z-index: -1; /* Transición para efectos futuros */
+  }
+  
+  .StoryOn:hover::before {
+    box-shadow: 0 0 5px rgba(59, 130, 247, 0.5); /* Efecto hover */
+  }

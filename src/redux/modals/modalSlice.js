@@ -1,9 +1,10 @@
-// redux/modalSlice.js
+
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isActiveModal: false,
   currentStep: 1, // Empezamos en el paso 1 (BirthdateForm)
+  isDropdownOpen: false,
 };
 
 const modalSlice = createSlice({
@@ -24,9 +25,15 @@ const modalSlice = createSlice({
     },
     resetStep: (state) => {
       state.currentStep = 1; // Reiniciar paso
-    }
+    },
+    showDropdown: (state) => {
+      state.isDropdownOpen = true;
+    },
+    hideDropdown: (state) => {
+      state.isDropdownOpen = false;
+    },
   }
 });
 
-export const { showModal, hiddenModal, nextStep, prevStep, resetStep } = modalSlice.actions;
+export const { showModal, hiddenModal, nextStep, prevStep, resetStep, showDropdown, hideDropdown  } = modalSlice.actions;
 export default modalSlice.reducer;

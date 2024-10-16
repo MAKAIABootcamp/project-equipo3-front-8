@@ -1,10 +1,29 @@
 /* styles.css */
 
 .navbarButton {/* Fondo transparente para el botón */
-    transition: background-color 70ms ease-in; /* Transición suave para el fondo */
+    transition: background-color 50ms ease-in; /* Transición suave para el fondo */
 }
 
 /* Cambiar el color del botón al pasar el mouse sobre el navbarLink */
 .navbarLink:hover + .navbarButton {
-   @apply bg-blanco-marino;
+   /* @apply bg-blanco-marino; */
+   background-color: rgba(0, 0, 0, .05);
+}
+
+.navbarLink:hover svg ,.navbarLink:hover img  {
+    /* @apply bg-blanco-marino; */
+    scale: 1.08;
+ }
+
+
+ .navbarLink:active  {
+    opacity: .5;
+ }
+
+.navbarLink:active + .navbarButton {
+    opacity: .5;
+ }
+
+ .navbarButton.active {
+   background-color: rgba(0, 0, 0, .05);/* Sombra interna para efecto de presión */
 }

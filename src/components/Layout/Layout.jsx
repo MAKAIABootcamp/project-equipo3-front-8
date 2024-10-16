@@ -4,10 +4,12 @@ import SidebarPanel from "./SidebarPanel";
 
 const Layout = () => {
   return (
-    <div className="flex flex-col items-center p-3 ">
+    <div >
       {/* <Header/> */}
+      <div className="flex justify-center ">
       <SidebarPanel />
       <Outlet />
+      </div>
       <SidebarNavigation />
 
     </div>

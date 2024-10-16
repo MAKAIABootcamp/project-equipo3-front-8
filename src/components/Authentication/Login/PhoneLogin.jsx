@@ -9,7 +9,7 @@ import {
 } from "firebase/auth";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { hiddenModal } from "../../../redux/modales/modalSlice";
+import { hiddenModal } from "../../../redux/modals/modalSlice";
 import { Link } from "react-router-dom";
 
 const PhoneLogin = () => {

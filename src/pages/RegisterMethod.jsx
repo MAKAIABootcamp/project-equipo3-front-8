@@ -1,7 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { googleLoginThunk, loginWithFacebookThunk } from "../redux/auth/authSlice";
-import { nextStep } from "../redux/modales/modalSlice";
+import { nextStep } from "../redux/modals/modalSlice";
 
 const RegisterMethod = () => {
     const navigate = useNavigate();

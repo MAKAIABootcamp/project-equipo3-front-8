@@ -1,5 +1,5 @@
 import UserProfile from '../components/UserProfile';
-import RestaurantCard from '../components/Common/Post/PostCard';
+import PostCard from '../components/Common/Post/PostCard';
 import ComidaImg from '../assets/imagenes/comida.png';
 
 
@@ -34,7 +34,7 @@ const Home = () => {
   return (
 
 
-    <main className=" max-w-[749px] h-auto p-0 shadow-lg rounded-lg flex flex-col justify-end ">
+    <main className=" max-w-[749px] h-auto p-0 shadow-lg rounded-lg flex flex-col justify-end md:mr-[15vw] md:ml-[21.875rem]">
       <div className='pt-[0px] pr-[30px] pb-[0px] pl-[30px]'>
         {/* Sección de Perfiles de Usuario */}
         <div className="flex justify-center mb-12">
@@ -44,7 +44,7 @@ const Home = () => {
         </div>
 
         {/* Tarjeta de Restaurante */}
-        <RestaurantCard foodImage={ComidaImg} />
+        <PostCard foodImage={ComidaImg} />
       </div>
     </main>
   );

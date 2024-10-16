@@ -11,12 +11,13 @@ import {
 import { auth, database } from "../../Firebase/firebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import axios from "axios";
+import { generateUniqueUsername } from "../../utils/usernameGenerator"
 
 const collectionName = "users";
 
 export const createAccountThunk = createAsyncThunk(
   "auth/createAccount",
-  async ({ email, password, name, photo }) => {
+  async ({ email, password, name, photo, username }) => {
     const userCredentials = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -31,11 +32,12 @@ export const createAccountThunk = createAsyncThunk(
 
     const newUser = {
       id: userCredentials.user.uid,
+      username: username,
       displayName: name,
       email: email,
-      accessToken: userCredentials.user.accessToken,
       photoURL: photo,
       isAdmin: false,
+      accessToken: userCredentials.user.accessToken,
       //Incluir el resto de la información (o propiedades) que necesiten guardar del usuario
     };
 
@@ -76,6 +78,7 @@ export const googleLoginThunk = createAsyncThunk(
     const { user } = await signInWithPopup(auth, googleProvider);
 
     //Se busca la información del usuario en la base de datos. Si no existe el usuario se crea y si existe se obtiene la información
+    const username = await generateUniqueUsername(user.displayName);
     let newUser = null;
     const userRef = doc(database, collectionName, user.uid);
     const userDoc = await getDoc(userRef);
@@ -85,13 +88,14 @@ export const googleLoginThunk = createAsyncThunk(
     } else {
       newUser = {
         id: user.uid,
+        username: username,
         displayName: user.displayName,
-        accessToken: user.accessToken,
-        photoURL: user.photoURL,
         email: user.email,
+        city: null,
+        photoURL: user.photoURL,
         isAdmin: false,
         //Incluir el resto de la información que deben guardar
-        city: null,
+        accessToken: user.accessToken,
       };
       await setDoc(userRef, newUser);
     }
@@ -122,13 +126,13 @@ export const loginWithVerificationCodeThunk = createAsyncThunk(
         newUser = {
           id: user.uid,
           displayName: user.displayName,
-          accessToken: user.accessToken,
-          photoURL: user.photoURL,
           email: user.email,
           phoneNumber: user.phoneNumber,
-          isAdmin: false,
           //Incluir el resto de la información que deben guardar
           city: null,
+          photoURL: user.photoURL,
+          isAdmin: false,
+          accessToken: user.accessToken,
         };
         await setDoc(userRef, newUser);
       }
@@ -176,7 +180,9 @@ export const loginWithFacebookThunk = createAsyncThunk(
           photoURL: response.data.picture.data.url,
         });
       }
+
       //Se busca la información del usuario en la base de datos. Si no existe el usuario se crea y si existe se obtiene la información
+      const username = await generateUniqueUsername(result.user.displayName);
       let newUser = null;
       const userRef = doc(database, collectionName, result.user.uid);
       const userDoc = await getDoc(userRef);
@@ -186,21 +192,24 @@ export const loginWithFacebookThunk = createAsyncThunk(
       } else {
         newUser = {
           id: result.user.uid,
-          accessToken,
+          username: username,
           displayName: result.user.displayName,
           email: result.user.email,
-          photoURL: response.data?.picture?.data?.url
-            ? response.data.picture.data.url
-            : result.user.photoURL,
-          isAdmin: false,
+          
           //Incluir el resto de la información que deben guardar
           city: null,
+          photoURL: response.data?.picture?.data?.url
+          ? response.data.picture.data.url
+          : result.user.photoURL,
+          isAdmin: false,
+          accessToken,
         };
         await setDoc(userRef, newUser);
       }
 
       return newUser;
     } catch (error) {
+      
       console.error(error);
       return rejectWithValue(error.message);
     }

@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate} from 'react-router-dom'
 import { auth } from '../Firebase/firebaseConfig'
 import { onAuthStateChanged } from 'firebase/auth'
 import { restoreActiveSessionThunk } from '../redux/auth/authSlice'
@@ -15,7 +15,6 @@ import PublicRouter from './PublicRouter'
 import NotFound from '../pages/NotFound';
 import ModalRegistro from '../components/Layout/ModalRegistro';
 import RestaurantProfile from '../components/RestaurantProfile'
-
 
 const AppRouter = () => {
   const dispatch = useDispatch()
@@ -55,7 +54,6 @@ const AppRouter = () => {
             <Route path=':newid' element={<Dashboard />} />
           </Route>
         </Route>
-
 
         <Route path='*' element={<NotFound />} />
       </Route>
