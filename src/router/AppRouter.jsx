@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate} from 'react-router-dom'
 import { auth } from '../Firebase/firebaseConfig'
 import { onAuthStateChanged } from 'firebase/auth'
 import { restoreActiveSessionThunk } from '../redux/auth/authSlice'
@@ -13,7 +13,6 @@ import PageLoader from '../components/Loaders/PageLoader'
 import PrivateRouter from './PrivateRouter'
 import PublicRouter from './PublicRouter'
 import NotFound from '../pages/NotFound';
-
 
 
 const AppRouter = () => {
@@ -51,7 +50,6 @@ const AppRouter = () => {
             <Route path=':newid' element={<Dashboard />} />
           </Route>
         </Route>
-
 
         <Route path='*' element={<NotFound />} />
       </Route>

@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    isActiveModal: false
+    isActiveModal: false,
+    isDropdownOpen: false,
 };
 
 const modalSlice = createSlice({
@@ -13,9 +14,15 @@ const modalSlice = createSlice({
         },
         hiddenModal: (state) => {
             state.isActiveModal = false;
-        }
+        },
+        showDropdown: (state) => {
+            state.isDropdownOpen = true;
+        },
+        hideDropdown: (state) => {
+            state.isDropdownOpen = false;
+        },
     }
 });
 
-export const { showModal, hiddenModal } = modalSlice.actions;
+export const { showModal, hiddenModal, showDropdown, hideDropdown } = modalSlice.actions;
 export default modalSlice.reducer;

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { hiddenModal } from "../../redux/modales/modalSlice";
+import { hiddenModal } from "../../redux/modals/modalSlice";
 
 const Modal = ({ children = null, onNavigate = null, showBack = false }) => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const Modal = ({ children = null, onNavigate = null, showBack = false }) => {
   };
 
   return (
-    <div className="fixed z-10 inset-0 bg-black bg-opacity-50 flex justify-center items-center backdrop-blur-sm">
+    <div className="fixed z-20 inset-0 bg-black bg-opacity-50 flex justify-center items-center backdrop-blur-sm">
       <div className="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3">
         {showBack && <button onClick={() => navigate(-1)}>{"<"}</button>}
         <button
