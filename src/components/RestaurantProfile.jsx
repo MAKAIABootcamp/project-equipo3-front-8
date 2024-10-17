@@ -3,18 +3,18 @@ import AvatarSection from "./RestaurantProfile/AvatarSection";
 import DetailList from "./RestaurantProfile/DetailList";
 import IconList from "./RestaurantProfile/IconList";
 import Photos from "./RestaurantProfile/Photos"
-import Gallery from "./RestaurantProfile"
+import Gallery from "./RestaurantProfile/Gallery"
 
 const RestaurantProfile = () => {
 
-  const images = [
-    " ",
-    " ",
-    " ",
-    " ",
-    " ",
-    " ",
-  ]; 
+  // const images = [
+  //   " ",
+  //   " ",
+  //   " ",
+  //   " ",
+  //   " ",
+  //   " ",
+  // ]; 
 
 
   return (
@@ -24,7 +24,7 @@ const RestaurantProfile = () => {
       <DetailList />
       <IconList />
       <Photos />
-      <Gallery/>
+      <Gallery/> 
     </div>
   );
 };

@@ -1,4 +1,4 @@
-const Gallery = ({ images }) => {
+const Gallery = () => {
     const images = [
       " ",
       " ",

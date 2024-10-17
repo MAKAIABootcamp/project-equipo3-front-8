@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate} from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { auth } from '../Firebase/firebaseConfig'
 import { onAuthStateChanged } from 'firebase/auth'
 import { restoreActiveSessionThunk } from '../redux/auth/authSlice'
@@ -18,7 +18,7 @@ import RestaurantProfile from '../components/RestaurantProfile'
 
 const AppRouter = () => {
   const dispatch = useDispatch()
-  const { loading, isAuthenticated, user } = useSelector((store) => store.auth);
+  const { loading, isAuthenticated } = useSelector((store) => store.auth);
   const [checking, setChecking] = useState(true)
 
 
@@ -36,9 +36,9 @@ const AppRouter = () => {
 
   return (
     <Routes>
-       <Route path='restaurantprofile' element={<RestaurantProfile />} />
-      <Route element={<Layout />}>        
+      <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path='restaurantprofile' element={<RestaurantProfile />} />
         <Route element={<PublicRouter isAutenticate={isAuthenticated} />}>
           <Route path='login' element={<LoginPanel />} />
           <Route path='loginWithEmailAndPassword' element={<SignIn />} />
