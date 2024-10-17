@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserPreferences } from "../redux/auth/authSlice";
+
 
 
 const FormQuestions = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {user}= useSelector(store=>store.auth);
 
   // Definir las preguntas y opciones
   const questions = [
     {
       title: "¿Qué tan seguido te das una escapadita a comer al mes?",
+      label: "eatingOutFrecuency",
       options: [
         "1 vez al mes",
         "2-3 veces al mes",
@@ -19,6 +25,7 @@ const FormQuestions = () => {
     },
     {
       title: "¿Qué tipo de comida prefieres cuando sales a comer?",
+      label:"interests",
       options: [
         "Comida rápida",
         "Comida saludable",
@@ -34,6 +41,7 @@ const FormQuestions = () => {
   const isLastQuestion = currentQuestion === questions.length - 1;
 
   const handleNext = (values, { setFieldValue }) => {
+    dispatch(updateUserPreferences({preference: questions[currentQuestion].label, updateData: values.answer, userId: user.id}))
     if (isLastQuestion) {
       // Si es la última pregunta, redirigimos o finalizamos el flujo
       console.log("Respuestas finales:", values);
@@ -47,11 +55,11 @@ const FormQuestions = () => {
   };
 
   // Función para ir hacia atrás
-  const handleBack = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1);
-    }
-  };
+  // const handleBack = () => {
+  //   if (currentQuestion > 0) {
+  //     setCurrentQuestion(currentQuestion - 1);
+  //   }
+  // };
 
   return (
     <div className="p-10">

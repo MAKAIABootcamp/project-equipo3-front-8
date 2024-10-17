@@ -9,36 +9,112 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth, database } from "../../Firebase/firebaseConfig";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import axios from "axios";
 import { generateUniqueUsername } from "../../utils/usernameGenerator";
 
 const collectionName = "users";
 
+const defaultUserData = {
+  userDescription: "",
+  location: {
+    city: "",
+    country: "",
+    state: "",
+    street: "",
+  },
+  birthday: null,
+  website: "",
+  userBanner: null,
+  stories: [],
+  reviewCount: 0,
+  likesCount: 0,
+  followers: [],
+  following: [],
+  eatingOutFrecuency: "",
+  interests: [],
+  isAdmin: false,
+  accountType: "normal",
+  themePreference: "light",
+  notificationsEnabled: true,
+  isOnline: false,
+  lastConnection: null,
+  createdAt: new Date().toISOString(),
+};
+
+// Función auxiliar para obtener o crear un usuario
+const getOrCreateUser = async (user, userRef) => {
+  const userDoc = await getDoc(userRef);
+  let newUser;
+
+  if (userDoc.exists()) {
+    newUser = userDoc.data();
+  } else {
+    const username = await generateUniqueUsername(
+      user.displayName || "usuario"
+    );
+    newUser = {
+      id: user.uid,
+      username,
+      displayName: user.displayName,
+      email: user.email,
+      userAvatar: user.photoURL,
+      accessToken: user.accessToken,
+      ...defaultUserData,
+    };
+    await setDoc(userRef, newUser);
+  }
+
+  return newUser;
+};
+
+export const updateUserPreferences = createAsyncThunk(
+  "auth/updateUserPreferences",
+  async ({ preference, updateData, userId }, { rejectedWithValue }) => {
+    const user = {};
+    user[preference] = updateData;
+    try {
+      const userRef = doc(database, collectionName, userId);
+      await updateDoc(userRef, user);
+      return user;
+    } catch (error) {
+      console.error(error);
+      return rejectedWithValue(error.message);
+    }
+  }
+);
+
 export const createAccountThunk = createAsyncThunk(
   "auth/createAccount",
-  async ({ email, password, name, photo = null, username }) => {
+  async ({
+    email,
+    password,
+    name = null,
+    photo = null,
+    username,
+    birthday,
+  }) => {
     const userCredentials = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
-    await updateProfile(auth.currentUser, {
-      displayName: name,
-      photoURL: photo,
-    });
+    // await updateProfile(auth.currentUser, {
+    //   displayName: name,
+    //   photoURL: photo,
+    // });
 
     //Crear o guardar el usuario en la base de datos
 
     const newUser = {
       id: userCredentials.user.uid,
-      username: username,
+      username, // Usa el username proporcionado por el input
       displayName: name,
-      email: email,
-      photoURL: photo,
-      isAdmin: false,
+      email, // Usa el email proporcionado por el input
+      userAvatar: photo,
       accessToken: userCredentials.user.accessToken,
-      //Incluir el resto de la información (o propiedades) que necesiten guardar del usuario
+      ...defaultUserData, // Expande el objeto con los valores predeterminados
+      birthday,
     };
 
     //Armamos la referencia del nuevo usuario a guarda
@@ -75,32 +151,11 @@ export const googleLoginThunk = createAsyncThunk(
   "auth/googleLogin",
   async () => {
     const googleProvider = new GoogleAuthProvider();
-    const { user } = await signInWithPopup(auth, googleProvider);
+    const result = await signInWithPopup(auth, googleProvider);
+    const userRef = doc(database, collectionName, result.user.uid);
+    const user = await getOrCreateUser(result.user, userRef);
 
-    //Se busca la información del usuario en la base de datos. Si no existe el usuario se crea y si existe se obtiene la información
-    const username = await generateUniqueUsername(user.displayName);
-    let newUser = null;
-    const userRef = doc(database, collectionName, user.uid);
-    const userDoc = await getDoc(userRef);
-
-    if (userDoc.exists()) {
-      newUser = userDoc.data();
-    } else {
-      newUser = {
-        id: user.uid,
-        username: username,
-        displayName: user.displayName,
-        email: user.email,
-        city: null,
-        photoURL: user.photoURL,
-        isAdmin: false,
-        //Incluir el resto de la información que deben guardar
-        accessToken: user.accessToken,
-      };
-      await setDoc(userRef, newUser);
-    }
-
-    return newUser;
+    return user;
   }
 );
 
@@ -113,31 +168,8 @@ export const loginWithVerificationCodeThunk = createAsyncThunk(
         throw new Error("No hay resultado de confirmación disponible");
       }
       const { user } = await confirmationResult.confirm(code);
-
-      //Se busca la información del usuario en la base de datos. Si no existe el usuario se crea y si existe se obtiene la información
-
-      let newUser = null;
       const userRef = doc(database, collectionName, user.uid);
-      const userDoc = await getDoc(userRef);
-
-      if (userDoc.exists()) {
-        newUser = userDoc.data();
-      } else {
-        newUser = {
-          id: user.uid,
-          displayName: user.displayName,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-          //Incluir el resto de la información que deben guardar
-          city: null,
-          photoURL: user.photoURL,
-          isAdmin: false,
-          accessToken: user.accessToken,
-        };
-        await setDoc(userRef, newUser);
-      }
-
-      return newUser;
+      return await getOrCreateUser(user, userRef);
     } catch (error) {
       return rejectWithValue(error.message || "Error en la verificación");
     }
@@ -181,33 +213,10 @@ export const loginWithFacebookThunk = createAsyncThunk(
         });
       }
 
-      //Se busca la información del usuario en la base de datos. Si no existe el usuario se crea y si existe se obtiene la información
-      const username = await generateUniqueUsername(result.user.displayName);
-      let newUser = null;
       const userRef = doc(database, collectionName, result.user.uid);
-      const userDoc = await getDoc(userRef);
+      const user = await getOrCreateUser(result.user, userRef);
 
-      if (userDoc.exists()) {
-        newUser = userDoc.data();
-      } else {
-        newUser = {
-          id: result.user.uid,
-          username: username,
-          displayName: result.user.displayName,
-          email: result.user.email,
-
-          //Incluir el resto de la información que deben guardar
-          city: null,
-          photoURL: response.data?.picture?.data?.url
-            ? response.data.picture.data.url
-            : result.user.photoURL,
-          isAdmin: false,
-          accessToken,
-        };
-        await setDoc(userRef, newUser);
-      }
-
-      return newUser;
+      return user;
     } catch (error) {
       console.error(error);
       return rejectWithValue(error.message);
@@ -220,6 +229,7 @@ const authSlice = createSlice({
   initialState: {
     isAuthenticated: false,
     user: null,
+    birthday: null,
     loading: false,
     error: null,
   },
@@ -232,6 +242,9 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload;
       state.error = null;
+    },
+    setUserBirthday: (state, action) => {
+      state.birthday = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -328,11 +341,21 @@ const authSlice = createSlice({
       .addCase(loginWithFacebookThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      }).addCase(updateUserPreferences.fulfilled,(state,action)=>{
+        state.loading = false;
+        state.user ={
+          ...state.user,
+          ...action.payload
+        }
+      }).addCase(updateUserPreferences.rejected, (state,action)=>{
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 
 const authReducer = authSlice.reducer;
 export default authReducer;
 
-export const { clearError, restoreSession } = authSlice.actions;
+export const { clearError, restoreSession, setUserBirthday } =
+  authSlice.actions;

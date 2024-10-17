@@ -1,4 +1,4 @@
-const UserProfile = ({ name, imageUrl }) => {
+const StoryAvatar = ({ name, imageUrl }) => {
   return (
     <div className="flex flex-col items-center mx-2">
       <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0 p-[4px]" style={{ background: 'linear-gradient(65deg, rgba(255,0,102,1) 0%, rgba(94,0,190,1) 100%)' }}>
@@ -16,4 +16,4 @@ const UserProfile = ({ name, imageUrl }) => {
   );
 };
 
-export default UserProfile;
+export default StoryAvatar;
