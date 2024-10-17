@@ -15,6 +15,9 @@ import PublicRouter from './PublicRouter'
 import NotFound from '../pages/NotFound';
 import ModalRegistro from '../components/Layout/ModalRegistro';
 import RestaurantProfile from '../components/RestaurantProfile'
+import UserHubPage from '../pages/UserHubPage';
+
+
 
 const AppRouter = () => {
   const dispatch = useDispatch()
@@ -39,6 +42,8 @@ const AppRouter = () => {
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path='restaurantprofile' element={<RestaurantProfile />} />
+        <Route path="/user/:username" element={<UserHubPage />} /> 
+
         <Route element={<PublicRouter isAutenticate={isAuthenticated} />}>
           <Route path='login' element={<LoginPanel />} />
           <Route path='loginWithEmailAndPassword' element={<SignIn />} />

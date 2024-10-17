@@ -15,6 +15,53 @@ import { generateUniqueUsername } from "../../utils/usernameGenerator"
 
 const collectionName = "users";
 
+const defaultUserData = {
+  bio: "",
+  location: "",
+  website: "",
+  userBanner: null,
+  posts: [],
+  stories: [],
+  reviewCount: 0,
+  likesCount: 0,
+  followers: [],
+  following: [],
+  interests: [],
+  isAdmin: false,
+  accountType: "normal",
+  themePreference: "light",
+  notificationsEnabled: true,
+  isOnline: false,
+  lastConnection: null,
+  createdAt: new Date().toISOString(),
+};
+
+
+// Función auxiliar para obtener o crear un usuario
+const getOrCreateUser = async (user, userRef) => {
+  const userDoc = await getDoc(userRef);
+  let newUser;
+
+  if (userDoc.exists()) {
+    newUser = userDoc.data();
+  } else {
+    const username = await generateUniqueUsername(user.displayName || 'usuario');
+    newUser = {
+      id: user.uid,
+      username,
+      displayName: user.displayName,
+      email: user.email,
+      userAvatar: user.photoURL,
+      accessToken: user.accessToken,
+      ...defaultUserData,
+    };
+    await setDoc(userRef, newUser);
+  }
+
+  return newUser;
+};
+
+
 export const createAccountThunk = createAsyncThunk(
   "auth/createAccount",
   async ({ email, password, name, photo, username }) => {
@@ -32,13 +79,12 @@ export const createAccountThunk = createAsyncThunk(
 
     const newUser = {
       id: userCredentials.user.uid,
-      username: username,
+      username, // Usa el username proporcionado por el input
       displayName: name,
-      email: email,
-      photoURL: photo,
-      isAdmin: false,
+      email, // Usa el email proporcionado por el input
+      userAvatar: photo,
       accessToken: userCredentials.user.accessToken,
-      //Incluir el resto de la información (o propiedades) que necesiten guardar del usuario
+      ...defaultUserData, // Expande el objeto con los valores predeterminados
     };
 
     //Armamos la referencia del nuevo usuario a guarda
@@ -75,32 +121,11 @@ export const googleLoginThunk = createAsyncThunk(
   "auth/googleLogin",
   async () => {
     const googleProvider = new GoogleAuthProvider();
-    const { user } = await signInWithPopup(auth, googleProvider);
+    const result = await signInWithPopup(auth, googleProvider);
+    const userRef = doc(database, collectionName, result.user.uid);
+    const user = await getOrCreateUser(result.user, userRef);
 
-    //Se busca la información del usuario en la base de datos. Si no existe el usuario se crea y si existe se obtiene la información
-    const username = await generateUniqueUsername(user.displayName);
-    let newUser = null;
-    const userRef = doc(database, collectionName, user.uid);
-    const userDoc = await getDoc(userRef);
-
-    if (userDoc.exists()) {
-      newUser = userDoc.data();
-    } else {
-      newUser = {
-        id: user.uid,
-        username: username,
-        displayName: user.displayName,
-        email: user.email,
-        city: null,
-        photoURL: user.photoURL,
-        isAdmin: false,
-        //Incluir el resto de la información que deben guardar
-        accessToken: user.accessToken,
-      };
-      await setDoc(userRef, newUser);
-    }
-
-    return newUser;
+    return user;
   }
 );
 
@@ -113,31 +138,8 @@ export const loginWithVerificationCodeThunk = createAsyncThunk(
         throw new Error("No hay resultado de confirmación disponible");
       }
       const { user } = await confirmationResult.confirm(code);
-
-      //Se busca la información del usuario en la base de datos. Si no existe el usuario se crea y si existe se obtiene la información
-
-      let newUser = null;
       const userRef = doc(database, collectionName, user.uid);
-      const userDoc = await getDoc(userRef);
-
-      if (userDoc.exists()) {
-        newUser = userDoc.data();
-      } else {
-        newUser = {
-          id: user.uid,
-          displayName: user.displayName,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-          //Incluir el resto de la información que deben guardar
-          city: null,
-          photoURL: user.photoURL,
-          isAdmin: false,
-          accessToken: user.accessToken,
-        };
-        await setDoc(userRef, newUser);
-      }
-
-      return newUser;
+      return await getOrCreateUser(user, userRef);
     } catch (error) {
       return rejectWithValue(error.message || "Error en la verificación");
     }
@@ -181,35 +183,14 @@ export const loginWithFacebookThunk = createAsyncThunk(
         });
       }
 
-      //Se busca la información del usuario en la base de datos. Si no existe el usuario se crea y si existe se obtiene la información
-      const username = await generateUniqueUsername(result.user.displayName);
-      let newUser = null;
       const userRef = doc(database, collectionName, result.user.uid);
-      const userDoc = await getDoc(userRef);
+      const user = await getOrCreateUser(result.user, userRef);
 
-      if (userDoc.exists()) {
-        newUser = userDoc.data();
-      } else {
-        newUser = {
-          id: result.user.uid,
-          username: username,
-          displayName: result.user.displayName,
-          email: result.user.email,
-          
-          //Incluir el resto de la información que deben guardar
-          city: null,
-          photoURL: response.data?.picture?.data?.url
-          ? response.data.picture.data.url
-          : result.user.photoURL,
-          isAdmin: false,
-          accessToken,
-        };
-        await setDoc(userRef, newUser);
-      }
+      return user;
 
-      return newUser;
+
+
     } catch (error) {
-      
       console.error(error);
       return rejectWithValue(error.message);
     }
