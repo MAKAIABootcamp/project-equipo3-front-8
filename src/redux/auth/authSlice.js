@@ -11,13 +11,13 @@ import {
 import { auth, database } from "../../Firebase/firebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import axios from "axios";
-import { generateUniqueUsername } from "../../utils/usernameGenerator"
+import { generateUniqueUsername } from "../../utils/usernameGenerator";
 
 const collectionName = "users";
 
 export const createAccountThunk = createAsyncThunk(
   "auth/createAccount",
-  async ({ email, password, name, photo, username }) => {
+  async ({ email, password, name, photo = null, username }) => {
     const userCredentials = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -195,12 +195,12 @@ export const loginWithFacebookThunk = createAsyncThunk(
           username: username,
           displayName: result.user.displayName,
           email: result.user.email,
-          
+
           //Incluir el resto de la información que deben guardar
           city: null,
           photoURL: response.data?.picture?.data?.url
-          ? response.data.picture.data.url
-          : result.user.photoURL,
+            ? response.data.picture.data.url
+            : result.user.photoURL,
           isAdmin: false,
           accessToken,
         };
@@ -209,7 +209,6 @@ export const loginWithFacebookThunk = createAsyncThunk(
 
       return newUser;
     } catch (error) {
-      
       console.error(error);
       return rejectWithValue(error.message);
     }

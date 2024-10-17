@@ -9,7 +9,7 @@ import RegisterMethod from "../../pages/RegisterMethod";
 import FormQuestions from "../../pages/FormQuestions";
 import Modal from "./Modal";
 
-const ModalRegistro = ({ showBack = false }) => {
+const ModalRegistro = () => {
   const [showBackbottom, setShowBackBottom] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();

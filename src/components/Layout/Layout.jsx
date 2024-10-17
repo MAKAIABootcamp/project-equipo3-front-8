@@ -1,13 +1,16 @@
 import SidebarNavigation from "./SidebarNavigation";
 import { Outlet } from "react-router-dom";
 import SidebarPanel from "./SidebarPanel";
+import { useSelector } from "react-redux";
+
 
 const Layout = () => {
+  const { isAuthenticated } = useSelector((store) => store.auth);
+  
   return (
     <div >
-      {/* <Header/> */}
       <div className="flex justify-center ">
-      <SidebarPanel />
+      {!isAuthenticated && <SidebarPanel />}
       <Outlet />
       </div>
       <SidebarNavigation />
