@@ -16,6 +16,7 @@ const modalSlice = createSlice({
     },
     hiddenModal: (state) => {
       state.isActiveModal = false;
+      
     },
     nextStep: (state) => {
       state.currentStep += 1; // Incrementar paso
@@ -26,6 +27,9 @@ const modalSlice = createSlice({
     resetStep: (state) => {
       state.currentStep = 1; // Reiniciar paso
     },
+    setStep:(state,action)=>{
+      state.currentStep = action.payload;
+    },
     showDropdown: (state) => {
       state.isDropdownOpen = true;
     },
@@ -35,5 +39,5 @@ const modalSlice = createSlice({
   }
 });
 
-export const { showModal, hiddenModal, nextStep, prevStep, resetStep, showDropdown, hideDropdown  } = modalSlice.actions;
+export const { showModal, hiddenModal, nextStep, prevStep, resetStep, showDropdown, hideDropdown, setStep  } = modalSlice.actions;
 export default modalSlice.reducer;
