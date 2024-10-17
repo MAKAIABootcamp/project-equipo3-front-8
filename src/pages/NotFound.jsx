@@ -7,7 +7,7 @@ const NotFound = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center">
-      <h1 className="text-4xl font-bold ">404 - Página no encontrada</h1>
+      <h1 className="text-4xl font-bold text-grey-500 ">404 - Página no encontrada</h1>
       <p className="mt-4">Volverás al inicio en {countdown} segundos.</p>
     </div>
   );

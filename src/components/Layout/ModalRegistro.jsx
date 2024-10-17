@@ -2,7 +2,7 @@ import { useState,useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { hiddenModal, resetStep,prevStep } from "../../redux/modales/modalSlice";
+import { hiddenModal, resetStep,prevStep } from "../../redux/modals/modalSlice";
 import BirthdateForm from "../../pages/BirthdateForm"; // Importa tu componente
 import RegisterForm from "../../pages/RegisterForm"; // Importa tu componente
 import RegisterMethod from "../../pages/RegisterMethod";

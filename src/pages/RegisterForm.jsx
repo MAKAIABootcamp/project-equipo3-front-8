@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { nextStep, prevStep } from '../redux/modales/modalSlice';
+import { nextStep, prevStep } from '../redux/modals/modalSlice';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';  // Importación de Link

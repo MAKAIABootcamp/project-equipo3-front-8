@@ -14,12 +14,11 @@ import PrivateRouter from './PrivateRouter'
 import PublicRouter from './PublicRouter'
 import NotFound from '../pages/NotFound';
 import ModalRegistro from '../components/Layout/ModalRegistro';
-
-
+import RestaurantProfile from '../components/RestaurantProfile'
 
 const AppRouter = () => {
   const dispatch = useDispatch()
-  const { loading, isAuthenticated, user } = useSelector((store) => store.auth);
+  const { loading, isAuthenticated } = useSelector((store) => store.auth);
   const [checking, setChecking] = useState(true)
   const { isActiveModal } = useSelector((store) => store.modal);
 
@@ -40,12 +39,13 @@ const AppRouter = () => {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path='restaurantprofile' element={<RestaurantProfile />} />
         <Route element={<PublicRouter isAutenticate={isAuthenticated} />}>
           <Route path='login' element={<LoginPanel />} />
           <Route path='loginWithEmailAndPassword' element={<SignIn />} />
           <Route path='loginWithPhoneNumber' element={<SignIn isPhone={true} />} />
           <Route path='register' element={<ModalRegistro />} />
-          
+          {/* <Route path='restaurantprofile' element={<RestaurantProfile />} /> */}
 
         </Route>
 
@@ -55,7 +55,6 @@ const AppRouter = () => {
             <Route path=':newid' element={<Dashboard />} />
           </Route>
         </Route>
-
 
         <Route path='*' element={<NotFound />} />
       </Route>

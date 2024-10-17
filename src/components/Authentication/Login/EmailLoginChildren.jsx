@@ -35,16 +35,14 @@ const EmailLoginChildren = () => {
       <p className="text-gray-500 m-2">
         Correo electrónico o Nombre de usuario
       </p>
-      {/* {error && <p className="text-red-500">{error}
-          </p>} */}
+    
       <form onSubmit={formik.handleSubmit}>
         <input
           type="email"
           className="w-full p-2 mb-2 border rounded bg-[#f8f9fa] "
           placeholder="Correo electrónico o usuario"
           {...formik.getFieldProps("email")}
-          //   value={email}
-          //   onChange={(e) => setEmail(e.target.value)}
+         
           required
         />
         {formik.touched.email && formik.errors.email && (
@@ -55,14 +53,12 @@ const EmailLoginChildren = () => {
           className="w-full p-2 mb-4 border rounded bg-[#f8f9fa] "
           placeholder="Contraseña"
           {...formik.getFieldProps("password")}
-          //   value={password}
-          //   onChange={(e) => setPassword(e.target.value)}
           required
         />
         {/* Botón "ojito" */}
         <button
           type="button"
-          className="absolute inset-y-0 bottom-4 right-[500px] flex items-center text-gray-500 hover:text-gray-700"
+          className="absolute inset-y-2 top-0 rigth-[500px] m-4 text-gray-500 hover:text-gray-700"
           onClick={togglePasswordVisibility}
         >
           {showPassword ? (

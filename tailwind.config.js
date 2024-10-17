@@ -37,6 +37,7 @@ export default {
       fontSize: {
         '26px': '26px', // tamaño personalizado
       },
+      
 
     },
   },
