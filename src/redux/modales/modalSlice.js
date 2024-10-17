@@ -15,6 +15,7 @@ const modalSlice = createSlice({
     },
     hiddenModal: (state) => {
       state.isActiveModal = false;
+      
     },
     nextStep: (state) => {
       state.currentStep += 1; // Incrementar paso

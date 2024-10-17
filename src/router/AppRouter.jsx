@@ -21,6 +21,7 @@ const AppRouter = () => {
   const dispatch = useDispatch()
   const { loading, isAuthenticated, user } = useSelector((store) => store.auth);
   const [checking, setChecking] = useState(true)
+  const { isActiveModal } = useSelector((store) => store.modal);
 
 
   useEffect(() => {

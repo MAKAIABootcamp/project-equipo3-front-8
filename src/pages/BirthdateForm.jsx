@@ -19,7 +19,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const BirthdateForm = () => {
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
 
   const initialValues = {
     day: '',
@@ -33,8 +33,15 @@ const BirthdateForm = () => {
   };
 
   return (
-    <div className="fixed z-10 inset-0 bg-opacity-50 flex justify-center items-center backdrop-blur-sm">
-      <div className="bg-white p-10 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3 h-[60%] justify-center flex items-center flex-col">
+    <div className='p-10'>
+      {/* <div className="bg-white p-10 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3 h-[60%] justify-center flex items-center flex-col relative"> */}
+        {/* <button
+          className="absolute top-4 right-4 font-bold text-gray-500 hover:text-gray-700"
+        >
+          &#10005;
+        </button> */}
+
+
         <h1 className="text-[30px] leading-1.2 font-bold mb-4 text-negro-carbon text-start">¿Cuál es tu fecha de nacimiento?</h1>
         <Formik
           initialValues={initialValues}
@@ -101,7 +108,7 @@ const BirthdateForm = () => {
             </Form>
           )}
         </Formik>
-      </div>
+      {/* </div> */}
     </div>
   );
 };
