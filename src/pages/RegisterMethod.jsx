@@ -1,16 +1,17 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { googleLoginThunk, loginWithFacebookThunk } from "../redux/auth/authSlice";
-import { nextStep } from "../redux/modals/modalSlice";
+import { nextStep} from "../redux/modals/modalSlice";
+
 
 const RegisterMethod = () => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const loginMethod = [
         {
             method: "Registrarse con email / contraseña",
-            action: () => dispatch(nextStep()), // Aquí se debe llamar a dispatch correctamente
+            action: () => dispatch(nextStep()), 
         },
         {
             method: "Continuar con Google",
