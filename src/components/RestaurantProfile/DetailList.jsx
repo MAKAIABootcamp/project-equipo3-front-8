@@ -1,7 +1,7 @@
 const details = [
-    { label: "Teléfono", value: "+57 322 664 97 07" },
+    { label: "Teléfono", value: "+57 3226649707" },
     { label: "Ubicación", value: "Medellin" },
-    { label: "Sitio Web", value: "www.danielavaloyes.com" },
+    { label: "Sitio Web", value: "www.saboresdelpacificp.com" },
   ];
   
   const DetailList = () => {

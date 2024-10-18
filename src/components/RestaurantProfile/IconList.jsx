@@ -1,14 +1,19 @@
-const icons = [1, 2, 3, 4]; 
-
+import Comida from '../../assets/User/comida.jfif'
+import Mariscos from "../../assets/User/mariscos.jfif"
+import Jaiba from "../../assets/User/jaiba.jpg"
+import Pastel from "../../assets/User/pastel.webp"
+import Bocachico from "../../assets/User/bocachico.jfif"
 const IconList = () => {
+  
   return (
     <div className="flex justify-center gap-4 mt-4">
-      {icons.map((icon, index) => (
-        <div
-          key={index}
-          className="w-12 h-12 bg-gray-400 rounded-full"
-        />
-      ))}
+      
+     <img alt="" src= {Comida} className="w-14 h-14 rounded-full" />
+     <img src={ Bocachico} alt=""  className="w-14 h-14 rounded-full" />
+      <img src={Mariscos} alt="" className="w-14 h-14 rounded-full" />
+      <img src={Jaiba} alt="" className="w-14 h-14 rounded-full"/>
+      <img src={Pastel} alt="" className="w-14 h-14 rounded-full"/> 
+   
     </div>
   );
 };
