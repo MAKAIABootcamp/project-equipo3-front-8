@@ -53,13 +53,14 @@ const AppRouter = () => {
           />
           <Route path="register" element={<ModalRegistro />} />
           {/* <Route path='restaurantprofile' element={<RestaurantProfile />} /> */}
-          <Route path="review" element={<ModalReseña />} />
+          
         </Route>
 
         <Route element={<PrivateRouter isAutenticate={isAuthenticated} />}>
-          <Route path="news" element={<Dashboard />}>
+          {/* <Route path="news" element={<Dashboard />}>
             <Route path=":newid" element={<Dashboard />} />
-          </Route>
+          </Route> */}
+          <Route path="review" element={<ModalReseña />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
