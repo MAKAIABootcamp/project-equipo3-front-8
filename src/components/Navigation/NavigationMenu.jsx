@@ -12,6 +12,7 @@ import DiscoverIcon from "../../assets/icons/core/explore_icon_outline.svg";
 import DiscoverIconFilled from "../../assets/icons/core/explore_icon_filled.svg";
 
 import ProfileIcon from "../../assets/icons/core/account_circle_icon_outline.svg";
+import ProfileIconFilled from "../../assets/icons/core/account_circle_icon_filled.svg"
 
 
 import EstrellaIcon from "../../assets/icon/Estrella.png";
@@ -45,9 +46,9 @@ const NavigationMenu = () => {
 		...(isAuthenticated
 			? [
 				{
-					icon: user?.userAvatar || ProfileIcon,
+					icon: user?.userAvatar || (location.pathname === `/${user?.username}` ? ProfileIconFilled : ProfileIcon),
 					label: "Perfil",
-					link: `/user/${user?.username}`,
+					link: `/${user?.username}`,
 					username: user?.username
 				},
 			]

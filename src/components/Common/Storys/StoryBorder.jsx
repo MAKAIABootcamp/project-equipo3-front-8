@@ -53,7 +53,10 @@ const StoryBorder = ({ size = 42, borderWidth = 2, rotationAngle = 0 }) => {
 
     }, [size, borderWidth, rotationAngle]);
 
-    return <canvas ref={canvasRef} className="absolute inset-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />;
+    return <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"  style={{
+        width: `${size}px`,
+        height: `${size}px`,
+    }} />;
 };
 
 StoryBorder.propTypes = {

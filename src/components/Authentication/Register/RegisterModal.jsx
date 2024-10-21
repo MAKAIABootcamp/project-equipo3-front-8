@@ -8,7 +8,6 @@ const RegisterModal = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(null);
-    const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
 
     // Función para alternar la visibilidad de la contraseña
