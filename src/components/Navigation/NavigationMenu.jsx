@@ -58,7 +58,7 @@ const NavigationMenu = () => {
 
 	return (
 
-		<div className="flex relative lg:flex-col w-full justify-between items-center pb-[2vh] lg:pb-[0]  lg:w-[15vw] lg:max-w-64 ">
+		<div className="flex relative lg:flex-col w-full justify-between items-center pb-[2vh] lg:pb-[0]  lg:w-[260px] lg:max-w-64 ">
 			{/* Navigation Menu */}
 			<nav className="flex flex-row lg:flex-col flex-grow  items-center justify-center space-x-3 lg:space-x-0 lg:space-y-3 w-full lg:mb-4">
 				{links.map((item, index) => (

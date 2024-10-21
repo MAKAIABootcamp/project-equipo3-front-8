@@ -1,6 +1,6 @@
 // postsSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { database } from '../../Firebase/firebaseConfig';
+import { database } from '../../firebase/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 
 const collectionName = 'posts';

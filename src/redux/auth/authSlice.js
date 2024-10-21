@@ -38,7 +38,7 @@ const defaultUserData = {
   themePreference: "light",
   notificationsEnabled: true,
   isOnline: false,
-  lastConnection: null,
+  lastConnection: new Date().toISOString(),
   createdAt: new Date().toISOString(),
 };
 
@@ -67,6 +67,20 @@ const getOrCreateUser = async (user, userRef) => {
 
   return newUser;
 };
+
+// Añade esta función auxiliar para actualizar la última conexión
+const updateLastConnection = async (userId) => {
+  const userRef = doc(database, collectionName, userId);
+  
+  try {
+    await updateDoc(userRef, {
+      lastConnection: new Date().toISOString(), // Guarda la fecha y hora actual
+    });
+  } catch (error) {
+    console.error("Error actualizando la última conexión:", error);
+  }
+};
+
 
 export const updateUserPreferences = createAsyncThunk(
   "auth/updateUserPreferences",
@@ -135,6 +149,7 @@ export const loginWithEmailAndPasswordThunk = createAsyncThunk(
     const userDoc = await getDoc(userRef);
 
     if (userDoc.exists()) {
+      await updateLastConnection(user.uid);
       return userDoc.data();
     } else {
       throw new Error("No se encontraron datos del usuario");
@@ -154,7 +169,7 @@ export const googleLoginThunk = createAsyncThunk(
     const result = await signInWithPopup(auth, googleProvider);
     const userRef = doc(database, collectionName, result.user.uid);
     const user = await getOrCreateUser(result.user, userRef);
-
+    await updateLastConnection(user.id); // Actualiza la fecha de la última conexión
     return user;
   }
 );
@@ -216,6 +231,7 @@ export const loginWithFacebookThunk = createAsyncThunk(
       const userRef = doc(database, collectionName, result.user.uid);
       const user = await getOrCreateUser(result.user, userRef);
 
+      await updateLastConnection(user.id); // Actualiza la fecha de la última conexión
       return user;
     } catch (error) {
       console.error(error);

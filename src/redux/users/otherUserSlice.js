@@ -1,21 +1,35 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { database } from '../../firebase/firebaseConfig'; // Importa la configuración de Firebase
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { database } from '../../firebase/firebaseConfig';
 
-// Thunk para obtener los datos de otro usuario
+// Función para filtrar datos sensibles
+const filterSensitiveData = (userData) => {
+  const { accessToken, email, createdAt, followers, following, themePreference, notificationsEnabled, lastConnection, eatingOutFrecuency, ...filteredData } = userData; // Excluir accessToken
+  return filteredData;
+};
+
+// Thunk para obtener los datos de otro usuario por username
 export const fetchOtherUserData = createAsyncThunk(
   'otherUser/fetchData',
-  async (username) => {
-    const userRef = doc(database, 'users', username); // Ajusta según la estructura de tu colección
-    const userSnap = await getDoc(userRef);
-    
-    if (userSnap.exists()) {
-      return { id: userSnap.id, ...userSnap.data() }; // Devuelve los datos del usuario
-    } else {
-      throw new Error('Usuario no encontrado'); // Lanza un error si el usuario no existe
+  async (username, { rejectWithValue }) => {
+    try {
+      const usersCollectionRef = collection(database, 'users');
+      const q = query(usersCollectionRef, where('username', '==', username));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userData = userDoc.data();
+        return { id: userDoc.id, ...filterSensitiveData(userData) }; // Filtrar datos sensibles antes de devolverlos
+      } else {
+        return rejectWithValue('Usuario no encontrado');
+      }
+    } catch (error) {
+      return rejectWithValue('Error al obtener los datos del usuario');
     }
   }
 );
+
 
 const otherUserSlice = createSlice({
   name: 'otherUser',
@@ -43,7 +57,7 @@ const otherUserSlice = createSlice({
       })
       .addCase(fetchOtherUserData.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message; // Maneja el error
+        state.error = action.payload || 'Error desconocido'; // Maneja el error
       });
   },
 });

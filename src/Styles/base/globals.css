@@ -14,6 +14,7 @@ h1 {
 
 body {
     @apply font-nunito;
+    @apply text-negro-carbon;
 }
 
 .border-gradient {
