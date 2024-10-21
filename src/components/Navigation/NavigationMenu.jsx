@@ -12,6 +12,7 @@ import DiscoverIcon from "../../assets/icons/core/explore_icon_outline.svg";
 import DiscoverIconFilled from "../../assets/icons/core/explore_icon_filled.svg";
 
 import ProfileIcon from "../../assets/icons/core/account_circle_icon_outline.svg";
+import ProfileIconFilled from "../../assets/icons/core/account_circle_icon_filled.svg"
 
 
 import EstrellaIcon from "../../assets/icon/Estrella.png";
@@ -45,9 +46,9 @@ const NavigationMenu = () => {
 		...(isAuthenticated
 			? [
 				{
-					icon: user?.userAvatar || ProfileIcon,
+					icon: user?.userAvatar || (location.pathname === `/${user?.username}` ? ProfileIconFilled : ProfileIcon),
 					label: "Perfil",
-					link: `/user/${user?.username}`,
+					link: `/${user?.username}`,
 					username: user?.username
 				},
 			]
@@ -57,7 +58,7 @@ const NavigationMenu = () => {
 
 	return (
 
-		<div className="flex relative lg:flex-col w-full justify-between items-center pb-[2vh] lg:pb-[0]  lg:w-[15vw] lg:max-w-64 ">
+		<div className="flex relative lg:flex-col w-full justify-between items-center pb-[2vh] lg:pb-[0]  lg:w-[260px] lg:max-w-64 ">
 			{/* Navigation Menu */}
 			<nav className="flex flex-row lg:flex-col flex-grow  items-center justify-center space-x-3 lg:space-x-0 lg:space-y-3 w-full lg:mb-4">
 				{links.map((item, index) => (

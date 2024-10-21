@@ -7,7 +7,7 @@ import Gallery from "./RestaurantProfile/Gallery"
 const RestaurantProfile = () => {
 
   return (
-    <div className="max-w-md mx-auto bg-white shadow-lg overflow-hidden" >
+    <div className="mx-auto w-full max-w-[938px] " >
        <div>
           <Banner />
           <AvatarSection />
