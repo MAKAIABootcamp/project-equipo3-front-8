@@ -16,6 +16,7 @@ import NotFound from "../pages/NotFound";
 import ModalRegistro from "../components/Layout/ModalRegistro";
 import RestaurantProfile from "../components/RestaurantProfile";
 import UserHubPage from "../pages/UserHubPage";
+import ModalReseña from "../components/Layout/ModalReseña";
 
 const AppRouter = () => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const AppRouter = () => {
           />
           <Route path="register" element={<ModalRegistro />} />
           {/* <Route path='restaurantprofile' element={<RestaurantProfile />} /> */}
+          <Route path="review" element={<ModalReseña />} />
         </Route>
 
         <Route element={<PrivateRouter isAutenticate={isAuthenticated} />}>
