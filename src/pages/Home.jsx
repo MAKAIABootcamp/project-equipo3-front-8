@@ -34,27 +34,37 @@ const Home = () => {
 
   ]
 
-  const {  isAuthenticated, user } = useSelector((store) => store.auth);
+  const { isAuthenticated, user } = useSelector((store) => store.auth);
   return (
 
-    <>
-    <main className=" max-w-[749px] h-auto p-0 shadow-lg rounded-lg flex flex-col justify-end md:mr-[15vw] md:ml-[21.875rem]">
-      <div className='pt-[0px] pr-[30px] pb-[0px] pl-[30px]'>
-        {/* Sección de Perfiles de Usuario */}
-        <div className="flex justify-center mb-12">
-          {prueba.map((items, index) => (
-            <UserProfile key={index} name={items.name} imageUrl={items.imgUrl} />
-          ))}
-        </div>
+    <section className="flex flex-col flex-grow min-h-screen">
+      <main className=" flex flex-col flex-grow ">
 
-        {/* Tarjeta de Restaurante */}
-        <PostCard foodImage={ComidaImg} />
-      </div>
-    </main>
-    {
-      (isAuthenticated && (!user?.eatingOutFrecuency || !user?.interests?.length))?<ModalRegistro step={4} />:null
-    }
-    </>
+        <div className='flex justify-center flex-row items-stretch'>
+
+          <div className='max-w-[630px] w-full'>
+            <div className='mt-4'>
+              <div className="flex justify-center mb-6">
+                {prueba.map((items, index) => (
+                  <UserProfile key={index} name={items.name} imageUrl={items.imgUrl} />
+                ))}
+              </div>
+
+              {/* Tarjeta de Restaurante */}
+              <div className='flex flex-col items-center justify-start self-auto'>
+                <div className='w-full maxWhitMinW content-stretch flex flex-col flex-shrink-0 items-stretch justify-start flex-grow-0  '>
+                  <PostCard foodImage={ComidaImg} />
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Sección de Perfiles de Usuario */}
+        </div>
+      </main>
+      {
+        (isAuthenticated && (!user?.eatingOutFrecuency || !user?.interests?.length)) ? <ModalRegistro step={4} /> : null
+      }
+    </section>
   );
 };
 

@@ -22,3 +22,5 @@
   .StoryOn:hover::before {
     box-shadow: 0 0 5px rgba(59, 130, 247, 0.5); /* Efecto hover */
   }
+
+
