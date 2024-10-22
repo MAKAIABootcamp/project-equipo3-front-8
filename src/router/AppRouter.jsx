@@ -16,6 +16,7 @@ import NotFound from "../pages/NotFound";
 import ModalRegistro from "../components/Layout/ModalRegistro";
 import RestaurantProfile from "../components/RestaurantProfile";
 import UserHubPage from "../pages/UserHubPage";
+import UserSettingPage from "../pages/UserSettingPage" ;
 import ModalReseña from "../components/Layout/ModalReseña";
 
 const AppRouter = () => {
@@ -62,7 +63,7 @@ const AppRouter = () => {
           </Route> */}
           <Route path="new-review" element={<ModalReseña />} />
         </Route>
-
+        <Route path="setting" element={<UserSettingPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
