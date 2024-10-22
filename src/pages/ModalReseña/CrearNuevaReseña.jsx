@@ -1,33 +1,66 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { useState } from 'react';
-import { nextStep } from '../../redux/modals/modalSlice';
-
-// Lista simulada de restaurantes
-const RESTAURANTS = [
-    { name: "Restaurant 1", location: "Barranquilla" },
-    { name: "Restaurant 2", location: "Barranquilla" },
-    { name: "Restaurant 3", location: "Barranquilla" },
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { nextStep,setStep } from '../../redux/modals/modalSlice';
+import { searchRestaurants } from '../../redux/restaurants/restaurantSlice';
+import useDebounce from '../../hooks/useDebounce'; // Ajusta la ruta del hook
 
 const CrearNuevaReseña = () => {
     const dispatch = useDispatch();
     const [filteredRestaurants, setFilteredRestaurants] = useState([]);
-    
-    const handleSearch = (value) => {
-        const filtered = RESTAURANTS.filter((restaurant) =>
-            restaurant.name.toLowerCase().includes(value.toLowerCase())
-        );
-        setFilteredRestaurants(filtered);
-    };
+    const restaurants = useSelector((state) => state.restaurant.restaurants);
+    const loading = useSelector((state) => state.restaurant.loading);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedRestaurant, setSelectedRestaurant] = useState(null); // Estado para el restaurante seleccionado
+
+    // Debounce del valor de búsqueda
+    const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500 ms de delay
 
     // Esquema de validación con Yup
     const validationSchema = Yup.object({
         searchTerm: Yup.string()
             .required('Este campo es obligatorio')
-            .min(2, 'Debe tener al menos 2 caracteres')
+            .min(2, 'Debe tener al menos 2 caracteres'),
     });
+
+    const handleSearch = (value) => {
+        if (value.length >= 2) {
+            console.log('Buscando:', value);
+            dispatch(searchRestaurants(value));
+        } else {
+            setFilteredRestaurants([]); // Reinicia los resultados si la búsqueda es demasiado corta
+        }
+    };
+
+    // Efecto para ejecutar la búsqueda cuando el valor debounced cambie
+    useEffect(() => {
+        if (debouncedSearchTerm) {
+            handleSearch(debouncedSearchTerm);
+        }
+    }, [debouncedSearchTerm]);
+
+    useEffect(() => {
+        setFilteredRestaurants(restaurants); // Actualiza los restaurantes filtrados
+    }, [restaurants]);
+
+    // Limpiar búsqueda si se borra el texto
+    useEffect(() => {
+        if (!searchTerm) {
+            setFilteredRestaurants([]);
+        }
+    }, [searchTerm]);
+
+    const clearSelection = () => {
+        setSelectedRestaurant(null);
+        setSearchTerm(''); // Limpiar el input cuando se borre la selección
+    };
+
+    // Nueva función para manejar el envío del formulario y avanzar al paso 4
+    const handleSubmit = (values) => {
+        console.log('Formulario enviado:', values);
+        dispatch(setStep(3));  // Cambia a paso 4
+    };
 
     return (
         <div>
@@ -36,29 +69,37 @@ const CrearNuevaReseña = () => {
             <Formik
                 initialValues={{ searchTerm: '' }}
                 validationSchema={validationSchema}
-                onSubmit={(values) => {
-                    console.log('Formulario enviado:', values);
-                    dispatch(nextStep()); // Pasamos al siguiente paso del modal
-                }}
+                onSubmit={handleSubmit} // Cambiar aquí para usar la nueva función
             >
-                {({ isSubmitting, values }) => (
+                {({ isSubmitting, handleChange, values }) => (
                     <Form>
                         <div className="relative">
-                            {/* Contenedor para el Field y el botón */}
                             <div className="flex items-center border border-gray-300 rounded-lg py-2 px-4 focus-within:border-blue-500">
                                 <Field
                                     name="searchTerm"
                                     type="text"
                                     placeholder="Buscar un restaurante"
                                     className="w-full focus:outline-none"
-                                    onKeyUp={(e) => handleSearch(e.target.value)}
+                                    onChange={(e) => {
+                                        handleChange(e); // Mantiene la sincronización con Formik
+                                        setSearchTerm(e.target.value); // Actualiza el estado de búsqueda local
+                                    }}
+                                    value={selectedRestaurant ? selectedRestaurant.displayName : values.searchTerm} // Muestra el restaurante seleccionado o el texto buscado
+                                    disabled={!!selectedRestaurant} // Deshabilitar input si hay un restaurante seleccionado
                                 />
-                                
-                                {/* Botón con la flecha dentro del campo */}
+                                {selectedRestaurant ? (
+                                    <button
+                                        type="button"
+                                        className="ml-2 text-red-500 hover:text-red-700"
+                                        onClick={clearSelection} // Limpiar selección
+                                    >
+                                        ✖
+                                    </button>
+                                ) : null} {/* La "X" solo se muestra si hay un restaurante seleccionado */}
                                 <button
                                     type="submit"
-                                    disabled={isSubmitting}
-                                    className="ml-2 bg-principal text-white p-2 hover:bg-principal transition duration-300"
+                                    disabled={!selectedRestaurant || isSubmitting || loading}
+                                    className={`ml-2 p-2 transition duration-300 ${selectedRestaurant ? 'bg-principal text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
                                 >
                                     ➡️
                                 </button>
@@ -70,20 +111,20 @@ const CrearNuevaReseña = () => {
                             />
 
                             {/* Resultados de búsqueda */}
-                            {values.searchTerm && (
+                            {values.searchTerm && !selectedRestaurant && (
                                 <div className="absolute w-full bg-white border border-gray-300 rounded-lg mt-2 max-h-40 overflow-y-auto">
                                     {filteredRestaurants.length > 0 ? (
-                                        filteredRestaurants.map((restaurant, index) => (
+                                        filteredRestaurants.map((restaurant) => (
                                             <div
-                                                key={index}
+                                                key={restaurant.id}
                                                 className="p-2 hover:bg-gray-100 cursor-pointer flex justify-between"
                                                 onClick={() => {
-                                                    console.log(`Restaurante seleccionado: ${restaurant.name}`);
-                                                    // Aquí autenticarías el restaurante a tu propiedad
+                                                    setSelectedRestaurant(restaurant); // Selecciona el restaurante
+                                                    setSearchTerm(restaurant.displayName); // Muestra el nombre en el input
                                                 }}
                                             >
-                                                <span>{restaurant.name}</span>
-                                                <span>{restaurant.location}</span>
+                                                <span>{restaurant.displayName}</span>
+                                                <span>{restaurant.location.city}</span>
                                             </div>
                                         ))
                                     ) : (
@@ -96,7 +137,6 @@ const CrearNuevaReseña = () => {
                                         onClick={() => {
                                             console.log('Añadir nuevo lugar');
                                             dispatch(nextStep());
-                                            
                                         }}
                                     >
                                         <span>Añadir un nuevo lugar</span>

@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
-import { auth } from "../Firebase/firebaseConfig";
+import { auth } from "../firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { restoreActiveSessionThunk } from "../redux/auth/authSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../components/Layout/Layout";
 import Home from "../pages/Home";
-import Dashboard from "../pages/Dashboard";
+// import Dashboard from "../pages/Dashboard";
 import LoginPanel from "../pages/LoginPanel";
 import SignIn from "../pages/SignIn";
 import PageLoader from "../components/Loaders/PageLoader";
@@ -60,7 +60,7 @@ const AppRouter = () => {
           {/* <Route path="news" element={<Dashboard />}>
             <Route path=":newid" element={<Dashboard />} />
           </Route> */}
-          <Route path="review" element={<ModalReseña />} />
+          <Route path="new-review" element={<ModalReseña />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

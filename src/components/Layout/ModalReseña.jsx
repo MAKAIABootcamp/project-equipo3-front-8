@@ -22,6 +22,16 @@ const ModalReseña = ({ step = 0 }) => {
   const navigate = useNavigate();
   const currentStep = useSelector((state) => state.modal.currentStep); // Obtener el paso actual
 
+
+    // Mapa de pasos
+    const stepMap = {
+      1: { next: 3, prev: null },
+      2: { next: 1, prev: 1 },
+      3: { next: 4, prev: 1 }, // Salto a paso 1 si se retrocede desde aquí
+      4: { next: 5, prev: 3 },
+      5: { next: null, prev: 4 },
+    };
+
   useEffect(() => {
     if (step === 4) {
       dispatch(setStep(4));
@@ -47,14 +57,18 @@ const ModalReseña = ({ step = 0 }) => {
   };
 
   // Función para retroceder un paso en el flujo de modales
-  const handleBack = () => {
-    if (currentStep > 1) {
-      dispatch(prevStep(currentStep - 1)); // Retrocede un paso
+ // Función para retroceder un paso en el flujo de modales
+ const handleBack = () => {
+  const current = stepMap[currentStep];
+  
+  if (current) {
+    if (current.prev) {
+      dispatch(setStep(current.prev)); // Ir al paso anterior
     } else {
-      navigate(-1); // Navega hacia atrás si no hay más pasos
+      handleClose(); // Cerrar modal si no hay paso anterior
     }
-  };
-
+  }
+};
   // const handleClose = () => navigate("/");
 
   // Contenido dinámico basado en el paso actual

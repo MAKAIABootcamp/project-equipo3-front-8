@@ -6,7 +6,7 @@ import "./PostReviewButton.css";
 const PostReviewButton = () => {
   const navigate = useNavigate();
 
-  const handlePostReviewNavigate = () => navigate('/review')
+  const handlePostReviewNavigate = () => navigate('/new-review')
 
   return (
     <button 
