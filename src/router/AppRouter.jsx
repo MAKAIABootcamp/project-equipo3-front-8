@@ -13,11 +13,11 @@ import PageLoader from "../components/Loaders/PageLoader";
 import PrivateRouter from "./PrivateRouter";
 import PublicRouter from "./PublicRouter";
 import NotFound from "../pages/NotFound";
-import ModalRegistro from "../components/Layout/ModalRegistro";
+import ModalRegistro from "../components/Layout/RegistryModal";
 import RestaurantProfile from "../components/RestaurantProfile";
 import UserHubPage from "../pages/UserHubPage";
 import UserSettingPage from "../pages/UserSettingPage" ;
-import ModalReseña from "../components/Layout/ModalReseña";
+import ModalReseña from "../components/Layout/ReviewModal";
 
 const AppRouter = () => {
   const dispatch = useDispatch();

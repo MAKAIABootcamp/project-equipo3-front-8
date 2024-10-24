@@ -14,7 +14,7 @@ import RegisterMethod from "../../pages/RegisterMethod";
 import FormQuestions from "../../pages/FormQuestions";
 import Modal from "./Modal";
 
-const ModalRegistro = ({ step = 0 }) => {
+const RegistryModal = ({ step = 0 }) => {
   const [showBackbottom, setShowBackBottom] = useState(true);
   const [showCloseButton, setChowCloseButton] = useState(true);
   const dispatch = useDispatch();
@@ -97,8 +97,8 @@ const ModalRegistro = ({ step = 0 }) => {
 };
 
 // Definición de las propTypes
-ModalRegistro.propTypes = {
+RegistryModal.propTypes = {
   step: PropTypes.number,
 };
 
-export default ModalRegistro;
+export default RegistryModal;

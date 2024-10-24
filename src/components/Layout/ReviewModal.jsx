@@ -8,14 +8,14 @@ import {
   prevStep,
   setStep,
 } from "../../redux/modals/modalSlice";
-import RangoModal from "../../pages/ModalReseña/RangoModal";
-import Uploadimage from "../../pages/ModalReseña/uploadimage";
-import PublishReview from "../../pages/ModalReseña/PublishReview";
-import CrearNuevaReseña from "../../pages/ModalReseña/CrearNuevaReseña";
-import AddRestaurant from "../../pages/ModalReseña/AddRestaurant";
+import ModalRange from "../../pages/ReviewModal/ModalRange";
+import Uploadimage from "../../pages/ReviewModal/uploadimage";
+import PublishReview from "../../pages/ReviewModal/PublishReview";
+import CreateNewReview from "../../pages/ReviewModal/CreateNewReview";
+import AddRestaurant from "../../pages/ReviewModal/AddRestaurant";
 import Modal from "./Modal";
 
-const ModalReseña = ({ step = 0 }) => {
+const ReviewModal = ({ step = 0 }) => {
   const [showBackbottom, setShowBackBottom] = useState(true);
   const [showCloseButton, setChowCloseButton] = useState(true);
   const dispatch = useDispatch();
@@ -75,13 +75,13 @@ const ModalReseña = ({ step = 0 }) => {
   const renderStepContent = () => {
     switch (currentStep) {
       case 1:
-        return <CrearNuevaReseña />;
+        return <CreateNewReview />;
       case 2:
         return <AddRestaurant/>;
       case 3:
         return <Uploadimage />;
       case 4:
-        return <RangoModal />;
+        return <ModalRange />;
       case 5:
         return <PublishReview />;
       default:
@@ -114,8 +114,8 @@ const ModalReseña = ({ step = 0 }) => {
 };
 
 // Definición de las propTypes
-ModalReseña.propTypes = {
+ReviewModal.propTypes = {
   step: PropTypes.number,
 };
 
-export default ModalReseña;
+export default ReviewModal;

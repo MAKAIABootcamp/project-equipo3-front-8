@@ -1,36 +1,69 @@
 // postsSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { database } from '../../firebase/firebaseConfig';
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 
 const collectionName = 'posts';
 
 export const createPostThunk = createAsyncThunk(
-  'posts/createPost',
-  async ({ userId, restaurantId, userPhoto, username, reviewCount, restaurantName, restaurantCity, restaurantImage, postImage, description, tags, likesCount, postValue }) => {
-    const postId = Date.now(); // Puedes usar un ID único, aquí usamos la fecha actual
+  "posts/createPost",
+  async ({
+    userId,
+    restaurantId,
+    firstQuestion,
+    secondQuestion,
+    thirdQuestion,
+    // userPhoto,
+    // username,
+    // reviewCount,
+    // restaurantName,
+    // restaurantCity,
+    // restaurantImage,
+    postImage,
+    description,
+    tags,
+    // likesCount,
+    // postValue,
+  }) => {
+    // const postId = Date.now(); // Puedes usar un ID único, aquí usamos la fecha actual
+    //Función que reciba un objeto como este:{
+    //   firstQuestion,
+    //   secondQuestion,
+    //   thirdQuestion,
+    //   tags: [...tags],
+    // } y nos retorne un {foodQuality,service,ambience,valueForMoney}
 
     const newPost = {
-      id: postId,
+      // id: postId,
       userId,
       restaurantId,
-      userPhoto,
-      username,
-      reviewCount,
-      restaurantName,
-      restaurantCity,
-      restaurantImage,
+      // userPhoto,
+      // username,
+      // reviewCount,
+      // restaurantName,
+      // restaurantCity,
+      // restaurantImage,
       postImage,
       description,
-      tags,
-      likes: likesCount,
-      postValue: postValue,
+      // tags,
+      likes: [],
+      dislikes: [],
+      postValue: {
+        firstQuestion,
+        secondQuestion,
+        thirdQuestion,
+        tags: [...tags],
+      },
+      // review:{foodQuality,service,ambience,valueForMoney},
       publicationDate: new Date().toISOString(),
     };
 
-    const postRef = doc(database, collectionName, postId);
-    await setDoc(postRef, newPost);
-    return newPost; // Retorna el nuevo post para actualizar el estado
+    const postRef = collection(database, collectionName);
+    const postDoc = await addDoc(postRef, newPost);
+    return {
+      id: postDoc.id,
+      ...newPost,
+    }; // Retorna el nuevo post para actualizar el estado
   }
 );
 
