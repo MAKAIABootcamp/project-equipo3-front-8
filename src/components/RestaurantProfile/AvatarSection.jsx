@@ -1,13 +1,22 @@
-import Comida from "../../assets/User/mariscos.jfif"
+import Perfil from "../../assets/User/mariscos.jfif"
 
 const AvatarSection = () => {
   return (
     <div className="flex flex-col items-center justify-center -mt-[70px]">
-      <div className="flex items-center flex-col justify-center">
-        <img src={Comida} alt="" className="w-[150px] h-[150px] rounded-full items-center justify-center flex " />
+      {/* Foto de perfil */}
+      <div className="relative w-32 h-32  items-center flex-col justify-center rounded-full overflow-hidden mx-auto mt-18 border-4 border-white cursor-pointer">
+        <img
+          src={Perfil}
+          alt="Perfil"
+          className="w-full h-full object-cover"
+          onClick={() =>
+            openModal({ src: Perfil, alt: "Foto de Perfil", likes: 100, dislikes: 2, comments: [] }, "perfil")
+          }
+        />        
         <h2 className="mt-4 text-center text-sm">@SaboresDelPacífico</h2>
-        <p className=" font-black text-center">Restaurante Chocoano</p>
-      </div>
+         <p className=" font-black text-center">Restaurante Chocoano</p>
+      </div>     
+        
       <div className="flex flex-col items-center mt-2">
         <span className="text-principal text-lg">★★★★★</span>
        

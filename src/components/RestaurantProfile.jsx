@@ -1,7 +1,7 @@
 import Banner from "./RestaurantProfile/Banner";
 import AvatarSection from "./RestaurantProfile/AvatarSection";
 import DetailList from "./RestaurantProfile/DetailList";
-import IconList from "./RestaurantProfile/IconList";
+//import IconList from "./RestaurantProfile/IconList";
 import Gallery from "./RestaurantProfile/Gallery"
 
 const RestaurantProfile = () => {
@@ -12,7 +12,7 @@ const RestaurantProfile = () => {
           <Banner />
           <AvatarSection />
           <DetailList />
-          <IconList />
+          {/* <IconList /> */}
           <Gallery/> 
        </div>
     </div>
