@@ -2,7 +2,7 @@ import UserProfile from '../components/Common/Storys/StoryAvatar';
 import PostCard from '../components/Common/Post/PostCard';
 import ComidaImg from '../assets/imagenes/comida.png';
 import { useSelector } from "react-redux";
-import ModalRegistro from '../components/Layout/ModalRegistro';
+import ModalRegistro from '../components/Layout/RegistryModal';
 
 
 const Home = () => {

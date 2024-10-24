@@ -2,24 +2,29 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { nextStep, setImage } from '../../redux/modals/modalSlice';
+import { nextStep, setQuestionsData} from '../../redux/modals/modalSlice';
 
-const RangoModal = () => {
+const ModalRange = () => {
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
-      sabor: '',
-      tiempoEspera: '',
-      costoCalidad: '',
+      firstQuestion: '',
+      secondQuestion: '',
+      thirdQuestion: '',
     },
     validationSchema: Yup.object({
-      sabor: Yup.string().required('Requerido'),
-      tiempoEspera: Yup.string().required('Requerido'),
-      costoCalidad: Yup.string().required('Requerido'),
+      firstQuestion: Yup.string().required('Requerido'),
+      secondQuestion: Yup.string().required('Requerido'),
+      thirdQuestion: Yup.string().required('Requerido'),
     }),
     onSubmit: (values) => {
       console.log('Reseña enviada:', values);
-      dispatch(nextStep()); // Pasamos al siguiente paso del modal
+
+      // Guardar los valores de las preguntas en Redux
+      dispatch(setQuestionsData(values));
+
+      // Avanzar al siguiente paso del modal
+      dispatch(nextStep());
     },
   });
 
@@ -27,23 +32,23 @@ const RangoModal = () => {
     <div>
         <h2 className="text-lg font-semibold mb-4">Crea una nueva Reseña</h2>
         <form onSubmit={formik.handleSubmit}>
-          {/* Sabor */}
+          {/* firstQuestion */}
           <div className="mb-4">
-            <label className="block mb-2">¿Cómo calificarías el sabor del platillo?</label>
+            <label className="block mb-2">¿Cómo calificarías el firstQuestion del platillo?</label>
             <div className="flex justify-between">
               {['😡', '🙁', '😐', '🙂', '😃'].map((emoji, index) => (
                 <label key={index}>
                   <input
                     type="radio"
-                    name="sabor"
+                    name="firstQuestion"
                     value={emoji}
                     onChange={formik.handleChange}
-                    checked={formik.values.sabor === emoji}
+                    checked={formik.values.firstQuestion === emoji}
                     className="hidden"
                   />
                   <span
                     className={`cursor-pointer text-2xl ${
-                      formik.values.sabor === emoji ? 'text-purple-500' : ''
+                      formik.values.firstQuestion === emoji ? 'text-purple-500' : ''
                     }`}
                   >
                     {emoji}
@@ -51,7 +56,7 @@ const RangoModal = () => {
                 </label>
               ))}
             </div>
-            {formik.errors.sabor ? <div className="text-red-500 text-sm">{formik.errors.sabor}</div> : null}
+            {formik.errors.firstQuestion ? <div className="text-red-500 text-sm">{formik.errors.firstQuestion}</div> : null}
           </div>
 
           {/* Tiempo de espera */}
@@ -62,15 +67,15 @@ const RangoModal = () => {
                 <label key={index}>
                   <input
                     type="radio"
-                    name="tiempoEspera"
+                    name="secondQuestion"
                     value={emoji}
                     onChange={formik.handleChange}
-                    checked={formik.values.tiempoEspera === emoji}
+                    checked={formik.values.secondQuestion === emoji}
                     className="hidden"
                   />
                   <span
                     className={`cursor-pointer text-2xl ${
-                      formik.values.tiempoEspera === emoji ? 'text-purple-500' : ''
+                      formik.values.secondQuestion === emoji ? 'text-purple-500' : ''
                     }`}
                   >
                     {emoji}
@@ -78,7 +83,7 @@ const RangoModal = () => {
                 </label>
               ))}
             </div>
-            {formik.errors.tiempoEspera ? <div className="text-red-500 text-sm">{formik.errors.tiempoEspera}</div> : null}
+            {formik.errors.secondQuestion ? <div className="text-red-500 text-sm">{formik.errors.secondQuestion}</div> : null}
           </div>
 
           {/* Costo vs Calidad */}
@@ -89,15 +94,15 @@ const RangoModal = () => {
                 <label key={index}>
                   <input
                     type="radio"
-                    name="costoCalidad"
+                    name="thirdQuestion"
                     value={emoji}
                     onChange={formik.handleChange}
-                    checked={formik.values.costoCalidad === emoji}
+                    checked={formik.values.thirdQuestion === emoji}
                     className="hidden"
                   />
                   <span
                     className={`cursor-pointer text-2xl ${
-                      formik.values.costoCalidad === emoji ? 'text-purple-500' : ''
+                      formik.values.thirdQuestion === emoji ? 'text-purple-500' : ''
                     }`}
                   >
                     {emoji}
@@ -105,7 +110,7 @@ const RangoModal = () => {
                 </label>
               ))}
             </div>
-            {formik.errors.costoCalidad ? <div className="text-red-500 text-sm">{formik.errors.costoCalidad}</div> : null}
+            {formik.errors.thirdQuestion ? <div className="text-red-500 text-sm">{formik.errors.thirdQuestion}</div> : null}
           </div>
 
           {/* Botones */}
@@ -122,4 +127,4 @@ const RangoModal = () => {
   );
 };
 
-export default RangoModal;
+export default ModalRange;

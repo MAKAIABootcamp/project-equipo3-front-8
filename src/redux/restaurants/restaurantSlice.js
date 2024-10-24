@@ -111,14 +111,19 @@ export const createRestaurantOnReview = createAsyncThunk(
     'restaurant/create',
     async ({ restaurantName, city, address }, { rejectWithValue }) => {
         try {
+            // Verifica si el restaurante ya existe
             const restaurantExists = await checkRestaurantExists(restaurantName, city, address);
             if (restaurantExists) {
                 return rejectWithValue('El restaurante ya existe en esta ubicación.');
             }
 
+            // Espera a que se genere un username único
+            const username = await generateUniqueUsername(restaurantName); // Asegúrate de que la promesa esté resuelta
+
+            // Crea el restaurante en Firestore
             const restaurantRef = collection(database, RESTAURANTS_COLLECTION);
             const newRestaurantRef = await addDoc(restaurantRef, {
-                username: generateUniqueUsername(restaurantName), // Generar un username único
+                username, // Ya resuelto
                 displayName: restaurantName,
                 email: '', // Dejar en blanco por ahora
                 phone: {

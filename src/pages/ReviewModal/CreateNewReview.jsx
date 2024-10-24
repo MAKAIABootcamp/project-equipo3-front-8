@@ -2,17 +2,21 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { nextStep,setStep } from '../../redux/modals/modalSlice';
+import { nextStep, setStep } from '../../redux/modals/modalSlice';
 import { searchRestaurants } from '../../redux/restaurants/restaurantSlice';
 import useDebounce from '../../hooks/useDebounce'; // Ajusta la ruta del hook
 
-const CrearNuevaReseña = () => {
+const CreateNewReview = () => {
     const dispatch = useDispatch();
     const [filteredRestaurants, setFilteredRestaurants] = useState([]);
     const restaurants = useSelector((state) => state.restaurant.restaurants);
     const loading = useSelector((state) => state.restaurant.loading);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedRestaurant, setSelectedRestaurant] = useState(null); // Estado para el restaurante seleccionado
+    const [searchTerm, setSearchTerm] = useState(sessionStorage.getItem('searchTerm') || ''); // Cargar desde sessionStorage
+    const [selectedRestaurant, setSelectedRestaurant] = useState(
+        sessionStorage.getItem('selectedRestaurant') 
+        ? JSON.parse(sessionStorage.getItem('selectedRestaurant')) 
+        : null
+    ); // Cargar selección desde sessionStorage
 
     // Debounce del valor de búsqueda
     const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500 ms de delay
@@ -51,6 +55,16 @@ const CrearNuevaReseña = () => {
         }
     }, [searchTerm]);
 
+    // Guardar en sessionStorage cada vez que cambie la búsqueda o selección
+    useEffect(() => {
+        sessionStorage.setItem('searchTerm', searchTerm);
+        if (selectedRestaurant) {
+            sessionStorage.setItem('selectedRestaurant', JSON.stringify(selectedRestaurant));
+        } else {
+            sessionStorage.removeItem('selectedRestaurant');
+        }
+    }, [searchTerm, selectedRestaurant]);
+
     const clearSelection = () => {
         setSelectedRestaurant(null);
         setSearchTerm(''); // Limpiar el input cuando se borre la selección
@@ -67,7 +81,7 @@ const CrearNuevaReseña = () => {
             <h2 className="text-center text-xl font-semibold mb-4">Crea una nueva Reseña</h2>
 
             <Formik
-                initialValues={{ searchTerm: '' }}
+                initialValues={{ searchTerm }}
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit} // Cambiar aquí para usar la nueva función
             >
@@ -151,4 +165,4 @@ const CrearNuevaReseña = () => {
     );
 };
 
-export default CrearNuevaReseña;
+export default CreateNewReview;

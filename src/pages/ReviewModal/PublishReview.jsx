@@ -3,8 +3,9 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { useState } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import TagModal from "./TagModal";
+import { createPostThunk } from '../../redux/post/postSlice';
 
 const ReviewSchema = Yup.object().shape({
   review: Yup.string()
@@ -12,21 +13,44 @@ const ReviewSchema = Yup.object().shape({
     .required('Este campo es requerido'),
 });
 
-const PublishReview = ({ user }) => {
+const PublishReview = () => {
+  const dispatch = useDispatch();
   const [tagsSelected, setTagsSelected] = useState([]);
   const [isTagModalOpen, setIsTagModalOpen] = useState(false); // Controla la visibilidad del modal
+  const { isAuthenticated, user } = useSelector((store) => store.auth); // Obtener datos del usuario desde el estado
+  const { restaurant } = useSelector((state) => state.authRestaurant); // Obtener datos del restaurante desde el estado 
+  console.log('Restaurant from Redux:', restaurant);
+  const restaurantId = restaurant?.id || '';
+  
 
   // Selecciona la imagen cargada desde el estado de Redux
   const uploadedImage = useSelector((state) => state.modal.image);
+  // Obtener preguntas de Redux
+  const { firstQuestion, secondQuestion, thirdQuestion } = useSelector((state) => state.modal.questions); 
+  console.log('Uploaded Image:', uploadedImage);
 
   const handleTagSelection = (selectedTags) => {
     setTagsSelected(selectedTags);
     setIsTagModalOpen(false);  // Cierra el modal después de seleccionar
   };
 
+  // Función para manejar el envío del formulario
   const handleSubmit = (values) => {
-    console.log('Reseña enviada:', values);
-    console.log('Tags seleccionados:', tagsSelected);
+    const newPost = {
+      userId: user?.id || '', // ID del usuario autenticado
+      restaurantId: restaurantId, // Obtiene el ID del restaurante autenticado
+      firstQuestion: firstQuestion, 
+      secondQuestion: secondQuestion, 
+      thirdQuestion: thirdQuestion,
+      description: values.review, // El texto de la reseña
+      postImage: uploadedImage, // La imagen que seleccionaste
+      tags: tagsSelected, // Tags seleccionados
+    };
+
+    console.log('Publicando:', newPost);
+
+    // Despacha la acción para crear el post
+    dispatch(createPostThunk(newPost));
   };
 
   return (
@@ -59,12 +83,12 @@ const PublishReview = ({ user }) => {
                 <div className="flex items-center mb-4">
                   <div className="rounded-full bg-gray-300 w-10 h-10 overflow-hidden mr-3">
                     <img
-                      src={user?.image || '/default-user.png'}
-                      alt={user?.name || 'Username'}
+                      src={user?.userAvatar || '/default-image.png'} // Imagen del usuario
+                      alt={user?.displayName || 'Usuario'}
                       className="object-cover w-full h-full"
                     />
                   </div>
-                  <span className="font-semibold">{user?.name || 'Username'}</span>
+                  <span className="font-semibold">{user?.displayName || 'Username'}</span>
                 </div>
 
                 {/* Campo de reseña */}
