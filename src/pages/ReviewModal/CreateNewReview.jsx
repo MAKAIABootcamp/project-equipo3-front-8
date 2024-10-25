@@ -5,9 +5,11 @@ import { useState, useEffect } from 'react';
 import { nextStep, setStep } from '../../redux/modals/modalSlice';
 import { searchRestaurants } from '../../redux/restaurants/restaurantSlice';
 import useDebounce from '../../hooks/useDebounce'; // Ajusta la ruta del hook
+import { setNewPost } from '../../redux/post/postSlice';
 
 const CreateNewReview = () => {
     const dispatch = useDispatch();
+    const { user } = useSelector((store) => store.auth); 
     const [filteredRestaurants, setFilteredRestaurants] = useState([]);
     const restaurants = useSelector((state) => state.restaurant.restaurants);
     const loading = useSelector((state) => state.restaurant.loading);
@@ -73,7 +75,14 @@ const CreateNewReview = () => {
     // Nueva función para manejar el envío del formulario y avanzar al paso 4
     const handleSubmit = (values) => {
         console.log('Formulario enviado:', values);
+        dispatch(
+          setNewPost({
+            userId: user.id,
+            restaurantId: selectedRestaurant.id,
+          })
+        );
         dispatch(setStep(3));  // Cambia a paso 4
+        
     };
 
     return (
@@ -150,6 +159,11 @@ const CreateNewReview = () => {
                                         className="p-2 hover:bg-gray-100 cursor-pointer flex justify-between"
                                         onClick={() => {
                                             console.log('Añadir nuevo lugar');
+                                            dispatch(
+                                              setNewPost({
+                                                userId: user.id,
+                                              })
+                                            );
                                             dispatch(nextStep());
                                         }}
                                     >
