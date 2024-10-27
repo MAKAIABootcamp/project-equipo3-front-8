@@ -39,7 +39,7 @@ const EmailLoginChildren = () => {
       <form onSubmit={formik.handleSubmit}>
         <input
           type="email"
-          className="w-full p-2 mb-2 border rounded bg-[#f8f9fa] "
+          className="w-full p-2 mb-2 border rounded bg-blanco-marino "
           placeholder="Correo electrónico o usuario"
           {...formik.getFieldProps("email")}
          
@@ -50,7 +50,7 @@ const EmailLoginChildren = () => {
         )}
         <input
           type={showPassword ? "text" : "password"}
-          className="w-full p-2 mb-4 border rounded bg-[#f8f9fa] "
+          className="w-full p-2 mb-4 border rounded bg-blanco-marino "
           placeholder="Contraseña"
           {...formik.getFieldProps("password")}
           required
@@ -58,7 +58,7 @@ const EmailLoginChildren = () => {
         {/* Botón "ojito" */}
         <button
           type="button"
-          className="absolute inset-y-2 top-0 rigth-[500px] m-4 text-gray-500 hover:text-gray-700"
+          className="absolute right-12 mt-3 justify-center items-center text-gray-500 hover:text-gray-700"
           onClick={togglePasswordVisibility}
         >
           {showPassword ? (
@@ -99,13 +99,13 @@ const EmailLoginChildren = () => {
         </span>
         <button
           type="submit"
-          className="w-full bg-[#ff0066] text-white p-2 rounded"
+          className="w-full bg-principal text-blanco-puro p-2 rounded"
         >
           Iniciar sesión
         </button>
         <span className="justify-center items-center text-center text-gray-500 m-4 flex ">
           ¿No tienes cuenta?
-          <Link to={""} className="text-pink-600 ">
+          <Link to={""} className="text-principal m-2 ">
             Registrarte
           </Link>
         </span>

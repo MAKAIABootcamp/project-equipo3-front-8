@@ -32,7 +32,7 @@ const Modal = ({
   return (
     <div className="fixed z-50 inset-0 bg-black bg-opacity-50 flex justify-center items-center backdrop-blur-sm">
       <div className="relative bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3">
-        {showBack && <button onClick={handleBack}>{"<"}</button>}
+        {showBack && <button className="text-gray-500 text-2xl absolute top-2 left-2 hover:text-gray-700 font-bold " onClick={handleBack}>{"<"}</button>}
         {showClose && (
           <button
             className="absolute top-4 right-4 font-bold text-gray-500 hover:text-gray-700"
