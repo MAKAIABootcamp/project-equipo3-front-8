@@ -98,7 +98,7 @@ const BirthdateForm = () => {
             <button
               type="submit"
               disabled={!isValid || !dirty || isSubmitting}
-              className={`w-full text-white font-semibold py-2 rounded-lg mb-4 ${isValid && dirty ? 'bg-red-500' : 'bg-gray-300'}`}
+              className={`w-full text-white font-semibold py-2 rounded-lg mb-4 ${isValid && dirty ? 'bg-principal' : 'bg-gray-300'}`}
             >
               {isSubmitting ? 'Enviando...' : 'Siguiente'}
             </button>
