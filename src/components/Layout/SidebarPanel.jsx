@@ -1,7 +1,9 @@
 import LoginButton from '../Buttons/Auth/LoginButton';
 import RegisterButton from '../Buttons/Auth/RegisterButton';
+import { useLocation } from 'react-router-dom';
 
 const SidebarPanel = () => {
+    const location = useLocation(); // Para pasar la ruta actual al botón de iniciar sesión
     return (
         <aside
             className="hidden fixed top-0 left-0 z-10 md:flex justify-center h-screen max-w-[21.875rem] p-8 bg-gray-50  text-grey-dim font-titulo"
@@ -23,7 +25,7 @@ const SidebarPanel = () => {
                 </div>
 
                 <div className="space-y-4 flex flex-col flex-nowrap content-stretch font-bold">
-                    <RegisterButton/>
+                    <RegisterButton location={location}/>
                     <LoginButton />
                     {/* <button className="border border-principal text-principal  py-2 px-8 rounded-[4px] hover:bg-pink-100 transition-all">
                         Iniciar Sesión

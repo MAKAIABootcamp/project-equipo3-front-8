@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import TagModal from "./TagModal";
-import { createPostThunk } from '../../redux/post/postSlice';
+import { createPostThunk, clearNewPost } from '../../redux/post/postSlice';
 import uploadFile from '../../services/uploadFile';
 import UploadImage from './uploadimage';
+import { hiddenModal } from '../../redux/modals/modalSlice';
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -18,12 +20,14 @@ const ReviewSchema = Yup.object().shape({
 });
 
 const PublishReview = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  
   const [tagsSelected, setTagsSelected] = useState([]);
   const [isTagModalOpen, setIsTagModalOpen] = useState(false); // Controla la visibilidad del modal
   const [image, setImage] = useState(null);
   const { user } = useSelector((store) => store.auth); // Obtener datos del usuario desde el estado
-  const {newPost} = useSelector(state=>state.posts)
+  const { newPost } = useSelector(state => state.posts)
 
 
   const handleTagSelection = (selectedTags) => {
@@ -41,13 +45,23 @@ const PublishReview = () => {
         ...newPost,
         postImage: imageUrl, description: values.review, tags: tagsSelected || []
       }
+      // Crear el post en el servidor
       dispatch(createPostThunk(post));
+      navigate(-1);
+
+      // Limpiar el estado de la publicación
+      dispatch(clearNewPost());
+
+      // Limpiar estados locales también
+      setTagsSelected([]);
+      setImage(null);
+
+
     } catch (error) {
       console.error('Error al subir la imagen:', error);
       return; // Termina la ejecución si hay error en la subida
     }
 
-    dispatch(createPostThunk(newPost));
   };
 
   return (

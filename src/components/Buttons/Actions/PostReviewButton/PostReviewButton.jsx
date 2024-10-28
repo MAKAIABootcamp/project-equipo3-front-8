@@ -1,18 +1,26 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import PostReviewIcon from "../../../../assets/icons/core/post_review_icon.svg";
 import "./PostReviewButton.css";
 
-
-const PostReviewButton = () => {
+const PostReviewButton = ({ location }) => {
   const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const restaurant = useSelector((state) => state.authRestaurant.restaurant);
 
-  const handlePostReviewNavigate = () => navigate('/new-review')
+   const handlePostReviewNavigate = () => {
+     if (isAuthenticated || restaurant) {
+       navigate("/new-review", { state: { background: location } });
+     } else {
+       navigate("/login");
+     }
+   };
 
   return (
-    <button 
-    onClick={handlePostReviewNavigate} 
-    aria-label="Publicar una reseña"
-    className="
+    <button
+      onClick={handlePostReviewNavigate}
+      aria-label="Publicar una reseña"
+      className="
     min-w-[50px] lg:w-full 
     h-[50px]
     relative
@@ -30,15 +38,14 @@ const PostReviewButton = () => {
     animated-gradient-bg
 
     
-  " >
+  "
+    >
       <div className="w-[104px] flex items-center justify-center leading-[50px]">
-
         <PostReviewIcon className="lg:mr-3 w-[26px] h-[26px]" />
         <span className="hidden lg:block text-lg font-bold">Postear</span>
       </div>
+    </button>
+  );
+};
 
-    </button >
-  )
-}
-
-export default PostReviewButton
+export default PostReviewButton;

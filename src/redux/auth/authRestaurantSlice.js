@@ -40,6 +40,7 @@ const defaultRestaurantData = {
   isOnline: false,
   lastConnection: new Date().toISOString(),
   createdAt: new Date().toISOString(),
+  
 };
 
 // Función para generar un nombre de usuario único

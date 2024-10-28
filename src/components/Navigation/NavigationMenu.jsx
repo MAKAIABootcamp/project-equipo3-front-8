@@ -87,7 +87,7 @@ const NavigationMenu = () => {
 
 					</NavLink>
 				))}
-				<PostReviewButton />
+				<PostReviewButton location={location} />
 			</nav>
 
 			{!isAuthenticated ? (

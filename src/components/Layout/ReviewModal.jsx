@@ -9,7 +9,6 @@ import {
   setStep,
 } from "../../redux/modals/modalSlice";
 import ModalRange from "../../pages/ReviewModal/ModalRange";
-import Uploadimage from "../../pages/ReviewModal/uploadimage";
 import PublishReview from "../../pages/ReviewModal/PublishReview";
 import CreateNewReview from "../../pages/ReviewModal/CreateNewReview";
 import AddRestaurant from "../../pages/ReviewModal/AddRestaurant";

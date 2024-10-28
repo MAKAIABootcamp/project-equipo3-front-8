@@ -6,11 +6,6 @@ const initialState = {
   currentStep: 1, // Empezamos en el paso 1 
   isDropdownOpen: false,
   image: null,
-  questions: {
-    firstQuestion: null,
-    secondQuestion: null,
-    thirdQuestion: null,
-  },
 };
 
 const modalSlice = createSlice({
@@ -45,11 +40,8 @@ const modalSlice = createSlice({
     setImage: (state, action) => {
       state.image = action.payload;
     },
-    setQuestionsData: (state, action) => {
-      state.questions = action.payload; // Guardar las respuestas
-    },
   }
 });
 
-export const { showModal, hiddenModal, nextStep, prevStep, resetStep, showDropdown, hideDropdown, setStep, setImage, setQuestionsData  } = modalSlice.actions;
+export const { showModal, hiddenModal, nextStep, prevStep, resetStep, showDropdown, hideDropdown, setStep, setImage  } = modalSlice.actions;
 export default modalSlice.reducer;

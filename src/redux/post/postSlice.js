@@ -1,7 +1,7 @@
 // postsSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { database } from "../../firebase/firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 import { calculateRatings } from "../../utils/reviewsOperations";
 
 const collectionName = "posts";
@@ -47,6 +47,14 @@ export const createPostThunk = createAsyncThunk(
     };
   }
 );
+
+// Thunk para obtener publicaciones desde Firebase
+export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
+  const postsCollection = collection(database, collectionName);
+  const postsSnapshot = await getDocs(postsCollection);
+  return postsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+});
+
 
 const postsSlice = createSlice({
   name: "posts",
@@ -102,6 +110,19 @@ const postsSlice = createSlice({
         state.posts.push(action.payload);
       })
       .addCase(createPostThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      .addCase(fetchPosts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.posts = action.payload;
+      })
+      .addCase(fetchPosts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
