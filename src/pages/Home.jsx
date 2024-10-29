@@ -18,6 +18,10 @@ const Home = () => {
   const { isAuthenticated, user } = useSelector((store) => store.auth);
   const { posts, loading, error } = useSelector((state) => state.posts);
 
+  useEffect(()=> {
+    console.log("posts", posts)
+  }, [posts])
+
   const prueba = [
     {
       name: "olmar",
@@ -69,6 +73,7 @@ const Home = () => {
                     foodImage={post.postImage} // Usa la imagen de la publicación o una de ejemplo
                     description={post.description}
                     tags={post?.questions?.tags || []}
+                    restaurantId={post.restaurantId}
                   />
                 ))}
                 

@@ -1,3 +1,4 @@
+import {useState, useEffect} from 'react'
 import PuntovIcon from '../../../assets/navegacion/PuntosHome.png';
 import './PostCard.css';
 import UserAvatar from '../User/UserAvatar';
@@ -16,8 +17,23 @@ import MoreIconVert from '../../../assets/icons/core/more_icon_vertical.svg';
 import SmallArrowIcon from '../../../assets/icons/core/small_arrow_icon.svg';
 import KidStarIcon from '../../../assets/icons/core/kid_star_icon_filled.svg';
 import PropTypes from "prop-types";
+import { useDispatch } from 'react-redux';
+import { getRestaurantById } from '../../../redux/restaurants/restaurantSlice';
 
-const RestaurantCard = ({ foodImage, description, tags }) => {
+const RestaurantCard = ({ foodImage, description, tags, restaurantId }) => {
+  const dispatch = useDispatch()
+  const [restaurant, setRestaurant] = useState(null)
+
+  async function getRestaurants() {
+    const restaurants = await dispatch(getRestaurantById(restaurantId))
+    setRestaurant(restaurants.payload)
+    console.log("restaurants.payload", restaurants.payload)
+  }
+
+  useEffect(()=>{
+    getRestaurants()
+  },[])
+
   console.log(tags);
   return (
     <article>
@@ -43,8 +59,8 @@ const RestaurantCard = ({ foodImage, description, tags }) => {
               <div className="flex items-center flex-shrink-0">
                 <UserAvatar srcAvatar={foodImage} showStoryBorder={false} />
                 <div className="ml-2">
-                  <p className="font-bold text-sm">Papas Jhons</p>
-                  <p className="text-xs text-grey-dim">Barranquilla</p>
+                  <p className="font-bold text-sm">{restaurant?.displayName}</p>
+                  <p className="text-xs text-grey-dim">{restaurant?.location.city}</p>
                 </div>
               </div>
             </div>

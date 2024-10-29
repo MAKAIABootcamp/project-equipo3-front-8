@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { collection, getDocs, query, where, addDoc } from 'firebase/firestore';
+import { collection, getDocs, query, where, addDoc, getDoc, doc } from 'firebase/firestore';
 import { database } from '../../firebase/firebaseConfig'; // Ajusta la ruta según tu estructura
 
 // Nombre de la colección
@@ -66,6 +66,19 @@ export const searchRestaurants = createAsyncThunk(
             }));
 
             return restaurants;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const getRestaurantById = createAsyncThunk(
+    'restaurant/getById',
+    async (id, { rejectWithValue }) => {
+        try {
+            const restaurantsRef = doc(database, RESTAURANTS_COLLECTION, id);
+            const querySnapshot = await getDoc(restaurantsRef);
+            return querySnapshot.data();
         } catch (error) {
             return rejectWithValue(error.message);
         }
