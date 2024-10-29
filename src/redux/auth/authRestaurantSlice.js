@@ -45,7 +45,8 @@ const defaultRestaurantData = {
 
 // Función para generar un nombre de usuario único
 const generateUniqueUsername = async (baseUsername) => {
-  let username = baseUsername;
+  let username = baseUsername.replace(/\s+/g, "");
+  console.log(username);
   let counter = 1;
 
   const restaurantsRef = collection(database, RESTAURANTS_COLLECTION);
@@ -59,7 +60,7 @@ const generateUniqueUsername = async (baseUsername) => {
 
   // Generar un nombre de usuario único
   while (existingUsernames.has(username)) {
-    username = `${baseUsername}_${counter}`;
+    username = `${baseUsername.replace(/\s+/g, "")}_${counter}`;
     counter += 1;
   }
 

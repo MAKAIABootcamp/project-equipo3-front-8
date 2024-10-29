@@ -8,7 +8,7 @@ import TagModal from "./TagModal";
 import { createPostThunk, clearNewPost } from '../../redux/post/postSlice';
 import uploadFile from '../../services/uploadFile';
 import UploadImage from './uploadimage';
-import { hiddenModal } from '../../redux/modals/modalSlice';
+import { hiddenModal, resetStep } from '../../redux/modals/modalSlice';
 import { useNavigate } from "react-router-dom";
 
 
@@ -51,6 +51,7 @@ const PublishReview = () => {
 
       // Limpiar el estado de la publicación
       dispatch(clearNewPost());
+      // dispatch(resetStep());
 
       // Limpiar estados locales también
       setTagsSelected([]);

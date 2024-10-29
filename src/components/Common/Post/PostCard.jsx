@@ -60,7 +60,7 @@ const RestaurantCard = ({ foodImage, description, tags, restaurantId }) => {
                 <UserAvatar srcAvatar={foodImage} showStoryBorder={false} />
                 <div className="ml-2">
                   <p className="font-bold text-sm">{restaurant?.displayName}</p>
-                  <p className="text-xs text-grey-dim">{restaurant?.location.city}</p>
+                  <p className="text-xs text-grey-dim">{restaurant?.location?.city}</p>
                 </div>
               </div>
             </div>
