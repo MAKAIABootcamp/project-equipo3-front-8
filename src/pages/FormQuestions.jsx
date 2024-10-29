@@ -97,7 +97,7 @@ const FormQuestions = () => {
                 id="answer"
                 value={values.answer}
                 onChange={(e) => setFieldValue("answer", e.target.value)}
-                className="border border-gray-300 rounded-lg p-2 bg-blanco-marino text-grey-basic focus:outline-none focus:ring-2 focus:ring-Blue focus:border-pink-400 text-center"
+                className="border border-gray-300 rounded-lg p-2 bg-blanco-marino text-negro-puro focus:outline-none focus:ring-2 focus:ring-Blue focus:border-pink-400 text-center"
               >
                 <option value="" disabled>
                   Selecciona una opción
