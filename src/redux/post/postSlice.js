@@ -1,60 +1,41 @@
 // postsSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { database } from '../../firebase/firebaseConfig';
-import { collection, addDoc } from 'firebase/firestore';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { database } from "../../firebase/firebaseConfig";
+import { collection, addDoc, getDocs } from "firebase/firestore";
+import { calculateRatings } from "../../utils/reviewsOperations";
 
-const collectionName = 'posts';
+const collectionName = "posts";
 
 export const createPostThunk = createAsyncThunk(
   "posts/createPost",
   async ({
     userId,
     restaurantId,
-    firstQuestion,
-    secondQuestion,
-    thirdQuestion,
-    // userPhoto,
-    // username,
-    // reviewCount,
-    // restaurantName,
-    // restaurantCity,
-    // restaurantImage,
+    questions: { firstQuestion, secondQuestion, thirdQuestion },
     postImage,
     description,
     tags,
-    // likesCount,
-    // postValue,
   }) => {
-    // const postId = Date.now(); // Puedes usar un ID único, aquí usamos la fecha actual
-    //Función que reciba un objeto como este:{
-    //   firstQuestion,
-    //   secondQuestion,
-    //   thirdQuestion,
-    //   tags: [...tags],
-    // } y nos retorne un {foodQuality,service,ambience,valueForMoney}
-
+    const review = calculateRatings({
+      firstQuestion,
+      secondQuestion,
+      thirdQuestion,
+      tags,
+    });
     const newPost = {
-      // id: postId,
       userId,
       restaurantId,
-      // userPhoto,
-      // username,
-      // reviewCount,
-      // restaurantName,
-      // restaurantCity,
-      // restaurantImage,
       postImage,
       description,
-      // tags,
       likes: [],
       dislikes: [],
-      postValue: {
+      questions: {
         firstQuestion,
         secondQuestion,
         thirdQuestion,
         tags: [...tags],
       },
-      // review:{foodQuality,service,ambience,valueForMoney},
+      review,
       publicationDate: new Date().toISOString(),
     };
 
@@ -63,13 +44,35 @@ export const createPostThunk = createAsyncThunk(
     return {
       id: postDoc.id,
       ...newPost,
-    }; // Retorna el nuevo post para actualizar el estado
+    };
   }
 );
 
+// Thunk para obtener publicaciones desde Firebase
+export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
+  const postsCollection = collection(database, collectionName);
+  const postsSnapshot = await getDocs(postsCollection);
+  return postsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+});
+
+
 const postsSlice = createSlice({
-  name: 'posts',
+  name: "posts",
   initialState: {
+    newPost: {
+      userId: "",
+      restaurantId: "",
+      postImage: "",
+      description: "",
+      questions: {
+        firstQuestion: "",
+        secondQuestion: "",
+        thirdQuestion: "",
+      },
+      tags: [],
+      likes: [],
+      dislikes: [],
+    },
     posts: [],
     loading: false,
     error: null,
@@ -77,6 +80,23 @@ const postsSlice = createSlice({
   reducers: {
     clearError: (state) => {
       state.error = null;
+    },
+    setNewPost: (state, action) => {
+      state.newPost = {
+        ...state.newPost,
+        ...action.payload,
+      };
+    },
+    clearNewPost: (state) => {
+      state.newPost = {
+        userId: "",
+        restaurantId: "",
+        postImage: "",
+        description: "",
+        tags: [],
+        likes: [],
+        dislikes: [],
+      };
     },
   },
   extraReducers: (builder) => {
@@ -87,14 +107,27 @@ const postsSlice = createSlice({
       })
       .addCase(createPostThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.posts.push(action.payload); // Añadir el nuevo post al estado
+        state.posts.push(action.payload);
       })
       .addCase(createPostThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      .addCase(fetchPosts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.posts = action.payload;
+      })
+      .addCase(fetchPosts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
   },
 });
 
-export const { clearError } = postsSlice.actions;
+export const { clearError, setNewPost, clearNewPost } = postsSlice.actions;
 export default postsSlice.reducer;

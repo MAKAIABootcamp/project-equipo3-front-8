@@ -5,7 +5,13 @@ import PropTypes from 'prop-types';
 import { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import TagModal from "./TagModal";
-import { createPostThunk } from '../../redux/post/postSlice';
+import { createPostThunk, clearNewPost } from '../../redux/post/postSlice';
+import uploadFile from '../../services/uploadFile';
+import UploadImage from './uploadimage';
+import { hiddenModal, resetStep } from '../../redux/modals/modalSlice';
+import { useNavigate } from "react-router-dom";
+
+
 
 const ReviewSchema = Yup.object().shape({
   review: Yup.string()
@@ -14,20 +20,15 @@ const ReviewSchema = Yup.object().shape({
 });
 
 const PublishReview = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  
   const [tagsSelected, setTagsSelected] = useState([]);
   const [isTagModalOpen, setIsTagModalOpen] = useState(false); // Controla la visibilidad del modal
-  const { isAuthenticated, user } = useSelector((store) => store.auth); // Obtener datos del usuario desde el estado
-  const { restaurant } = useSelector((state) => state.authRestaurant); // Obtener datos del restaurante desde el estado 
-  console.log('Restaurant from Redux:', restaurant);
-  const restaurantId = restaurant?.id || '';
-  
+  const [image, setImage] = useState(null);
+  const { user } = useSelector((store) => store.auth); // Obtener datos del usuario desde el estado
+  const { newPost } = useSelector(state => state.posts)
 
-  // Selecciona la imagen cargada desde el estado de Redux
-  const uploadedImage = useSelector((state) => state.modal.image);
-  // Obtener preguntas de Redux
-  const { firstQuestion, secondQuestion, thirdQuestion } = useSelector((state) => state.modal.questions); 
-  console.log('Uploaded Image:', uploadedImage);
 
   const handleTagSelection = (selectedTags) => {
     setTagsSelected(selectedTags);
@@ -35,22 +36,33 @@ const PublishReview = () => {
   };
 
   // Función para manejar el envío del formulario
-  const handleSubmit = (values) => {
-    const newPost = {
-      userId: user?.id || '', // ID del usuario autenticado
-      restaurantId: restaurantId, // Obtiene el ID del restaurante autenticado
-      firstQuestion: firstQuestion, 
-      secondQuestion: secondQuestion, 
-      thirdQuestion: thirdQuestion,
-      description: values.review, // El texto de la reseña
-      postImage: uploadedImage, // La imagen que seleccionaste
-      tags: tagsSelected, // Tags seleccionados
-    };
+  const handleSubmit = async (values) => {
 
-    console.log('Publicando:', newPost);
+    try {
+      const imageUrl = image ? await uploadFile(image) : "";// Asegúrate de tener la referencia a `imageFile`
 
-    // Despacha la acción para crear el post
-    dispatch(createPostThunk(newPost));
+      const post = {
+        ...newPost,
+        postImage: imageUrl, description: values.review, tags: tagsSelected || []
+      }
+      // Crear el post en el servidor
+      dispatch(createPostThunk(post));
+      navigate(-1);
+
+      // Limpiar el estado de la publicación
+      dispatch(clearNewPost());
+      // dispatch(resetStep());
+
+      // Limpiar estados locales también
+      setTagsSelected([]);
+      setImage(null);
+
+
+    } catch (error) {
+      console.error('Error al subir la imagen:', error);
+      return; // Termina la ejecución si hay error en la subida
+    }
+
   };
 
   return (
@@ -63,32 +75,35 @@ const PublishReview = () => {
       <div className="flex">
         {/* Imagen cargada o de ejemplo (izquierda) */}
         <div className="w-1/2 flex justify-center items-center">
-          <img
+          <UploadImage setImage={setImage} />
+          {/* <img
             src={uploadedImage || '/default-image.png'}
             alt="Review visual"
             className="rounded-lg w-[350px] h-[350px] object-cover"
-          />
+          /> */}
         </div>
 
         {/* Formulario (derecha) */}
         <div className="w-1/2 pl-6">
           <Formik
-            initialValues={{ review: '' }}
+            initialValues={{ review: "" }}
             validationSchema={ReviewSchema}
             onSubmit={handleSubmit}
           >
-            {({ errors, touched,values }) => (
+            {({ errors, touched, values }) => (
               <Form>
                 {/* Imagen y nombre de usuario */}
                 <div className="flex items-center mb-4">
                   <div className="rounded-full bg-gray-300 w-10 h-10 overflow-hidden mr-3">
                     <img
-                      src={user?.userAvatar || '/default-image.png'} // Imagen del usuario
-                      alt={user?.displayName || 'Usuario'}
+                      src={user?.userAvatar || "/default-image.png"} // Imagen del usuario
+                      alt={user?.displayName || "Usuario"}
                       className="object-cover w-full h-full"
                     />
                   </div>
-                  <span className="font-semibold">{user?.displayName || 'Username'}</span>
+                  <span className="font-semibold">
+                    {user?.displayName || "Username"}
+                  </span>
                 </div>
 
                 {/* Campo de reseña */}
@@ -121,13 +136,14 @@ const PublishReview = () => {
 
                 {/* Mostrar tags seleccionados como botones */}
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {tagsSelected.map((tag, index) => (
+                  {tagsSelected.map((tagObject, index) => (
                     <button
                       key={index}
                       type="button"
                       className="border px-4 py-2 rounded-full bg-purple-500 text-white"
+                      title={`Valor: ${tagObject.value}, Categoría: ${tagObject.category}`} // Tooltip para mostrar info adicional
                     >
-                      {tag}
+                      {tagObject.tag}
                     </button>
                   ))}
                 </div>
@@ -148,7 +164,9 @@ const PublishReview = () => {
       </div>
 
       {/* Modal de Tags */}
-      {isTagModalOpen && <TagModal onClose={handleTagSelection} selectedTags={tagsSelected} />}
+      {isTagModalOpen && (
+        <TagModal onClose={handleTagSelection} selectedTags={tagsSelected} />
+      )}
     </div>
   );
 };

@@ -9,7 +9,6 @@ import {
   setStep,
 } from "../../redux/modals/modalSlice";
 import ModalRange from "../../pages/ReviewModal/ModalRange";
-import Uploadimage from "../../pages/ReviewModal/uploadimage";
 import PublishReview from "../../pages/ReviewModal/PublishReview";
 import CreateNewReview from "../../pages/ReviewModal/CreateNewReview";
 import AddRestaurant from "../../pages/ReviewModal/AddRestaurant";
@@ -27,9 +26,9 @@ const ReviewModal = ({ step = 0 }) => {
     const stepMap = {
       1: { next: 3, prev: null },
       2: { next: 1, prev: 1 },
-      3: { next: 4, prev: 1 }, // Salto a paso 1 si se retrocede desde aquí
-      4: { next: 5, prev: 3 },
-      5: { next: null, prev: 4 },
+      3: { next: 3, prev: 1 }, // Salto a paso 1 si se retrocede desde aquí
+      4: { next: 4, prev: 3 },
+      // 5: { next: null, prev: 4 },
     };
 
   useEffect(() => {
@@ -78,11 +77,11 @@ const ReviewModal = ({ step = 0 }) => {
         return <CreateNewReview />;
       case 2:
         return <AddRestaurant/>;
+      // case 3:
+      //   return <Uploadimage />;
       case 3:
-        return <Uploadimage />;
-      case 4:
         return <ModalRange />;
-      case 5:
+      case 4:
         return <PublishReview />;
       default:
         return null;

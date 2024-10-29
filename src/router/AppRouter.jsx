@@ -16,13 +16,16 @@ import NotFound from "../pages/NotFound";
 import ModalRegistro from "../components/Layout/RegistryModal";
 import RestaurantProfile from "../components/RestaurantProfile";
 import UserHubPage from "../pages/UserHubPage";
-import UserSettingPage from "../pages/UserSettingPage" ;
+import UserSettingPage from "../pages/UserSettingPage";
 import ModalReseña from "../components/Layout/ReviewModal";
+import { useLocation } from "react-router-dom";
 
 const AppRouter = () => {
   const dispatch = useDispatch();
   const { loading, isAuthenticated } = useSelector((store) => store.auth);
   const [checking, setChecking] = useState(true);
+  const location = useLocation();
+  const background = location.state?.background;
   // const { isActiveModal } = useSelector((store) => store.modal);
 
   useEffect(() => {
@@ -39,34 +42,45 @@ const AppRouter = () => {
   // if (isAuthenticated && !user?.eatingOutFrecuency && !user?.interests.length)
   //   return <ModalRegistro step={4} />;
   return (
-    <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="restaurantprofile" element={<RestaurantProfile />} />
-        <Route path="/:username" element={<UserHubPage />} />
+    <>
+      <Routes location={background || location}>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="restaurantprofile" element={<RestaurantProfile />} />
+          <Route path="/:username" element={<UserHubPage />} />
 
-        <Route element={<PublicRouter isAutenticate={isAuthenticated} />}>
-          <Route path="login" element={<LoginPanel />} />
-          <Route path="loginWithEmailAndPassword" element={<SignIn />} />
-          <Route
-            path="loginWithPhoneNumber"
-            element={<SignIn isPhone={true} />}
-          />
-          <Route path="register" element={<ModalRegistro />} />
-          {/* <Route path='restaurantprofile' element={<RestaurantProfile />} /> */}
-          
-        </Route>
+          <Route element={<PublicRouter isAutenticate={isAuthenticated} />}>
+            <Route path="login" element={<LoginPanel />} />
+            <Route path="loginWithEmailAndPassword" element={<SignIn />} />
+            <Route
+              path="loginWithPhoneNumber"
+              element={<SignIn isPhone={true} />}
+            />
+            {/* {background && <Route path="register" element={<ModalRegistro />} />} */}
+            {/* <Route path='restaurantprofile' element={<RestaurantProfile />} /> */}
+          </Route>
 
-        <Route element={<PrivateRouter isAutenticate={isAuthenticated} />}>
-          {/* <Route path="news" element={<Dashboard />}>
+          <Route element={<PrivateRouter isAutenticate={isAuthenticated} />}>
+            {/* <Route path="news" element={<Dashboard />}>
             <Route path=":newid" element={<Dashboard />} />
           </Route> */}
-          <Route path="new-review" element={<ModalReseña />} />
+            {/* {background && <Route path="new-review" element={<ModalReseña />} />} */}
+          </Route>
+          <Route path="setting" element={<UserSettingPage />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
-        <Route path="setting" element={<UserSettingPage />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
+      </Routes>
+      {background && (
+        <Routes>
+          <Route element={<PublicRouter isAutenticate={isAuthenticated} />}>
+            <Route path="/register" element={<ModalRegistro />} />
+          </Route>
+          <Route element={<PrivateRouter isAutenticate={isAuthenticated} />}>
+            <Route path="/new-review" element={<ModalReseña />} />
+          </Route>
+        </Routes>
+      )}
+    </>
   );
 };
 
