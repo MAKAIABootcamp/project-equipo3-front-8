@@ -84,8 +84,7 @@ const PhoneLogin = () => {
 
   return (
     <div>
-      {/* <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3"> */}
+      
       <h2 className="text-2xl font-bold mb-4">Iniciar sesión con teléfono</h2>
 
       {/* Formulario condicional basado en el estado de verificationId */}

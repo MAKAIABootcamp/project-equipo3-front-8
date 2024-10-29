@@ -13,11 +13,12 @@ const AvatarSection = () => {
             openModal({ src: Perfil, alt: "Foto de Perfil", likes: 100, dislikes: 2, comments: [] }, "perfil")
           }
         />        
-        <h2 className="mt-4 text-center text-sm">@SaboresDelPacífico</h2>
-         <p className=" font-black text-center">Restaurante Chocoano</p>
+        
       </div>     
         
       <div className="flex flex-col items-center mt-2">
+        <h2 className="mt-4 text-center text-sm">@SaboresDelPacífico</h2>
+         <p className=" font-black text-center">Restaurante Chocoano</p>
         <span className="text-principal text-lg">★★★★★</span>
        
       </div>

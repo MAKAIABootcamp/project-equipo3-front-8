@@ -159,14 +159,14 @@ const Settings = () => {
             name="notificationsEnabled"
             checked={formik.values.notificationsEnabled}
             onChange={formik.handleChange}
-            className="w-6 h-6 text-blue-600 focus:ring-2 focus:ring-blue-500"
+            className="w-6 h-6 text-principal focus:ring-2 focus:ring-principal"
           />
         </div>
 
         <button
           type="submit"
           onClick={formik.handleSubmit}
-          className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+          className="w-full bg-principal text-white py-2 rounded-lg font-semibold hover:bg-principal transition-colors"
         >
           Guardar cambios
         </button>
