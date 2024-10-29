@@ -1,38 +1,43 @@
-import {useState, useEffect} from 'react'
-import PuntovIcon from '../../../assets/navegacion/PuntosHome.png';
-import './PostCard.css';
-import UserAvatar from '../User/UserAvatar';
+import { useState, useEffect } from "react";
+import PuntovIcon from "../../../assets/navegacion/PuntosHome.png";
+import "./PostCard.css";
+import UserAvatar from "../User/UserAvatar";
 
-import HeartIcon from '../../../assets/icons/core/heart_icon_outline.svg';
-import HeartIconFilled from '../../../assets/icons/core/heart_icon_filled.svg';
+import HeartIcon from "../../../assets/icons/core/heart_icon_outline.svg";
+import HeartIconFilled from "../../../assets/icons/core/heart_icon_filled.svg";
 
-import DislikeIcon from '../../../assets/icons/core/dislike_icon_outline.svg';
-import DislikeIconFilled from '../../../assets/icons/core/dislike_icon_filled.svg';
+import DislikeIcon from "../../../assets/icons/core/dislike_icon_outline.svg";
+import DislikeIconFilled from "../../../assets/icons/core/dislike_icon_filled.svg";
 
-import ShareIcon from '../../../assets/icons/core/share_icon_outline.svg';
-import ShareIconFilled from '../../../assets/icons/core/share_icon_filled.svg';
+import ShareIcon from "../../../assets/icons/core/share_icon_outline.svg";
+import ShareIconFilled from "../../../assets/icons/core/share_icon_filled.svg";
 
-import MoreIconVert from '../../../assets/icons/core/more_icon_vertical.svg';
+import MoreIconVert from "../../../assets/icons/core/more_icon_vertical.svg";
 
-import SmallArrowIcon from '../../../assets/icons/core/small_arrow_icon.svg';
-import KidStarIcon from '../../../assets/icons/core/kid_star_icon_filled.svg';
+import SmallArrowIcon from "../../../assets/icons/core/small_arrow_icon.svg";
+import KidStarIcon from "../../../assets/icons/core/kid_star_icon_filled.svg";
 import PropTypes from "prop-types";
-import { useDispatch } from 'react-redux';
-import { getRestaurantById } from '../../../redux/restaurants/restaurantSlice';
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getRestaurantById } from "../../../redux/restaurants/restaurantSlice";
 
 const RestaurantCard = ({ foodImage, description, tags, restaurantId }) => {
-  const dispatch = useDispatch()
-  const [restaurant, setRestaurant] = useState(null)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [restaurant, setRestaurant] = useState(null);
 
   async function getRestaurants() {
-    const restaurants = await dispatch(getRestaurantById(restaurantId))
-    setRestaurant(restaurants.payload)
-    console.log("restaurants.payload", restaurants.payload)
+    const restaurants = await dispatch(getRestaurantById(restaurantId));
+    setRestaurant(restaurants.payload);
+    console.log("restaurants.payload", restaurants.payload);
   }
 
-  useEffect(()=>{
-    getRestaurants()
-  },[])
+  const handleNavigateToProfile = (userType, username) =>
+    navigate(`/profile/${userType}/${username}`);
+
+  useEffect(() => {
+    getRestaurants();
+  }, []);
 
   console.log(tags);
   return (
@@ -56,11 +61,18 @@ const RestaurantCard = ({ foodImage, description, tags, restaurantId }) => {
               </figure>
 
               {/* Avatar del restaurante */}
-              <div className="flex items-center flex-shrink-0">
+              <div
+                className="flex items-center flex-shrink-0"
+                onClick={() =>
+                  handleNavigateToProfile("restaurant", restaurant?.username)
+                }
+              >
                 <UserAvatar srcAvatar={foodImage} showStoryBorder={false} />
                 <div className="ml-2">
                   <p className="font-bold text-sm">{restaurant?.displayName}</p>
-                  <p className="text-xs text-grey-dim">{restaurant?.location?.city}</p>
+                  <p className="text-xs text-grey-dim">
+                    {restaurant?.location?.city}
+                  </p>
                 </div>
               </div>
             </div>
@@ -92,7 +104,11 @@ const RestaurantCard = ({ foodImage, description, tags, restaurantId }) => {
 
         {/* Imagen de la comida */}
         <div className="w-full aspect-square">
-          <img src={foodImage} alt="Imagen de la comida" className="w-full h-full object-cover" />
+          <img
+            src={foodImage}
+            alt="Imagen de la comida"
+            className="w-full h-full object-cover"
+          />
         </div>
 
         {/* Pie con íconos y fecha */}
@@ -114,7 +130,6 @@ const RestaurantCard = ({ foodImage, description, tags, restaurantId }) => {
     </article>
   );
 };
-
 
 RestaurantCard.propTypes = {
   foodImage: PropTypes.string,

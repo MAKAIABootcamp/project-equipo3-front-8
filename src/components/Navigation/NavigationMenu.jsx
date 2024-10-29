@@ -32,29 +32,36 @@ const NavigationMenu = () => {
 
 
 	const links = [
-		{
-			icon: location.pathname === "/" || location.pathname === "/dashboard" ? HomeIconFilled : HomeIcon,
-			label: "Home",
-			link: "/",
-		},
-		{ icon: SearchIcon, label: "Buscar", link: "/" },
-		{
-			icon: location.pathname === "/explorar" ? DiscoverIconFilled : DiscoverIcon,
-			label: "Explorar",
-			link: "/explorar",
-		},
-		...(isAuthenticated
-			? [
-				{
-					icon: user?.userAvatar || (location.pathname === `/${user?.username}` ? ProfileIconFilled : ProfileIcon),
-					label: "Perfil",
-					link: `/${user?.username}`,
-					username: user?.username
-				},
-			]
-			: []),
-
-	];
+    {
+      icon:
+        location.pathname === "/" || location.pathname === "/dashboard"
+          ? HomeIconFilled
+          : HomeIcon,
+      label: "Home",
+      link: "/",
+    },
+    { icon: SearchIcon, label: "Buscar", link: "/" },
+    {
+      icon:
+        location.pathname === "/explorar" ? DiscoverIconFilled : DiscoverIcon,
+      label: "Explorar",
+      link: "/explorar",
+    },
+    ...(isAuthenticated
+      ? [
+          {
+            icon:
+              user?.userAvatar ||
+              (location.pathname === `/profile/user/${user?.username}`
+                ? ProfileIconFilled
+                : ProfileIcon),
+            label: "Perfil",
+            link: `/profile/user/${user?.username}`,
+            username: user?.username,
+          },
+        ]
+      : []),
+  ];
 
 	return (
 
