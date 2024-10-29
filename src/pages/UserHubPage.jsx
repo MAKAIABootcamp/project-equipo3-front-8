@@ -56,11 +56,11 @@ const UserHubPage = () => {
         />
        
         
-        <div className="flex flex-col  text-center  md:text-left">
+        <div className=" md:text-left">
           <h1 className="text-2xl md:text-3xl font-semibold mb-2">{displayUser.displayName}</h1>
           <p className="text-gray-600">{displayUser.email}</p>
           {isCurrentUser && (
-            <button className="mt-4 px-4 py-2 bg-principal text-blanco-puro rounded-lg hover:bg-principal transition">
+            <button type='submit' className="mt-4 px-4 py-2 bg-principal text-blanco-puro rounded-lg hover:bg-principal transition">
               Configuración
             </button>
           )}
@@ -83,12 +83,12 @@ const UserHubPage = () => {
         Nuestra aplicación está en etapa beta. Estamos trabajando en nuevas funcionalidades importantes para mejorar tu experiencia.
       </h1>
       <div className="grid grid-cols-3 gap-4 mt-6 w-full max-w-lg">
-        <div className="bg-gray-300 h-32"></div>
-        <div className="bg-gray-300 h-32"></div>
-        <div className="bg-gray-300 h-32"></div>
-        <div className="bg-gray-300 h-32"></div>
-        <div className="bg-gray-300 h-32"></div>
-        <div className="bg-gray-300 h-32"></div>
+        <div className="bg-gray-300 h-38"></div>
+        <div className="bg-gray-300 h-38"></div>
+        <div className="bg-gray-300 h-38"></div>
+        <div className="bg-gray-300 h-38"></div>
+        <div className="bg-gray-300 h-38"></div>
+        <div className="bg-gray-300 h-38"></div>
       </div>
     </div>
   );

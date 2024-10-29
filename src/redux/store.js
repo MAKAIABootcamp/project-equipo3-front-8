@@ -5,6 +5,7 @@ import postReducer from "./post/postSlice";
 import otherUserReducer from "./users/otherUserSlice"
 import restaurantReducer from "./restaurants/restaurantSlice"
 import authRestaurantReducer from "./auth/authRestaurantSlice"
+import profileReducer from "./setting/profileSlice"
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
         otherUser: otherUserReducer,
         restaurant: restaurantReducer,
         authRestaurant: authRestaurantReducer,
+        profile: profileReducer,
     },
 
 })

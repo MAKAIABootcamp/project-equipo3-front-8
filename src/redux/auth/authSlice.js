@@ -8,7 +8,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { auth, database } from "../../Firebase/firebaseConfig";
+import { auth, database } from "../../firebase/firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import axios from "axios";
 import { generateUniqueUsername } from "../../utils/usernameGenerator";
