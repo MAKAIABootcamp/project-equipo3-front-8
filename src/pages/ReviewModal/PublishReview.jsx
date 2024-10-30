@@ -1,68 +1,70 @@
-import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import PropTypes from 'prop-types';
+import React from "react";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import PropTypes from "prop-types";
 import { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import TagModal from "./TagModal";
-import { createPostThunk, clearNewPost } from '../../redux/post/postSlice';
-import uploadFile from '../../services/uploadFile';
-import UploadImage from './uploadimage';
-import { hiddenModal, resetStep } from '../../redux/modals/modalSlice';
+import { createPostThunk, clearNewPost } from "../../redux/post/postSlice";
+import uploadFile from "../../services/uploadFile";
+import UploadImage from "./uploadimage";
+import { hiddenModal, resetStep } from "../../redux/modals/modalSlice";
 import { useNavigate } from "react-router-dom";
-
-
 
 const ReviewSchema = Yup.object().shape({
   review: Yup.string()
-    .max(200, 'Máximo 200 caracteres')
-    .required('Este campo es requerido'),
+    .max(200, "Máximo 200 caracteres")
+    .required("Este campo es requerido"),
 });
 
 const PublishReview = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   const [tagsSelected, setTagsSelected] = useState([]);
   const [isTagModalOpen, setIsTagModalOpen] = useState(false); // Controla la visibilidad del modal
   const [image, setImage] = useState(null);
   const { user } = useSelector((store) => store.auth); // Obtener datos del usuario desde el estado
-  const { newPost } = useSelector(state => state.posts)
+  const { newPost } = useSelector((state) => state.posts);
 
+  console.log(newPost);
 
   const handleTagSelection = (selectedTags) => {
     setTagsSelected(selectedTags);
-    setIsTagModalOpen(false);  // Cierra el modal después de seleccionar
+    setIsTagModalOpen(false); // Cierra el modal después de seleccionar
   };
 
   // Función para manejar el envío del formulario
   const handleSubmit = async (values) => {
-
     try {
-      const imageUrl = image ? await uploadFile(image) : "";// Asegúrate de tener la referencia a `imageFile`
-
+      const restaurantId = sessionStorage.getItem("restaurantId") || "";
+      const imageUrl = image ? await uploadFile(image) : ""; // Asegúrate de tener la referencia a `imageFile`
       const post = {
         ...newPost,
-        postImage: imageUrl, description: values.review, tags: tagsSelected || []
+        postImage: imageUrl,
+        description: values.review,
+        tags: tagsSelected || [],
+      };
+      if (restaurantId) {
+        post.restaurantId = restaurantId;
       }
+
       // Crear el post en el servidor
       dispatch(createPostThunk(post));
+      sessionStorage.removeItem("restaurantId");
       navigate(-1);
 
       // Limpiar el estado de la publicación
       dispatch(clearNewPost());
-      // dispatch(resetStep());
+      dispatch(resetStep());
 
       // Limpiar estados locales también
       setTagsSelected([]);
       setImage(null);
-
-
     } catch (error) {
-      console.error('Error al subir la imagen:', error);
+      console.error("Error al subir la imagen:", error);
       return; // Termina la ejecución si hay error en la subida
     }
-
   };
 
   return (
