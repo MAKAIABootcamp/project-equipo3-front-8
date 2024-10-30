@@ -84,29 +84,15 @@ export const getRestaurantById = createAsyncThunk(
     try {
       const restaurantsRef = doc(database, RESTAURANTS_COLLECTION, id);
       const querySnapshot = await getDoc(restaurantsRef);
-      return querySnapshot.data();
+      return {
+        id: querySnapshot.id,
+        ...querySnapshot.data(),
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
-
-// // Función para filtrar datos sensibles
-// const filterSensitiveData = (userData) => {
-//   const {
-//     accessToken,
-//     email,
-//     createdAt,
-//     followers,
-//     following,
-//     themePreference,
-//     notificationsEnabled,
-//     lastConnection,
-//     eatingOutFrecuency,
-//     ...filteredData
-//   } = userData; // Excluir accessToken
-//   return filteredData;
-// };
 
 // Thunk para obtener los datos de otro usuario por username
 export const getRestaurantByUsername = createAsyncThunk(
@@ -189,9 +175,7 @@ export const createRestaurantOnReview = createAsyncThunk(
       // Espera a que se genere un username único
       const username = await generateUniqueUsername(restaurantName); // Asegúrate de que la promesa esté resuelta
 
-      // Crea el restaurante en Firestore
-      const restaurantRef = collection(database, RESTAURANTS_COLLECTION);
-      const newRestaurantRef = await addDoc(restaurantRef, {
+      const newRestaurant = {
         username, // Ya resuelto
         displayName: restaurantName,
         email: "", // Dejar en blanco por ahora
@@ -208,15 +192,39 @@ export const createRestaurantOnReview = createAsyncThunk(
           state: "",
         },
         ...defaultRestaurantData, // Agrega los campos opcionales
-      });
+      };
+
+      // Crea el restaurante en Firestore
+      const restaurantRef = collection(database, RESTAURANTS_COLLECTION);
+      const newRestaurantRef = await addDoc(restaurantRef, newRestaurant);
+
+      sessionStorage.setItem("restaurantId", newRestaurantRef.id);
 
       return {
         id: newRestaurantRef.id,
-        displayName: restaurantName,
+        ...newRestaurant,
         city,
-        address,
       };
     } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Función para obtener todos los restaurantes desde firestore
+export const fetchAllRestaurants = createAsyncThunk(
+  "restaurant/fetchAll",
+  async (_, { rejectWithValue }) => {
+    try {
+      const restaurantRef = collection(database, RESTAURANTS_COLLECTION);
+      const restaurantsDoc = await getDocs(restaurantRef);
+      const allRestaurants = restaurantsDoc.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      return allRestaurants;
+    } catch (error) {
+      console.error(error);
       return rejectWithValue(error.message);
     }
   }
@@ -247,6 +255,7 @@ const restaurantSlice = createSlice({
       })
       .addCase(createRestaurantOnReview.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(createRestaurantOnReview.fulfilled, (state, action) => {
         state.loading = false;
@@ -268,6 +277,32 @@ const restaurantSlice = createSlice({
       .addCase(getRestaurantByUsername.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
+      })
+      .addCase(getRestaurantById.fulfilled, (state, action) => {
+        state.restaurant = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(getRestaurantById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getRestaurantById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllRestaurants.fulfilled, (state, action) => {
+        state.restaurants = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchAllRestaurants.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchAllRestaurants.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       });
   },
 });

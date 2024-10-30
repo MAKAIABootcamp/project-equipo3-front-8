@@ -17,29 +17,37 @@ import MoreIconVert from "../../../assets/icons/core/more_icon_vertical.svg";
 import SmallArrowIcon from "../../../assets/icons/core/small_arrow_icon.svg";
 import KidStarIcon from "../../../assets/icons/core/kid_star_icon_filled.svg";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getRestaurantById } from "../../../redux/restaurants/restaurantSlice";
+import { formatDistanceToNow } from "date-fns";
 
-const RestaurantCard = ({ foodImage, description, tags, restaurantId }) => {
-  const dispatch = useDispatch();
+
+const PostCard = ({ foodImage, description, tags, restaurantId, restaurant=null, userPost=null, date }) => {
+  console.log("restaurantId:", restaurantId);
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [restaurant, setRestaurant] = useState(null);
+  const formattedDate = date ? formatDistanceToNow(new Date(date), { addSuffix: true }) : "";
+  // const [restaurant, setRestaurant] = useState(null);
+  // const { user } = useSelector((store) => store.auth);
+  // const { restaurant } = useSelector((store) => store.restaurant);
 
-  async function getRestaurants() {
-    const restaurants = await dispatch(getRestaurantById(restaurantId));
-    setRestaurant(restaurants.payload);
-    console.log("restaurants.payload", restaurants.payload);
-  }
+  // async function getRestaurants() {
+  //   const restaurants = await dispatch(getRestaurantById(restaurantId));
+  //   setRestaurant(restaurants.payload);
+  //   console.log("restaurants.payload", restaurants.payload);
+  // }
 
   const handleNavigateToProfile = (userType, username) =>
     navigate(`/profile/${userType}/${username}`);
 
-  useEffect(() => {
-    getRestaurants();
-  }, []);
-
-  console.log(tags);
+  // useEffect(() => {
+  //   // getRestaurants();
+  //   dispatch(getRestaurantById(restaurantId));
+  // }, [dispatch]);
+  
+  console.log(restaurant);
+  console.log("usuario",userPost);
   return (
     <article>
       <div className="flex flex-col w-full h-auto rounded-xl text-[14px] mb-4 shadow-xl justify-start">
@@ -49,9 +57,9 @@ const RestaurantCard = ({ foodImage, description, tags, restaurantId }) => {
             <div className="flex items-center w-full">
               {/* Avatar del usuario */}
               <div className="flex items-center flex-shrink-0">
-                <UserAvatar srcAvatar={foodImage} showStoryBorder={true} />
+                <UserAvatar srcAvatar={userPost?.userAvatar} showStoryBorder={true} />
                 <div className="ml-2">
-                  <p className="font-bold text-sm">Hice Klent</p>
+                  <p className="font-bold text-sm">{userPost?.displayName}</p>
                   <p className="text-xs text-grey-dim">57 Reseñas</p>
                 </div>
               </div>
@@ -88,12 +96,12 @@ const RestaurantCard = ({ foodImage, description, tags, restaurantId }) => {
           </p>
 
           {/* Botones - Tag */}
-          <div className="flex flex-wrap gap-2 mt-4">
+          <div className="flex flex-wrap gap-2 mb-4">
             {tags.map((tagObj, index) => (
               <button
                 key={index}
                 type="button"
-                className="border px-4 py-2 rounded-full bg-purple-500 text-white"
+                className="bg-morazul text-white px-4 py-2.5 rounded-full text-sm font-extrabold"
                 title={`Categoría: ${tagObj.category}, Valor: ${tagObj.value}`}
               >
                 {tagObj.tag}
@@ -121,7 +129,7 @@ const RestaurantCard = ({ foodImage, description, tags, restaurantId }) => {
             <DislikeIcon className="cursor-pointer" />
           </div>
           <div className="flex items-center space-x-4">
-            <p className="text-[10px]">Sep 27 / 2024</p>
+            <p className="text-gray-500 text-xs font-medium tracking-wide font-nunito">{formattedDate}</p>
             <ShareIcon className="cursor-pointer" />
             <MoreIconVert className="cursor-pointer" />
           </div>
@@ -131,7 +139,7 @@ const RestaurantCard = ({ foodImage, description, tags, restaurantId }) => {
   );
 };
 
-RestaurantCard.propTypes = {
+PostCard.propTypes = {
   foodImage: PropTypes.string,
   description: PropTypes.string,
   tags: PropTypes.arrayOf(
@@ -143,4 +151,4 @@ RestaurantCard.propTypes = {
   ).isRequired,
 };
 
-export default RestaurantCard;
+export default PostCard;

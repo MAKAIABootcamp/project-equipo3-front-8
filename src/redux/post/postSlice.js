@@ -1,7 +1,14 @@
 // postsSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { database } from "../../firebase/firebaseConfig";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  serverTimestamp,
+} from "firebase/firestore";
 import { calculateRatings } from "../../utils/reviewsOperations";
 
 const collectionName = "posts";
@@ -40,10 +47,14 @@ export const createPostThunk = createAsyncThunk(
     };
 
     const postRef = collection(database, collectionName);
-    const postDoc = await addDoc(postRef, newPost);
+    const postDoc = await addDoc(postRef, {
+      ...newPost,
+      createdAt: serverTimestamp(),
+    });
     return {
       id: postDoc.id,
       ...newPost,
+      createdAt: new Date().toISOString(),
     };
   }
 );
@@ -51,10 +62,14 @@ export const createPostThunk = createAsyncThunk(
 // Thunk para obtener publicaciones desde Firebase
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   const postsCollection = collection(database, collectionName);
-  const postsSnapshot = await getDocs(postsCollection);
-  return postsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  const q = query(postsCollection, orderBy("createdAt", "desc"));
+  const postsSnapshot = await getDocs(q);
+  return postsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+    createdAt: doc.data().createdAt?.toDate()?.toISOString(),
+  }));
 });
-
 
 const postsSlice = createSlice({
   name: "posts",
@@ -107,7 +122,7 @@ const postsSlice = createSlice({
       })
       .addCase(createPostThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.posts.push(action.payload);
+        state.posts.unshift(action.payload);
       })
       .addCase(createPostThunk.rejected, (state, action) => {
         state.loading = false;
