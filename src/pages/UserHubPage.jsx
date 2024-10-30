@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   fetchOtherUserData,
   clearOtherUserData,
@@ -11,9 +11,7 @@ import AvatarSection from "../components/RestaurantProfile/AvatarSection";
 
 const UserHubPage = () => {
   const dispatch = useDispatch();
-  const { userType, username } = useParams();
-  console.log(userType);
-  console.log(username);
+  const { username } = useParams();
   const { user, isAuthenticated } = useSelector((store) => store.auth);
 
   const {
@@ -91,11 +89,7 @@ const UserHubPage = () => {
           </h1> */}
           <p className="text-gray-600">{displayUser.email}</p>
           {isCurrentUser && (
-            <button 
-             onClick={() => navigate("/setting")}
-             type='submit'
-             className="mt-4 px-4 py-2 bg-principal text-blanco-puro rounded-lg hover:bg-principal transition"
-            >
+            <button type='submit' className="mt-4 px-4 py-2 bg-principal text-blanco-puro rounded-lg hover:bg-principal transition">
               Configuración
             </button>
           )}

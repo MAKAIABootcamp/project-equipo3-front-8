@@ -4,11 +4,12 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { setProfileData } from '../../redux/setting/profileSlice';
-
+import { storage } from '../../firebase/firebaseConfig';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const UserSettings = () => {
   const dispatch = useDispatch();
-  const { profilePhoto, coverPhoto, setUserType, bio, website, gender, notificationsEnabled } = useSelector(
+  const { profilePhoto, coverPhoto, bio, website, gender, notificationsEnabled } = useSelector(
     (state) => state.profile
   );
 
@@ -20,7 +21,6 @@ const UserSettings = () => {
       notificationsEnabled: notificationsEnabled,
       avatar: null,
       banner: null,
-      setUserType: '',
     },
     validationSchema: Yup.object({
       bio: Yup.string().max(150, 'La bio no puede exceder 150 caracteres'),
@@ -33,15 +33,15 @@ const UserSettings = () => {
     },
   });
 
-  // const handleFileChange = async (e, field) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const storageRef = ref(storage, `${field}/${file.name}`);
-  //     await uploadBytes(storageRef, file);
-  //     const url = await getDownloadURL(storageRef);
-  //     dispatch(setProfileData({ [field]: url }));
-  //   }
-  // };
+  const handleFileChange = async (e, field) => {
+    const file = e.target.files[0];
+    if (file) {
+      const storageRef = ref(storage, `${field}/${file.name}`);
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+      dispatch(setProfileData({ [field]: url }));
+    }
+  };
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -61,7 +61,7 @@ const UserSettings = () => {
           />
           <button
             type="button"
-            className="ml-4 text-blanco-puro bg-principal hover:underline"
+            className="ml-4 text-blue-500 hover:underline"
             onClick={() => document.getElementById('avatar').click()}
           >
             Cambiar foto
@@ -84,7 +84,7 @@ const UserSettings = () => {
         />
         <button
           type="button"
-          className="mt-2 text-blanco-puro bg-principal hover:underline"
+          className="mt-2 text-blue-500 hover:underline"
           onClick={() => document.getElementById('banner').click()}
         >
           Cambiar banner
@@ -130,9 +130,6 @@ const UserSettings = () => {
           <option value="">Selecciona</option>
           <option value="Hombre">Hombre</option>
           <option value="Mujer">Mujer</option>
-          <option value="Bisexual">Mujer</option>
-          <option value="Mujer Trans">Mujer</option>
-          <option value="Binario">Mujer</option>
           <option value="Otro">Otro</option>
         </select>
       </div>
@@ -150,9 +147,8 @@ const UserSettings = () => {
       </div>
 
       <button
-         
         type="submit"
-        className="w-full bg-principal text-white py-2 rounded-lg hover:bg-principal"
+        className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
       >
         Guardar cambios
       </button>

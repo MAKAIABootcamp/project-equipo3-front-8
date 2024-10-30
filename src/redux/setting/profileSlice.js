@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const profileSlice = createSlice({
   name: 'profile',
   initialState: {
-    userType: 'normal',
+    userType: 'normal', // 'normal', 'contentCreator' o 'restaurant'
     profilePhoto: null,
     coverPhoto: null,
     bio: '',
