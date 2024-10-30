@@ -5,12 +5,15 @@ import {
   fetchOtherUserData,
   clearOtherUserData,
 } from "../redux/users/otherUserSlice";
+import { getRestaurantByUsername } from "../redux/restaurants/restaurantSlice";
 import NotFound from "./NotFound";
+import AvatarSection from "../components/RestaurantProfile/AvatarSection";
 
 const UserHubPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { username } = useParams();
+  const { userType, username } = useParams();
+  console.log(userType);
+  console.log(username);
   const { user, isAuthenticated } = useSelector((store) => store.auth);
 
   const {
@@ -20,17 +23,25 @@ const UserHubPage = () => {
   } = useSelector(
     (store) => store.otherUser || { data: null, loading: false, error: null }
   );
+
+  const { restaurant: restaurantAuth } = useSelector(
+    (store) => store.authRestaurant
+  );
   const { restaurant } = useSelector(
     (store) => store.restaurant || { restaurant: null }
   );
 
   useEffect(() => {
     if (isAuthenticated) {
-      if (username && username !== user.username) {
+      if (username && userType === "user" && username !== user.username) {
         dispatch(fetchOtherUserData(username));
       } else {
         dispatch(clearOtherUserData());
       }
+    }
+
+    if (userType === "restaurant") {
+      dispatch(getRestaurantByUsername(username));
     }
   }, [dispatch, username, user.username, isAuthenticated]);
 
@@ -62,17 +73,22 @@ const UserHubPage = () => {
       <div className="flex flex-col items-center md:flex-row md:items-start md:space-x-6">
         {/* Banner superior */}
         <div className="w-full h-50 bg-gray-300 mb-8"></div>
-
-        <img
-          className="w-32 h-32 md:w-48 md:h-48 object-cover mb-4 md:mb-0 rounded-full border-4 border-principal"
-          src={user?.userAvatar}
-          alt={displayUser.displayName}
+        <AvatarSection
+          photo={displayUser?.userAvatar}
+          alt={displayUser?.displayName}
+          username={displayUser?.username}
+          displayName={displayUser?.displayName}
         />
+        {/* <img
+          className="w-32 h-32 md:w-48 md:h-48 object-cover mb-4 md:mb-0 rounded-full border-4 border-principal"
+          src={displayUser?.userAvatar}
+          alt={displayUser.displayName}
+        /> */}
 
         <div className="flex flex-col  text-center  md:text-left">
-          <h1 className="text-2xl md:text-3xl font-semibold mb-2">
+          {/* <h1 className="text-2xl md:text-3xl font-semibold mb-2">
             {displayUser.displayName}
-          </h1>
+          </h1> */}
           <p className="text-gray-600">{displayUser.email}</p>
           {isCurrentUser && (
             <button 

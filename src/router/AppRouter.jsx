@@ -46,8 +46,8 @@ const AppRouter = () => {
       <Routes location={background || location}>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="restaurantprofile" element={<RestaurantProfile />} />
-          <Route path="/:username" element={<UserHubPage />} />
+          {/* <Route path="restaurantprofile" element={<RestaurantProfile />} /> */}
+          <Route path="profile/:userType/:username" element={<UserHubPage />} />
 
           <Route element={<PublicRouter isAutenticate={isAuthenticated} />}>
             <Route path="login" element={<LoginPanel />} />

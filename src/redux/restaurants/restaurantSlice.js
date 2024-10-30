@@ -91,22 +91,22 @@ export const getRestaurantById = createAsyncThunk(
   }
 );
 
-// Función para filtrar datos sensibles
-const filterSensitiveData = (userData) => {
-  const {
-    accessToken,
-    email,
-    createdAt,
-    followers,
-    following,
-    themePreference,
-    notificationsEnabled,
-    lastConnection,
-    eatingOutFrecuency,
-    ...filteredData
-  } = userData; // Excluir accessToken
-  return filteredData;
-};
+// // Función para filtrar datos sensibles
+// const filterSensitiveData = (userData) => {
+//   const {
+//     accessToken,
+//     email,
+//     createdAt,
+//     followers,
+//     following,
+//     themePreference,
+//     notificationsEnabled,
+//     lastConnection,
+//     eatingOutFrecuency,
+//     ...filteredData
+//   } = userData; // Excluir accessToken
+//   return filteredData;
+// };
 
 // Thunk para obtener los datos de otro usuario por username
 export const getRestaurantByUsername = createAsyncThunk(
@@ -126,7 +126,7 @@ export const getRestaurantByUsername = createAsyncThunk(
       if (!querySnapshot.empty) {
         const restaurantDoc = querySnapshot.docs[0];
         const restaurantData = restaurantDoc.data();
-        return { id: restaurantDoc.id, ...filterSensitiveData(restaurantData) }; // Filtrar datos sensibles antes de devolverlos
+        return { id: restaurantDoc.id, ...restaurantData }; // Filtrar datos sensibles antes de devolverlos
       } else {
         return rejectWithValue("Usuario no encontrado");
       }
@@ -255,6 +255,19 @@ const restaurantSlice = createSlice({
       .addCase(createRestaurantOnReview.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(getRestaurantByUsername.fulfilled, (state, action) => {
+        state.restaurant = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(getRestaurantByUsername.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getRestaurantByUsername.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
       });
   },
 });
