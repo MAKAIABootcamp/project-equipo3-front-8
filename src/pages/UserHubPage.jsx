@@ -8,6 +8,7 @@ import {
 import { getRestaurantByUsername } from "../redux/restaurants/restaurantSlice";
 import NotFound from "./NotFound";
 import AvatarSection from "../components/RestaurantProfile/AvatarSection";
+import Banner from "../components/RestaurantProfile/Banner";
 
 const UserHubPage = () => {
   const dispatch = useDispatch();
@@ -72,19 +73,21 @@ const UserHubPage = () => {
     <div className="flex flex-col items-center p-6 md:p-10">
       <div className="flex flex-col items-center md:flex-row md:items-start md:space-x-6">
         {/* Banner superior */}
-        <div className="w-full h-50 bg-gray-300 mb-8"></div>
+        <Banner
+          photo={displayUser?.userBanner}
+          alt={displayUser?.displayName}
+         className ="flex items-center justify-center w-full h-50 object-cover aspect-[4/3] overflow-hidden "
+        
+        />
+      
         <AvatarSection
           photo={displayUser?.userAvatar}
           alt={displayUser?.displayName}
           username={displayUser?.username}
           displayName={displayUser?.displayName}
-        />
-        {/* <img
           className="w-32 h-32 md:w-48 md:h-48 object-cover mb-4 md:mb-0 rounded-full border-4 border-principal"
-          src={displayUser?.userAvatar}
-          alt={displayUser.displayName}
-        /> */}
-
+        />
+        
         <div className="flex flex-col  text-center  md:text-left">
           {/* <h1 className="text-2xl md:text-3xl font-semibold mb-2">
             {displayUser.displayName}

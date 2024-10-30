@@ -66,7 +66,7 @@ const AppRouter = () => {
           </Route> */}
             {/* {background && <Route path="new-review" element={<ModalReseña />} />} */}
           </Route>
-          <Route path="setting" element={<UserSettingPage />} />
+          <Route path="setting" element={<UserSettingPage/>} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
