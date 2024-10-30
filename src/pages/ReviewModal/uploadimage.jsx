@@ -72,7 +72,7 @@ const UploadImage = ({setImage}) => {
                 />
                 <button
                   type="button"
-                  className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 rounded"
+                  className="absolute top-0 right-0 bg-principal text-blanco-puro px-2 py-1 rounded"
                   onClick={handleRemoveImage}
                 >
                   
@@ -112,7 +112,7 @@ const UploadImage = ({setImage}) => {
               </label>
             )}
             {formik.errors.photo && formik.touched.photo ? (
-              <p className="text-red-500 text-sm mt-2">{formik.errors.photo}</p>
+              <p className="text-principal text-sm mt-2">{formik.errors.photo}</p>
             ) : null}
           </div>
 
