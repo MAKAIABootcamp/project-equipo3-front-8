@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import PuntovIcon from "../../../assets/navegacion/PuntosHome.png";
 import "./PostCard.css";
 import UserAvatar from "../User/UserAvatar";
 
