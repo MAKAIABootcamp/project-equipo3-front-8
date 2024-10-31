@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
-import UserProfile from "../components/Common/Storys/StoryAvatar";
 import PostCard from "../components/Common/Post/PostCard";
-import ComidaImg from "../assets/imagenes/comida.png";
 import { useSelector, useDispatch } from "react-redux";
 import ModalRegistro from "../components/Layout/RegistryModal";
 import { fetchPosts } from "../redux/post/postSlice";
