@@ -33,7 +33,7 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
 ----
 
 ### Antes de comenzar
-**Gestor de paquetes PNPM***
+**Gestor de paquetes PNPM**
 
 Intalacion: 
 
