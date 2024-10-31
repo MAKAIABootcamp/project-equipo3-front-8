@@ -17,7 +17,7 @@ const StarsRaiting = ({ rating = { stars: 0, message: "Insuficientes reseñas re
     });
 
     return (
-        <div className="flex space-x-1 justify-center font-semibold">
+        <div className="flex space-x-1 justify-center font-semibold max-w-67">
             {rating.stars > 0 ? stars : <p className="text-gray-600">{rating.message}</p>}
         </div>
     );

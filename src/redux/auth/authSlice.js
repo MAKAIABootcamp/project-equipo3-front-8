@@ -12,6 +12,7 @@ import { auth, database } from "../../Firebase/firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import axios from "axios";
 import { generateUniqueUsername } from "../../utils/usernameGenerator";
+import uploadFile from "../../services/uploadFile";
 
 const collectionName = "users";
 
@@ -168,7 +169,20 @@ export const googleLoginThunk = createAsyncThunk(
     const googleProvider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, googleProvider);
     const userRef = doc(database, collectionName, result.user.uid);
-    const user = await getOrCreateUser(result.user, userRef);
+    // const user = await getOrCreateUser(result.user, userRef);
+    let photoURL = null;
+    if (result.user.photoURL) {
+      // Subir la imagen de perfil a Cloudinary si existe
+      photoURL = await uploadFile(result.user.photoURL);
+    }
+
+    const user = await getOrCreateUser(
+      {
+        ...result.user,
+        photoURL: photoURL || result.user.photoURL // Usa la URL de Cloudinary o la original de Google si no hay error
+      },
+      userRef
+    );
     await updateLastConnection(user.id); // Actualiza la fecha de la última conexión
     return user;
   }

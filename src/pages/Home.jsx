@@ -11,6 +11,7 @@ import {
   calculateUserProfile,
   calculateOverallReviewScore,
 } from "../utils/reviewsOperations";
+import FoddiesLogo from "../assets/icon/Foddies.png";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -70,13 +71,16 @@ const Home = () => {
         <div className="max-w-[630px] w-full">
           <div className="mt-4">
             <div className="flex justify-center mb-6">
-              {prueba.map((items, index) => (
+              <img src={FoddiesLogo} alt="Foddies" />
+    
+              
+              {/* {prueba.map((items, index) => (
                 <UserProfile
                   key={index}
                   name={items.name}
                   imageUrl={items.imgUrl}
                 />
-              ))}
+              ))} */}
             </div>
 
             {/* Muestra cada publicación de Firebase */}

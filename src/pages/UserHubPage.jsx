@@ -130,11 +130,11 @@ const UserHubPage = () => {
       <div className="flex flex-col items-center text-center md:text-left">
         <h1 className="text-2xl font-semibold mb-2">{displayUser?.displayName}</h1>
         <p className="text-gray-600">{displayUser?.email}</p>
-        {isCurrentUser && (
+        {/* {isCurrentUser && (
           <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
             Configuración
           </button>
-        )}
+        )} */}
       </div>
 
       {/* Panel de estadísticas */}

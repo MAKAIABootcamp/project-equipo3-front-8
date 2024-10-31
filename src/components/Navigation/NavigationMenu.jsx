@@ -40,13 +40,13 @@ const NavigationMenu = () => {
       label: "Home",
       link: "/",
     },
-    { icon: SearchIcon, label: "Buscar", link: "/" },
-    {
-      icon:
-        location.pathname === "/explorar" ? DiscoverIconFilled : DiscoverIcon,
-      label: "Explorar",
-      link: "/explorar",
-    },
+    // { icon: SearchIcon, label: "Buscar", link: "/" },
+    // {
+    //   icon:
+    //     location.pathname === "/explorar" ? DiscoverIconFilled : DiscoverIcon,
+    //   label: "Explorar",
+    //   link: "/explorar",
+    // },
     ...(isAuthenticated
       ? [
           {

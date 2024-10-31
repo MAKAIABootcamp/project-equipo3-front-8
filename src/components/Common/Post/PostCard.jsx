@@ -62,10 +62,10 @@ const PostCard = ({
               <div className="flex items-center flex-shrink-0">
                 <UserAvatar
                   srcAvatar={userPost?.userAvatar}
-                  showStoryBorder={true}
+                  showStoryBorder={false}
                 />
                 <div className="ml-2">
-                  <p className="font-bold text-sm">{userPost?.displayName}</p>
+                  <p className="font-bold text-sm capitalize">{userPost?.displayName}</p>
                   <p className="text-xs text-grey-dim">{`${userReviews} Reseñas`}</p>
                 </div>
               </div>
@@ -81,10 +81,10 @@ const PostCard = ({
                   handleNavigateToProfile("restaurant", restaurant?.username)
                 }
               >
-                <UserAvatar srcAvatar={foodImage} showStoryBorder={false} />
+                <UserAvatar srcAvatar={restaurant?.userAvatar} showStoryBorder={false} />
                 <div className="ml-2">
-                  <p className="font-bold text-sm">{restaurant?.displayName}</p>
-                  <p className="text-xs text-grey-dim">
+                  <p className="font-bold text-sm capitalize">{restaurant?.displayName}</p>
+                  <p className="text-xs text-grey-dim capitalize">
                     {restaurant?.location?.city}
                   </p>
                 </div>
@@ -144,14 +144,14 @@ const PostCard = ({
                 {likes?.length}
               </p>
             </div>
-            <DislikeIcon className="cursor-pointer" />
+            {/* <DislikeIcon className="cursor-pointer" /> */}
           </div>
           <div className="flex items-center space-x-4">
             <p className="text-gray-500 text-xs font-medium tracking-wide font-nunito">
               {formattedDate}
             </p>
-            <ShareIcon className="cursor-pointer" />
-            <MoreIconVert className="cursor-pointer" />
+            {/* <ShareIcon className="cursor-pointer" />
+            <MoreIconVert className="cursor-pointer" /> */}
           </div>
         </div>
       </div>
