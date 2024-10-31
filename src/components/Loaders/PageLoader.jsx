@@ -1,5 +1,5 @@
 import SpinerIcon from '../../assets/icons/loaders/loading_icon.svg'
-import '../../styles/utils/_animations.css'
+import '../../Styles/utils/_animations.css'
 
 const PageLoader = () => {
     return (
