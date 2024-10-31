@@ -134,7 +134,7 @@ const PostCard = ({
               className="flex items-center mr-2 pr-2 border-r-2"
               onClick={handleLikes}
             >
-              {likes?.length && likes?.some((item) => item === user.id) ? (
+              {likes?.length && user?.id && likes?.some((item) => item === user.id) ? (
                 <HeartIconFilled className="cursor-pointer" />
               ) : (
                 <HeartIcon className="cursor-pointer" />

@@ -1296,7 +1296,7 @@ export function assignStars(score, reviews) {
     return {
       stars: 0,
       message:
-        "Insuficientes reseñas recientes para asignar estrellas. Se requieren al menos 30 reseñas en los últimos 6 meses.",
+        "Actualmente no hay suficientes reseñas recientes para asignar una calificación. Se requieren al menos 30 reseñas en los últimos 6 meses.",
       category: "Sin Clasificar",
     };
   }
