@@ -1,5 +1,5 @@
 import { doc, getDocs, collection, query, where } from "firebase/firestore";
-import { database } from "../Firebase/firebaseConfig"; // Ajusta la ruta si es necesario
+import { database } from "../firebase/firebaseConfig"; // Ajusta la ruta si es necesario
 
 // Función para generar un nombre de usuario único
 export async function generateUniqueUsername(displayName) {
