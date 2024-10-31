@@ -1,64 +1,125 @@
-import CorazonBlancoIcon from '../../../assets/like/CorazonBlanco.png';
-import DislikeIcon from '../../../assets/dislike/DislikeNormal.png';
-import ShareIcon from '../../../assets/shareIcon/ShareHome.png'
-import PuntovIcon from '../../../assets/navegacion/PuntosHome.png';
+import { useState, useEffect } from "react";
+import PuntovIcon from "../../../assets/navegacion/PuntosHome.png";
+import "./PostCard.css";
+import UserAvatar from "../User/UserAvatar";
 
-const RestaurantCard = ({ foodImage }) => {
+import HeartIcon from "../../../assets/icons/core/heart_icon_outline.svg";
+import HeartIconFilled from "../../../assets/icons/core/heart_icon_filled.svg";
+
+import DislikeIcon from "../../../assets/icons/core/dislike_icon_outline.svg";
+import DislikeIconFilled from "../../../assets/icons/core/dislike_icon_filled.svg";
+
+import ShareIcon from "../../../assets/icons/core/share_icon_outline.svg";
+import ShareIconFilled from "../../../assets/icons/core/share_icon_filled.svg";
+
+import MoreIconVert from "../../../assets/icons/core/more_icon_vertical.svg";
+
+import SmallArrowIcon from "../../../assets/icons/core/small_arrow_icon.svg";
+import KidStarIcon from "../../../assets/icons/core/kid_star_icon_filled.svg";
+import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
+import { setLikesPost } from "../../../redux/post/postSlice";
+
+const PostCard = ({
+  foodImage,
+  description,
+  tags,
+  restaurant = null,
+  userPost = null,
+  date,
+  reviewScore,
+  userReviews,
+  likes,
+  postId,
+}) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const formattedDate = date
+    ? formatDistanceToNow(new Date(date), { addSuffix: true })
+    : "";
+  const { user, isAuthenticated } = useSelector((store) => store.auth);
+
+  const handleNavigateToProfile = (userType, username) =>
+    navigate(`/profile/${userType}/${username}`);
+
+  const handleLikes = () => {
+    if (isAuthenticated) {
+      dispatch(setLikesPost({ postId, userId: user?.id, likes }));
+    } else {
+      navigate("/login");
+    }
+  };
   return (
-    <div className='flex justify-center items-center min-h-screen'>
-      <div className="flex flex-col flex-nowrap bg-white rounded-lg shadow-lg font-titulo text-[14px] justify-center content-stretch" style={{ width: '470px', height: '722px' }}>
-        {/* Información del restaurante y cliente */}
-        <div className='pt-[10px] pr-[15px] pb-[0px] pl-[15px]'>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center">
-              <div className="w-12 h-12 flex-shrink-0 relative rounded-full p-[2px]" style={{ background: 'linear-gradient(65deg, rgba(255,0,102,1) 0%, rgba(94,0,190,1) 100%)' }}>
-                <div className="w-full h-full rounded-full overflow-hidden bg-white">
-                  <img
-                    src="https://via.placeholder.com/100"
-                    alt="Restaurante"
-                    className="rounded-full w-full h-full object-cover"
-                  />
+    <article>
+      <div className="flex flex-col w-full h-auto rounded-xl text-[14px] mb-4 shadow-xl justify-start">
+        <div className="pt-4 px-4">
+          {/* Información del restaurante y cliente */}
+          <div className="flex justify-between items-center w-full mb-3">
+            <div className="flex items-center w-full">
+              {/* Avatar del usuario */}
+              <div className="flex items-center flex-shrink-0">
+                <UserAvatar
+                  srcAvatar={userPost?.userAvatar}
+                  showStoryBorder={false}
+                />
+                <div className="ml-2">
+                  <p className="font-bold text-sm capitalize">{userPost?.displayName}</p>
+                  <p className="text-xs text-grey-dim">{`${userReviews} Reseñas`}</p>
                 </div>
               </div>
-              <div className="ml-3">
-                <p className="font-bold text-sm">Hice Klent</p>
-                <p className="text-xs text-gray-500">57 Reseñas</p>
-              </div>
-              <span className="mx-2">→</span>
-              <div className="flex items-center">
-                {/* Contenedor con borde y gradiente aplicado */}
-                <div className="w-12 h-12 flex-shrink-0 relative rounded-full p-[2px]" style={{ background: 'linear-gradient(65deg, rgba(255,0,102,1) 0%, rgba(94,0,190,1) 100%)' }}>
-                  <div className="w-full h-full rounded-full overflow-hidden bg-white">
-                    <img
-                      src="https://via.placeholder.com/100"
-                      alt="Restaurante"
-                      className="rounded-full w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-                <div className="ml-3">
-                  <p className="font-bold text-sm">Papas Jhons</p>
-                  <p className="text-xs text-gray-500">Barranquilla</p>
+
+              <figure className="mx-2">
+                <SmallArrowIcon className="fill-grey-dim w-5" />
+              </figure>
+
+              {/* Avatar del restaurante */}
+              <div
+                className="flex items-center flex-shrink-0"
+                onClick={() =>
+                  handleNavigateToProfile("restaurant", restaurant?.username)
+                }
+              >
+                <UserAvatar srcAvatar={restaurant?.userAvatar} showStoryBorder={false} />
+                <div className="ml-2">
+                  <p className="font-bold text-sm capitalize">{restaurant?.displayName}</p>
+                  <p className="text-xs text-grey-dim capitalize">
+                    {restaurant?.location?.city}
+                  </p>
                 </div>
               </div>
             </div>
-            <div className="text-red-500 text-lg font-bold flex-shrink-0">4.5 ★</div>
+            <div className="flex items-center">
+              <KidStarIcon className="w-6 h-6 fill-principal" />
+              <span className="text-[1rem] font-bold ml-1">
+                {Number(reviewScore.toFixed(1))}
+              </span>
+            </div>
           </div>
 
           {/* Descripción del comentario */}
-          <p className="mb-4 leading-1.2 font-normal text-negro-carbon">
-            El restaurante sorprendió con sabores exquisitos. Probé un risotto cremoso de mariscos y una tarta de queso con frutos rojos. Servicio excelente y ambiente acogedor. ¡Definitivamente volveré!
+          <p className="text-negro-carbon text-sm mb-4 font-medium">
+            {description}
           </p>
 
-          {/* Botones */}
-          <div className="flex flex-nowrap space-x-2 mb-4 font-bold">
-            <button className="py-2.5 px-4 bg-morazul text-white rounded-[50px]">Excelente Servicio</button>
-            <button className="py-2.5 px-4 bg-morazul text-white rounded-[50px]">Precios Bajos</button>
+          {/* Botones - Tag */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {tags.map((tagObj, index) => (
+              <button
+                key={index}
+                type="button"
+                className="bg-morazul text-white px-4 py-2.5 rounded-full text-sm font-extrabold"
+                title={`Categoría: ${tagObj.category}, Valor: ${tagObj.value}`}
+              >
+                {tagObj.tag}
+              </button>
+            ))}
           </div>
         </div>
 
         {/* Imagen de la comida */}
-        <div className="w-full h-[470px]">
+        <div className="w-full aspect-square">
           <img
             src={foodImage}
             alt="Imagen de la comida"
@@ -67,21 +128,47 @@ const RestaurantCard = ({ foodImage }) => {
         </div>
 
         {/* Pie con íconos y fecha */}
-        <div className="flex flex-nowrap justify-between items-center text-gray-500 text-xs font-bold w-full h-[57px]">
+        <div className="flex justify-between items-center text-negro-carbon w-full h-[57px] px-4">
           <div className="flex items-center">
-            <img src={CorazonBlancoIcon} alt="Corazón Rojo" className="w-4 h-4" />
-            <p className="ml-1">100</p>
-            <img src={DislikeIcon} alt="Corazón Rojo" className="w-4 h-4 ml-2" />
+            <div
+              className="flex items-center mr-2 pr-2 border-r-2"
+              onClick={handleLikes}
+            >
+              {likes?.length && user?.id && likes?.some((item) => item === user.id) ? (
+                <HeartIconFilled className="cursor-pointer" />
+              ) : (
+                <HeartIcon className="cursor-pointer" />
+              )}
+
+              <p className="ml-1 text-xs font-bold select-none">
+                {likes?.length}
+              </p>
+            </div>
+            {/* <DislikeIcon className="cursor-pointer" /> */}
           </div>
           <div className="flex items-center space-x-4">
-            <p className="">Sep 27 / 2024</p>
-            <img src={ShareIcon} alt="Compartir" className="w-4 h-4" />
-            <img src={PuntovIcon} alt="Puntos" className="w-4 h-4" style={{ objectFit: 'contain' }} />
+            <p className="text-gray-500 text-xs font-medium tracking-wide font-nunito">
+              {formattedDate}
+            </p>
+            {/* <ShareIcon className="cursor-pointer" />
+            <MoreIconVert className="cursor-pointer" /> */}
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 
-export default RestaurantCard;
+PostCard.propTypes = {
+  foodImage: PropTypes.string,
+  description: PropTypes.string,
+  tags: PropTypes.arrayOf(
+    PropTypes.shape({
+      tag: PropTypes.string.isRequired,
+      value: PropTypes.number.isRequired,
+      category: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
+
+export default PostCard;

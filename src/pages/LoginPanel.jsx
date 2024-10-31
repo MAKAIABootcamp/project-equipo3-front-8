@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { showModal, hiddenModal } from "../redux/modales/modalSlice";
+import { showModal, hiddenModal } from "../redux/modals/modalSlice";
 import Modal from "../components/Layout/Modal";
 import SignInMethod from "../components/Authentication/SignInMethod";
 

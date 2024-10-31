@@ -1,0 +1,39 @@
+@keyframes floating-gradients {
+    0% {
+      background-position: 0% 0%, 100% 100%;
+    }
+    20% {
+      background-position: 20% 20%, 80% 80%;
+    }
+    40% {
+      background-position: 40% 40%, 60% 60%;
+    }
+    60% {
+      background-position: 100% 100%, 40% 40%;
+    }
+    80% {
+      background-position: 80% 80%, 20% 20%;
+    }
+    100% {
+      background-position: 0% 0%, 100% 100%;
+    }
+  }
+
+ 
+
+
+  .animated-gradient-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: radial-gradient(circle at 30% 30%, #ff0066, transparent),
+                radial-gradient(circle at 70% 70%, rgba(140, 0, 255, 0.705), transparent);
+    background-size: 400% 400%;
+    animation: floating-gradients 7s ease-in-out infinite;
+
+    z-index: -1; /* Asegura que esté detrás del contenido del botón */
+  }

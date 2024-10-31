@@ -8,7 +8,6 @@ const RegisterModal = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(null);
-    const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
 
     // Función para alternar la visibilidad de la contraseña
@@ -28,7 +27,7 @@ const RegisterModal = () => {
         try {
             // Firebase función para registrar al usuario
             await createUserWithEmailAndPassword(auth, email, password);
-           // dispatch(closeLoginModal()); // Cierra el modal al registrarse correctamente
+            // Cierra el modal al registrarse correctamente
         } catch (error) {
             console.error('Error al registrarse: ', error);
             setError('Error al registrarse. Por favor, intenta de nuevo.');
@@ -37,10 +36,10 @@ const RegisterModal = () => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3">
+            <div className="bg-blanco-puro p-8 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3">
                 <button
                     className="absolute  right-[480px] font-bold text-gray-500 hover:text-gray-700"
-                    //onClick={() => dispatch(closeLoginModal())}
+                    
                 > 
                     &#10005; 
                 </button>
@@ -66,7 +65,7 @@ const RegisterModal = () => {
                     {/* Botón "ojito" */}
                     <button
                         type="button"
-                        className="absolute inset-y-0 right-[500px] flex items-center text-gray-500 hover:text-gray-700"
+                        className="absolute right-12 mt-3 justify-center items-center text-gray-500 hover:text-gray-700"
                         onClick={togglePasswordVisibility}
                     >
                         {showPassword ? (

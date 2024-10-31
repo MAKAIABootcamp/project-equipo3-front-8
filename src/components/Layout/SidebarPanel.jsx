@@ -1,11 +1,14 @@
 import LoginButton from '../Buttons/Auth/LoginButton';
+import RegisterButton from '../Buttons/Auth/RegisterButton';
+import { useLocation } from 'react-router-dom';
 
 const SidebarPanel = () => {
+    const location = useLocation(); // Para pasar la ruta actual al botón de iniciar sesión
     return (
         <aside
-            className="fixed z-10 left-0 top-0 flex flex-col-reverse justify-center flex-wrap content-stretch w-[350px] h-screen p-0 bg-gray-50  text-grey-dim font-titulo"
+            className="hidden fixed top-0 left-0 z-10 md:flex justify-center h-screen max-w-[21.875rem] p-8 bg-gray-50  text-grey-dim font-titulo"
         >
-            <div className='pt-[0px] pr-[32px] pb-[0px] pl-[32px] space-y-4 '>
+            <div className='space-y-4 '>
 
                 <h1 className="text-[36px] font-bold leading-1.2 text-left" >
                     ¡<span className="text-principal">Foddies</span> es tu app foodie favorita!
@@ -22,9 +25,7 @@ const SidebarPanel = () => {
                 </div>
 
                 <div className="space-y-4 flex flex-col flex-nowrap content-stretch font-bold">
-                    <button className="bg-principal text-white py-2 px-8 rounded-[4px] hover:bg-pink-600 transition-all">
-                        Registrarme
-                    </button>
+                    <RegisterButton location={location}/>
                     <LoginButton />
                     {/* <button className="border border-principal text-principal  py-2 px-8 rounded-[4px] hover:bg-pink-100 transition-all">
                         Iniciar Sesión
