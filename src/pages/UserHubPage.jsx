@@ -4,10 +4,17 @@ import { useParams } from "react-router-dom";
 import {
   fetchOtherUserData,
   clearOtherUserData,
+  fetchAllUsersData,
 } from "../redux/users/otherUserSlice";
 import { getRestaurantByUsername } from "../redux/restaurants/restaurantSlice";
+import { fetchPosts } from "../redux/post/postSlice";
 import NotFound from "./NotFound";
 import AvatarSection from "../components/RestaurantProfile/AvatarSection";
+import {
+  calculateRestaurantScore,
+  calculateUserProfile,
+  assignStars,
+} from "../utils/reviewsOperations";
 
 const UserHubPage = () => {
   const dispatch = useDispatch();
@@ -18,6 +25,7 @@ const UserHubPage = () => {
 
   const {
     data: otherUser,
+    allUsers,
     loading,
     error,
   } = useSelector(
@@ -31,6 +39,8 @@ const UserHubPage = () => {
     (store) => store.restaurant || { restaurant: null }
   );
 
+  const { posts } = useSelector((store) => store.posts);
+
   useEffect(() => {
     if (isAuthenticated) {
       if (username && userType === "user" && username !== user.username) {
@@ -43,6 +53,8 @@ const UserHubPage = () => {
     if (userType === "restaurant") {
       dispatch(getRestaurantByUsername(username));
     }
+    dispatch(fetchPosts());
+    dispatch(fetchAllUsersData());
   }, [dispatch, username, user.username, isAuthenticated]);
 
   if (!isAuthenticated) {
@@ -63,11 +75,33 @@ const UserHubPage = () => {
   }
 
   const displayUser = isCurrentUser ? user : otherUser || restaurant;
+  const userReviews =
+    posts.filter((p) => {
+      if (userType === "restaurant") {
+        return p.restaurantId === displayUser?.id;
+      } else {
+        return p.userId === displayUser?.id;
+      }
+    }) || [];
+
+  console.log(userReviews);
 
   if (!displayUser && !isCurrentUser) {
     return <NotFound />;
   }
 
+  const score =
+    userType === "restaurant" &&
+    posts.length &&
+    allUsers.length &&
+    displayUser?.id
+      ? calculateRestaurantScore(posts, allUsers, displayUser?.id)
+      : calculateUserProfile(displayUser, userReviews, posts);
+  
+  const stars = userType === "restaurant" ? assignStars(score,userReviews): null;
+
+  console.log('Puntación del usuario:',score);
+  console.log('stars', stars)
   return (
     <div className="flex flex-col items-center p-6 md:p-10">
       <div className="flex flex-col items-center md:flex-row md:items-start md:space-x-6">
@@ -78,6 +112,8 @@ const UserHubPage = () => {
           alt={displayUser?.displayName}
           username={displayUser?.username}
           displayName={displayUser?.displayName}
+          score={score}
+          stars={stars}
         />
         {/* <img
           className="w-32 h-32 md:w-48 md:h-48 object-cover mb-4 md:mb-0 rounded-full border-4 border-principal"

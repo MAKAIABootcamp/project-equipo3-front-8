@@ -3,11 +3,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { database } from "../../firebase/firebaseConfig";
 import {
   collection,
+  doc,
   addDoc,
   getDocs,
   query,
   orderBy,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { calculateRatings } from "../../utils/reviewsOperations";
 
@@ -70,6 +72,27 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
     createdAt: doc.data().createdAt?.toDate()?.toISOString(),
   }));
 });
+
+export const setLikesPost = createAsyncThunk(
+  "posts/setLikes",
+  async ({ postId, userId, likes }, { rejectWithValue }) => {
+    try {
+      const isUserExists = likes.some((like) => like === userId);
+      const likesArray = isUserExists
+        ? likes.filter((like) => like !== userId)
+        : [...likes, userId];
+      const postRef = doc(database, collectionName, postId);
+      await updateDoc(postRef, { likes: [...likesArray] });
+      return {
+        postId,
+        likes: [...likesArray],
+      };
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 const postsSlice = createSlice({
   name: "posts",
@@ -140,6 +163,23 @@ const postsSlice = createSlice({
       .addCase(fetchPosts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(setLikesPost.fulfilled, (state, action) => {
+        state.posts = state.posts.map((item) =>
+          item.id === action.payload.postId
+            ? { ...item, likes: action.payload.likes }
+            : item
+        );
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(setLikesPost.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
+      .addCase(setLikesPost.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       });
   },
 });

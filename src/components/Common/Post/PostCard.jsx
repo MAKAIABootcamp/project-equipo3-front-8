@@ -17,37 +17,40 @@ import MoreIconVert from "../../../assets/icons/core/more_icon_vertical.svg";
 import SmallArrowIcon from "../../../assets/icons/core/small_arrow_icon.svg";
 import KidStarIcon from "../../../assets/icons/core/kid_star_icon_filled.svg";
 import PropTypes from "prop-types";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getRestaurantById } from "../../../redux/restaurants/restaurantSlice";
 import { formatDistanceToNow } from "date-fns";
+import { setLikesPost } from "../../../redux/post/postSlice";
 
-
-const PostCard = ({ foodImage, description, tags, restaurantId, restaurant=null, userPost=null, date }) => {
-  console.log("restaurantId:", restaurantId);
-  // const dispatch = useDispatch();
+const PostCard = ({
+  foodImage,
+  description,
+  tags,
+  restaurant = null,
+  userPost = null,
+  date,
+  reviewScore,
+  userReviews,
+  likes,
+  postId,
+}) => {
   const navigate = useNavigate();
-  const formattedDate = date ? formatDistanceToNow(new Date(date), { addSuffix: true }) : "";
-  // const [restaurant, setRestaurant] = useState(null);
-  // const { user } = useSelector((store) => store.auth);
-  // const { restaurant } = useSelector((store) => store.restaurant);
-
-  // async function getRestaurants() {
-  //   const restaurants = await dispatch(getRestaurantById(restaurantId));
-  //   setRestaurant(restaurants.payload);
-  //   console.log("restaurants.payload", restaurants.payload);
-  // }
+  const dispatch = useDispatch();
+  const formattedDate = date
+    ? formatDistanceToNow(new Date(date), { addSuffix: true })
+    : "";
+  const { user, isAuthenticated } = useSelector((store) => store.auth);
 
   const handleNavigateToProfile = (userType, username) =>
     navigate(`/profile/${userType}/${username}`);
 
-  // useEffect(() => {
-  //   // getRestaurants();
-  //   dispatch(getRestaurantById(restaurantId));
-  // }, [dispatch]);
-  
-  console.log(restaurant);
-  console.log("usuario",userPost);
+  const handleLikes = () => {
+    if (isAuthenticated) {
+      dispatch(setLikesPost({ postId, userId: user?.id, likes }));
+    } else {
+      navigate("/login");
+    }
+  };
   return (
     <article>
       <div className="flex flex-col w-full h-auto rounded-xl text-[14px] mb-4 shadow-xl justify-start">
@@ -57,10 +60,13 @@ const PostCard = ({ foodImage, description, tags, restaurantId, restaurant=null,
             <div className="flex items-center w-full">
               {/* Avatar del usuario */}
               <div className="flex items-center flex-shrink-0">
-                <UserAvatar srcAvatar={userPost?.userAvatar} showStoryBorder={true} />
+                <UserAvatar
+                  srcAvatar={userPost?.userAvatar}
+                  showStoryBorder={true}
+                />
                 <div className="ml-2">
                   <p className="font-bold text-sm">{userPost?.displayName}</p>
-                  <p className="text-xs text-grey-dim">57 Reseñas</p>
+                  <p className="text-xs text-grey-dim">{`${userReviews} Reseñas`}</p>
                 </div>
               </div>
 
@@ -86,7 +92,9 @@ const PostCard = ({ foodImage, description, tags, restaurantId, restaurant=null,
             </div>
             <div className="flex items-center">
               <KidStarIcon className="w-6 h-6 fill-principal" />
-              <span className="text-[1rem] font-bold ml-1">4.5</span>
+              <span className="text-[1rem] font-bold ml-1">
+                {Number(reviewScore.toFixed(1))}
+              </span>
             </div>
           </div>
 
@@ -122,14 +130,26 @@ const PostCard = ({ foodImage, description, tags, restaurantId, restaurant=null,
         {/* Pie con íconos y fecha */}
         <div className="flex justify-between items-center text-negro-carbon w-full h-[57px] px-4">
           <div className="flex items-center">
-            <div className="flex items-center mr-2 pr-2 border-r-2">
-              <HeartIcon className="cursor-pointer" />
-              <p className="ml-1 text-xs font-bold select-none">100</p>
+            <div
+              className="flex items-center mr-2 pr-2 border-r-2"
+              onClick={handleLikes}
+            >
+              {likes?.length && likes?.some((item) => item === user.id) ? (
+                <HeartIconFilled className="cursor-pointer" />
+              ) : (
+                <HeartIcon className="cursor-pointer" />
+              )}
+
+              <p className="ml-1 text-xs font-bold select-none">
+                {likes?.length}
+              </p>
             </div>
             <DislikeIcon className="cursor-pointer" />
           </div>
           <div className="flex items-center space-x-4">
-            <p className="text-gray-500 text-xs font-medium tracking-wide font-nunito">{formattedDate}</p>
+            <p className="text-gray-500 text-xs font-medium tracking-wide font-nunito">
+              {formattedDate}
+            </p>
             <ShareIcon className="cursor-pointer" />
             <MoreIconVert className="cursor-pointer" />
           </div>

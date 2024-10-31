@@ -7,6 +7,10 @@ import ModalRegistro from "../components/Layout/RegistryModal";
 import { fetchPosts } from "../redux/post/postSlice";
 import { fetchAllUsersData } from "../redux/users/otherUserSlice";
 import { fetchAllRestaurants } from "../redux/restaurants/restaurantSlice";
+import {
+  calculateUserProfile,
+  calculateOverallReviewScore,
+} from "../utils/reviewsOperations";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -23,6 +27,7 @@ const Home = () => {
     dispatch(fetchAllRestaurants());
   }, [dispatch]);
 
+  console.log(allUsers)
 
   const prueba = [
     {
@@ -87,16 +92,32 @@ const Home = () => {
                     const userPost = allUsers?.find(
                       (u) => u.id === post.userId
                     );
+                    const userReviews = posts.filter(p=>p.userId=== userPost.id)
+
+                    const userWeight = calculateUserProfile(
+                      userPost,
+                      userReviews,
+                      posts
+                    );
+                    const review = {
+                      ...post.review,
+                      text: post.description,
+                      date: post.createdAt,
+                      photos: post.postImage};
+                    const reviewScore = calculateOverallReviewScore(review, userWeight)
                     return (
                       <PostCard
                         key={post.id}
+                        postId={post.id}
                         foodImage={post.postImage} // Usa la imagen de la publicación o una de ejemplo
                         description={post.description}
                         tags={post?.questions?.tags || []}
-                        restaurantId={post.restaurantId}
                         restaurant={restaurantPost}
                         userPost={userPost}
-                        date = {post.createdAt}
+                        date={post.createdAt}
+                        reviewScore={reviewScore}
+                        userReviews={userReviews.length}
+                        likes={post.likes}
                       />
                     );
                   })}

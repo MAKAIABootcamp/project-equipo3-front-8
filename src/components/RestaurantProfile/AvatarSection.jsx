@@ -8,7 +8,9 @@ const AvatarSection = ({
   comments = [],
   username = "SaboresDelPacífico",
   displayName = "Restaurante Chocoano",
-  reviews=0
+  reviews = 0,
+  score,
+  stars
 }) => {
   return (
     <div className="flex flex-col items-center justify-center -mt-[70px]">
