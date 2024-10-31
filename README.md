@@ -1,57 +1,73 @@
-# FOODIES (Restaurant Review Website)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/bea50610-9ad4-4daf-bb5f-83778e821327" alt="Logo Foddies" width="400" />
+</div>
 
-![Logo del proyecto](./src/assets/brand/logos/Imalogo-Foddies.svg)
+### ¡Foddies es tu app foodie favorita!
 
 ## Descripción del proyecto
 Este proyecto es una **plataforma web** que permite a los usuarios **buscar, reseñar y calificar restaurantes**. El objetivo es ofrecer una experiencia centralizada donde tanto usuarios como restaurantes puedan interactuar a través de reseñas confiables y actualizadas. Los usuarios pueden buscar restaurantes por ubicación, tipo de comida, precio y más, mientras que los restaurantes pueden gestionar sus perfiles y mejorar su reputación en línea.
 
 ## Características principales
-- **Búsqueda avanzada**: Encuentra restaurantes por nombre, ubicación, tipo de cocina, precio y más.
+- **Autenticacion de usuario**: Los usuarios pueden ingresar con Facebook, Google y Email.
 - **Reseñas de usuarios**: Los usuarios pueden escribir y leer reseñas sobre diferentes restaurantes.
-- **Calificación por estrellas**: Los usuarios pueden calificar los restaurantes con un sistema de estrellas.
+- **Valoraciones calibradas**: Los usuarios pueden calificar los restaurantes con un sistema de estrellas basadan en el sistema de calificaciones michellin.
 - **Fotos de usuarios**: Los usuarios pueden subir fotos de su experiencia en los restaurantes.
-- **Mapas interactivos**: Visualización de la ubicación de los restaurantes en un mapa.
 - **Perfiles de restaurantes**: Los restaurantes pueden actualizar su información, menús, fotos, y responder a reseñas.
 
-## Estructura del proyecto
-El proyecto está organizado de la siguiente manera:
-- **/public**: Iconos utilizados en la aplicación.
-- **/src**
--   **/assets**: Recursos como imágenes y otros archivos estáticos.
--   **/components**: Componentes reutilizables de la aplicación.
--   **/firebase**: Configuración y servicios relacionados con Firebase.
--   **/hooks**: Hooks personalizados para la lógica de la aplicación.
--   **/pages**: Páginas principales del sitio web.
--   **/redux**: Estado global gestionado con Redux.
--   **/router**: Configuración de rutas de la aplicación.
--   **/services**: Servicios como API calls o lógica relacionada con datos externos.
--   **main.jsx**: Punto de entrada de la aplicación React.
--   **/Styles**: Archivos CSS o PostCSS relacionados con la personalización de estilos.
--  **.gitignore**: Archivos y carpetas ignorados por Git.
--  **README.md**: Archivo de documentación del proyecto.
--  **eslint.config.js**: Configuración para ESLint.
--  **index.html**: Archivo HTML principal.
--  **package.json**: Dependencias y scripts del proyecto.
--  **pnpm-lock.yaml**: Bloqueo de versiones para las dependencias de pnpm.
--  **postcss.config.js**: Configuración de PostCSS.
--  **tailwind.config.js**: Configuración de Tailwind CSS.
--  **vite.config.js**: Configuración de Vite para el proyecto.
+## Tecnologías 
 
-## Tecnologías utilizadas
-Este proyecto está construido con las siguientes tecnologías:
-- **React**: Biblioteca principal para la creación de interfaces de usuario.
-- **PostCSS**: Utilizado para procesar y mejorar los estilos CSS.
-- **Tailwind CSS**: Utilizado para estilizar componentes de forma rápida con utilidades.
-- **Vite**: Herramienta de construcción rápida para el desarrollo de aplicaciones React.
-- **pnpm**: Gestor de dependencias eficiente.
+<div style="display: flex; align-items: center; gap:10;">   
+  <img src="https://github.com/user-attachments/assets/a46bde0b-f1c8-49d9-9922-296c8068fda1" alt="PNPM" width="50"/>
+  <img src="https://github.com/user-attachments/assets/bd4224f4-9ced-42e2-90d5-98bf0a6fe3c9" alt="Vite js" width="50"/> 
+  <img src="https://icon.icepanel.io/Technology/svg/React.svg" alt="React" width="50"/> 
+  <img src="https://icon.icepanel.io/Technology/svg/Tailwind-CSS.svg" alt="Tailwind CSS" width="50"/> 
+</div>
+
+
 
 ## Requisitos previos
 Antes de comenzar, asegúrate de tener instalado lo siguiente:
 - **Node.js** (v14 o superior)
-- **pnpm** (o npm si prefieres usarlo)
+- **pnpm**
+
+----
+
+### Antes de comenzar
+**Gestor de paquetes PNPM***
+
+Intalacion: 
+
+```bash
+npm install -g pnpm
+```
+
+> Docs https://www.pnpm.io/
+
+----
 
 ## Instalación y configuración
+
 1. **Clonar el repositorio**:
    ```bash
    git clone https://github.com/MAKAIABootcamp/project-equipo3-front-8.git
+   ```
+2. **Abre la carpeta**:
+   ```bash
    cd project-equipo3-front-8
+   ```
+   
+3. **Instalar dependencias**:
+   ```bash
+   pnpm i 
+   ```
+
+4. **Corre el Servidor**:
+   ```bash
+   pnpm dev 
+   ```
+
+----
+Para mas Informacion Consulta la documentacion
+[DOC](https://github.com/MAKAIABootcamp/project-equipo3-front-8/wiki/1.-Bienvenido-a-Foddies)
+
+
